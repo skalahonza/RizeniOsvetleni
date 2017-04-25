@@ -6,13 +6,15 @@
 #define UDPTASK_DRAWER_H
 
 
+#include <basetsd.h>
+
 class Drawer {
 public:
     Drawer();
     ~Drawer();
 
 private:
-
+    UINT16 pixels[320][480];
 };
 
 
