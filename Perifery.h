@@ -6,8 +6,8 @@
 #define UDPTASK_PERIFERY_H
 
 #include <sys/types.h>
-#include <functional>
 #include <vector>
+#include <functional>
 #include "HardwareEndpoints.h"
 
 class Perifery {
