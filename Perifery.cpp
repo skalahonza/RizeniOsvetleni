@@ -8,12 +8,7 @@
 #include <stdint.h>
 #include <unistd.h>
 #include <fcntl.h>
-#include <malloc.h>
-#include <string.h>
-#include <byteswap.h>
-#include <getopt.h>
-#include <inttypes.h>
-#include <time.h>
+#include <iostream>
 #include "Perifery.h"
 
 /*
@@ -139,6 +134,7 @@ void *Perifery::map_phys_address(off_t region_base, size_t region_size, int opt_
 
 Perifery::Perifery() {
     memdev = (char *) "/dev/mem";
+    CheckLoop();
 }
 
 Perifery::~Perifery() {
@@ -156,8 +152,10 @@ void Perifery::CheckLoop() {
 
     if (mem_base == NULL) {
         //Error
+        std::cerr << "Error during perifery address initialization.\n";
+        return;
     }
-
+    uint32_t rgb_knobs_value_previous = 0;
     while (1) {
         uint32_t rgb_knobs_value;
         int int_val;
@@ -175,6 +173,10 @@ void Perifery::CheckLoop() {
          * cannot reuse previously read value of the location.
          */
         rgb_knobs_value = *(volatile uint32_t *) (mem_base + SPILED_REG_KNOBS_8BIT_o);
+
+        //No change detected
+        if (rgb_knobs_value_previous == rgb_knobs_value)
+            continue;
 
         /* Store the read value to the register controlling individual LEDs */
         *(volatile uint32_t *) (mem_base + SPILED_REG_LED_LINE_o) = rgb_knobs_value;

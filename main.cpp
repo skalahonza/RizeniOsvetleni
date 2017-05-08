@@ -1,8 +1,11 @@
-//#include <iostream>
+#include <iostream>
+#include "Perifery.h"
 
 using namespace std;
 
 int main() {
-    //std::cout << "Hello, World!" << std::endl;
+    cout << "Infinite loop\n";
+    auto controller = Perifery();
+
     return 0;
 }
