@@ -95,13 +95,12 @@ void Perifery::CheckLoop() {
         return;
     }
     uint32_t rgb_knobs_value_previous = 0;
+    unsigned char r = 0, g = 0, b = 0;
+    bool firstRead = true;
     while (loop_) {
         uint32_t rgb_knobs_value;
         int int_val;
         unsigned int uint_val;
-
-        /* Initialize structure to 0 seconds and 200 milliseconds */
-        struct timespec loop_delay = {.tv_sec = 0, .tv_nsec = 200 * 1000 * 1000};
 
         /*
          * Access register holding 8 bit relative knobs position
@@ -112,21 +111,28 @@ void Perifery::CheckLoop() {
          * cannot reuse previously read value of the location.
          */
         rgb_knobs_value = *(volatile uint32_t *) (mem_base + SPILED_REG_KNOBS_8BIT_o);
-
         //No change detected
         if (rgb_knobs_value_previous == rgb_knobs_value)
             continue;
 
-        /* Store the read value to the register controlling individual LEDs */
-        *(volatile uint32_t *) (mem_base + SPILED_REG_LED_LINE_o) = rgb_knobs_value;
+        //First reading
+        if (firstRead) {
+            red_ = r = *(unsigned char *) &rgb_knobs_value; //red spinner first byte - values: 0-20
+            green_ = g = *(((unsigned char *) &rgb_knobs_value) + 1); //green spinner second byte - values: 0-20
+            blue_ = b = *(((unsigned char *) &rgb_knobs_value) + 2); //blue spinner third byte - values: 0-20
 
-        /*
-         * Store RGB knobs values to the corersponding components controlling
-         * a color/brightness of the RGB LEDs
-         */
-        *(volatile uint32_t *) (mem_base + SPILED_REG_LED_RGB1_o) = rgb_knobs_value;
-
-        *(volatile uint32_t *) (mem_base + SPILED_REG_LED_RGB2_o) = rgb_knobs_value;
+            //Propagate change
+            Resolve_R_Callbacks(red_);
+            Resolve_G_Callbacks(green_);
+            Resolve_B_Callbacks(blue_);
+            firstRead = false;
+        }
+            //Not first reading
+        else {
+            red_ += SpinDirection(r, *(unsigned char *) &rgb_knobs_value);
+            green_ += SpinDirection(g, *(((unsigned char *) &rgb_knobs_value) + 1));
+            red_ += SpinDirection(b, *(((unsigned char *) &rgb_knobs_value) + 2));
+        }
 
         /* Assign value read from knobs to the basic signed and unsigned types */
         int_val = rgb_knobs_value;
@@ -135,13 +141,60 @@ void Perifery::CheckLoop() {
         /* Print values */
         printf("int %10d uint 0x%08x\n", int_val, uint_val);
 
-        /*
-         * Wait for time specified by "loop_delay" variable.
-         * Use monotonic clocks as time reference to ensure
-         * that wait interval is not prolonged or shortened
-         * due to real time adjustment.
-         */
+        rgb_knobs_value_previous = rgb_knobs_value;
+        // wait 200ms
+        struct timespec loop_delay = {.tv_sec = 0, .tv_nsec = 200 * 1000 * 1000};
         clock_nanosleep(CLOCK_MONOTONIC, 0, &loop_delay, NULL);
     }
+}
+
+void Perifery::Register_R_Callback(std::function<void(int)> callback) {
+    R_callbacks_.push_back(callback);
+}
+
+void Perifery::Register_G_Callback(std::function<void(int)> callback) {
+    G_callbacks_.push_back(callback);
+}
+
+void Perifery::Register_B_Callback(std::function<void(int)> callback) {
+    B_callbacks_.push_back(callback);
+}
+
+void Perifery::Clear_R_Callbacks() {
+    R_callbacks_.clear();
+}
+
+void Perifery::Clear_G_Callbacks() {
+    G_callbacks_.clear();
+}
+
+void Perifery::Clear_B_Callbacks() {
+    B_callbacks_.clear();
+}
+
+void Perifery::Resolve_R_Callbacks(int value) {
+    ResolveCallbacks(R_callbacks_, value);
+}
+
+void Perifery::ResolveCallbacks(std::vector<std::function<void(int)>> callbackList, int value) {
+    for (int i = 0; i < callbackList.size(); ++i) {
+        //Call the registered methods
+        callbackList.at((unsigned long) i)(value);
+    }
+}
+
+void Perifery::Resolve_G_Callbacks(int value) {
+    ResolveCallbacks(G_callbacks_, value);
+}
+
+void Perifery::Resolve_B_Callbacks(int value) {
+    ResolveCallbacks(B_callbacks_, value);
+}
+
+char Perifery::SpinDirection(unsigned char previous, unsigned char current) {
+    //TODO Reimplement this
+    // Return +1 or - 1 based on previous and current relative position
+    //Return zero if unchanged
+    return 0;
 }
 

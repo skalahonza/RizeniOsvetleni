@@ -26,6 +26,7 @@ public:
 
     void UnRegister_B_Callback(std::function<void(int)> callback);
 
+
     void Clear_R_Callbacks();
 
     void Clear_G_Callbacks();
@@ -37,8 +38,19 @@ public:
 private:
     void CheckLoop();
     void *map_phys_address(off_t region_base, size_t region_size, int opt_cached);
+
+    void ResolveCallbacks(std::vector<std::function<void(int)>> callbackList, int value);
+
+    void Resolve_R_Callbacks(int value);
+
+    void Resolve_G_Callbacks(int value);
+
+    void Resolve_B_Callbacks(int value);
+
+    char SpinDirection(unsigned char previous, unsigned char current);
     char *memdev;
     volatile bool loop_ = true;
+    unsigned char red_, green_, blue_;
     std::vector<std::function<void(int)>> R_callbacks_;
     std::vector<std::function<void(int)>> G_callbacks_;
     std::vector<std::function<void(int)>> B_callbacks_;
