@@ -133,7 +133,7 @@ void Perifery::CheckLoop() {
         //Propagate change
         Resolve_R_Callbacks(SpinDirection(r, red_));
         Resolve_G_Callbacks(SpinDirection(g, green_));
-        Resolve_B_Callbacks(SpinDirection(b, blue_);
+        Resolve_B_Callbacks(SpinDirection(b, blue_));
 
         //Save to previous
         red_ = r;
