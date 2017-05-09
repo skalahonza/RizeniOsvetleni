@@ -16,6 +16,8 @@ class Perifery {
 public:
     Perifery();
 
+    void Init();
+
     void Register_R_Callback(t_callback callback, std::string key);
 
     void Register_G_Callback(t_callback callback, std::string key);

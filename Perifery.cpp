@@ -74,7 +74,6 @@ void *Perifery::map_phys_address(off_t region_base, size_t region_size, int opt_
 Perifery::Perifery() {
     loop_ = true;
     memdev = (char *) "/dev/mem";
-    CheckLoop();
 }
 
 Perifery::~Perifery() {
@@ -183,7 +182,6 @@ char Perifery::SpinDirection(unsigned char previous, unsigned char current) {
 
 void Perifery::Register_R_Callback(t_callback callback, std::string key) {
     R_callbacks_[key] = callback;
-    std::cout << R_callbacks_.size() << "\n";
 }
 
 void Perifery::Register_G_Callback(t_callback callback, std::string key) {
@@ -213,5 +211,9 @@ void Perifery::UnRegister_G_Callback(std::string key) {
 
 void Perifery::UnRegister_B_Callback(std::string key) {
     B_callbacks_.erase(B_callbacks_.find(key));
+}
+
+void Perifery::Init() {
+    CheckLoop();
 }
 
