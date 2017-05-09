@@ -5,9 +5,6 @@ using namespace std;
 
 void test(SPINDIRECTION a, int value) {
     switch (a) {
-        case UNCHANGED:
-            cout << "Value: " << value << " Unchanged \n";
-            break;
         case LEFT:
             cout << "Value: " << value <<  " LEFT \n";
             break;
@@ -17,8 +14,14 @@ void test(SPINDIRECTION a, int value) {
     }
 }
 
-void pressed(){
-    cout << "Pressed\n";
+void pressed1(){
+    cout << "Red Pressed\n";
+}
+void pressed2(){
+    cout << "Green Pressed\n";
+}
+void pressed3(){
+    cout << "Blue Pressed\n";
 }
 
 int main() {
@@ -27,7 +30,9 @@ int main() {
     controller.Register_G_Callback(test, "printer");
     controller.Register_B_Callback(test, "printer");
 
-    controller.Register_R_Pressed_Callback(pressed,"123");
+    controller.Register_R_Pressed_Callback(pressed1,"redclick");
+    controller.Register_G_Pressed_Callback(pressed2,"greenclick");
+    controller.Register_B_Pressed_Callback(pressed3,"blueclick");
     controller.Init();
     return 0;
 }
