@@ -72,6 +72,7 @@ void *Perifery::map_phys_address(off_t region_base, size_t region_size, int opt_
 }
 
 Perifery::Perifery() {
+    loop_ = true;
     memdev = (char *) "/dev/mem";
     CheckLoop();
 }
@@ -179,27 +180,25 @@ char Perifery::SpinDirection(unsigned char previous, unsigned char current) {
     return 0;
 }
 
-void Perifery::Register_R_Callback(std::function<void(int)> callback, std::string key) {
+void Perifery::Register_R_Callback(t_callback callback, std::string key) {
     R_callbacks_[key] = callback;
 }
 
-void Perifery::Register_G_Callback(std::function<void(int)> callback, std::string key) {
+void Perifery::Register_G_Callback(t_callback callback, std::string key) {
     G_callbacks_[key] = callback;
 }
 
-void Perifery::Register_B_Callback(std::function<void(int)> callback, std::string key) {
+void Perifery::Register_B_Callback(t_callback callback, std::string key) {
     R_callbacks_[key] = callback;
 }
 
-void Perifery::ResolveCallbacks(std::map<std::string, std::function<void(int)>> callbacks, int value) {
-    for (auto any : callbacks) {
-        any.second(value);
-    }
+void Perifery::ResolveCallbacks(std::map<std::string, t_callback> callbacks, int value) {
+    for (std::map<std::string, t_callback>::iterator it=callbacks.begin(); it!=callbacks.end(); ++it)
+        it->second(value);
 }
 
 void Perifery::UnRegister_R_Callback(std::string key) {
-    auto it = R_callbacks_.find(key);
-    R_callbacks_.erase(it);
+    R_callbacks_.erase(R_callbacks_.find(key));
 }
 
 void Perifery::UnRegister_G_Callback(std::string key) {
