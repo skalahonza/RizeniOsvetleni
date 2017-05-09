@@ -172,11 +172,18 @@ void Perifery::Resolve_B_Callbacks(int value) {
     ResolveCallbacks(B_callbacks_, value);
 }
 
-char Perifery::SpinDirection(unsigned char previous, unsigned char current) {
-    //TODO Reimplement this
-    // Return +1 or - 1 based on previous and current relative position
-    //Return zero if unchanged
-    return 0;
+SPINDIRECTION Perifery::SpinDirection(unsigned char prew, unsigned char now) {
+    //0 -> 255 ... 0 = 0, 19 = 255 ... 1 dil 13,42;
+    if (prew == now)
+        return UNCHANGED;
+    else if ((prew == 255) && (now < 30))
+        return RIGHT;
+    else if ((prew == 0) && (now > 30))
+        return LEFT;
+    else if (prew < now)
+        return RIGHT;
+    else
+        return LEFT;
 }
 
 void Perifery::Register_R_Callback(std::function<void(int)> callback, std::string key) {

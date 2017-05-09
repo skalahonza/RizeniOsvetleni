@@ -11,6 +11,12 @@
 #include <map>
 #include "HardwareEndpoints.h"
 
+enum SPINDIRECTION {
+    UNCHANGED,
+    LEFT,
+    RIGHT
+};
+
 class Perifery {
 public:
     Perifery();
@@ -48,7 +54,7 @@ private:
 
     void Resolve_B_Callbacks(int value);
 
-    char SpinDirection(unsigned char previous, unsigned char current);
+    SPINDIRECTION SpinDirection(unsigned char prew, unsigned char now);
 
     char *memdev;
     volatile bool loop_ = true;
