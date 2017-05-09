@@ -120,7 +120,7 @@ void Perifery::CheckLoop() {
         r += 2;
         g += 1;
 
-        //First reading
+        //First reading - previous = current
         if (firstRead) {
             prevR = red_ = *r;
             prevG = green_ = *g;
@@ -135,7 +135,7 @@ void Perifery::CheckLoop() {
         }
 
         //Check button press
-        switch(*pressed){
+        switch (*pressed) {
             case 1:
                 Resolve_B_Pressed_Callbacks();
                 break;
@@ -147,15 +147,25 @@ void Perifery::CheckLoop() {
                 break;
         }
 
-        //Propagate change
-        Resolve_R_Callbacks(SpinDirection(prevR, red_),red_);
-        Resolve_G_Callbacks(SpinDirection(prevG, green_),green_);
-        Resolve_B_Callbacks(SpinDirection(prevB, blue_),blue_);
+        //GEt spin direction
+        SPINDIRECTION red_spin = SpinDirection(prevR, red_);
+        SPINDIRECTION green_spin = SpinDirection(prevG, green_);
+        SPINDIRECTION blue_spin = SpinDirection(prevB, blue_);
 
-        //Save to previous
-        prevR = red_;
-        prevG = green_;
-        prevB = blue_;
+        if (red_spin != UNCHANGED) {
+            Resolve_R_Callbacks(red_spin, red_);
+            prevR = red_;
+        }
+
+        if (green_spin != UNCHANGED) {
+            Resolve_G_Callbacks(green_spin, green_);
+            prevG = green_;
+        }
+
+        if (blue_spin != UNCHANGED) {
+            Resolve_B_Callbacks(blue_spin, blue_);
+            prevB = blue_;
+        }
 
         rgb_knobs_value_previous = rgb_knobs_value;
         // wait 200ms
@@ -177,19 +187,20 @@ void Perifery::Clear_B_Callbacks() {
 }
 
 void Perifery::Resolve_R_Callbacks(SPINDIRECTION direction, int value) {
-    ResolveCallbacks(R_callbacks_, direction,value);
+    ResolveCallbacks(R_callbacks_, direction, value);
 }
 
 void Perifery::Resolve_G_Callbacks(SPINDIRECTION direction, int value) {
-    ResolveCallbacks(G_callbacks_, direction,value);
+    ResolveCallbacks(G_callbacks_, direction, value);
 }
 
 void Perifery::Resolve_B_Callbacks(SPINDIRECTION direction, int value) {
-    ResolveCallbacks(B_callbacks_, direction,value);
+    ResolveCallbacks(B_callbacks_, direction, value);
 }
 
 SPINDIRECTION Perifery::SpinDirection(unsigned char prew, unsigned char now) {
     //0 -> 255 ... 0 = 0, 19 = 255 ... 1 dil 13,42;
+    // skip non-complete rotation
     if (prew == now || abs(prew - now) < 4)
         return UNCHANGED;
     else if ((prew > 250) && (now < 30))
@@ -217,7 +228,7 @@ void Perifery::Register_B_Callback(t_callback callback, std::string key) {
 
 void Perifery::ResolveCallbacks(std::map<std::string, t_callback> callbacks, SPINDIRECTION direction, int value) {
     for (std::map<std::string, t_callback>::iterator it = callbacks.begin(); it != callbacks.end(); ++it) {
-        it->second(direction,value);
+        it->second(direction, value);
     };
 }
 
@@ -244,7 +255,7 @@ void Perifery::ResolvePressedCallbacks(std::map<std::string, t_pressed_callback>
 }
 
 void Perifery::Resolve_R_Pressed_Callbacks() {
-ResolvePressedCallbacks(R_pressed_callbacks_);
+    ResolvePressedCallbacks(R_pressed_callbacks_);
 }
 
 void Perifery::Resolve_G_Pressed_Callbacks() {
