@@ -183,6 +183,7 @@ char Perifery::SpinDirection(unsigned char previous, unsigned char current) {
 
 void Perifery::Register_R_Callback(t_callback callback, std::string key) {
     R_callbacks_[key] = callback;
+    std::cout << R_callbacks_.size() << "\n";
 }
 
 void Perifery::Register_G_Callback(t_callback callback, std::string key) {
