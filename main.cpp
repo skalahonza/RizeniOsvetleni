@@ -1,8 +1,15 @@
-//#include <iostream>
+#include <iostream>
+#include "Perifery.h"
 
 using namespace std;
 
+void test(int a) {
+    cout << "Value is " << a << "\n";
+}
+
 int main() {
-    //std::cout << "Hello, World!" << std::endl;
+    cout << "Infinite loop\n";
+    auto controller = Perifery();
+    controller.Register_R_Callback(test, "printer");
     return 0;
 }
