@@ -100,7 +100,7 @@ void Perifery::CheckLoop() {
     bool firstRead = true;
     while (loop_) {
         uint32_t rgb_knobs_value;
-        unsigned char *r = 0, *g = 0, *b = 0;
+        unsigned char *r = 0, *g = 0, *b = 0, *pressed = 0;
 
         /*
          * Access register holding 8 bit relative knobs position
@@ -115,7 +115,8 @@ void Perifery::CheckLoop() {
         if (rgb_knobs_value_previous == rgb_knobs_value)
             continue;
 
-        r = g = b = (unsigned char *) &rgb_knobs_value;
+        r = g = b = pressed = (unsigned char *) &rgb_knobs_value;
+        pressed += 3;
         r += 2;
         g += 1;
 
@@ -131,6 +132,19 @@ void Perifery::CheckLoop() {
             red_ = *r;
             green_ = *g;
             blue_ = *b;
+        }
+
+        //Check button press
+        switch(*pressed){
+            case 1:
+                Resolve_R_Pressed_Callbacks();
+                break;
+            case 2:
+                Resolve_G_Pressed_Callbacks();
+                break;
+            case 4:
+                Resolve_B_Pressed_Callbacks();
+                break;
         }
 
         //Propagate change
