@@ -122,10 +122,6 @@ void Perifery::CheckLoop() {
             green_ = g = *(((unsigned char *) &rgb_knobs_value) + 1); //green spinner second byte - values: 0-20
             blue_ = b = *(((unsigned char *) &rgb_knobs_value) + 2); //blue spinner third byte - values: 0-20
 
-            //Propagate change
-            Resolve_R_Callbacks(red_);
-            Resolve_G_Callbacks(green_);
-            Resolve_B_Callbacks(blue_);
             firstRead = false;
         }
             //Not first reading
@@ -134,6 +130,11 @@ void Perifery::CheckLoop() {
             green_ += SpinDirection(g, *(((unsigned char *) &rgb_knobs_value) + 1));
             red_ += SpinDirection(b, *(((unsigned char *) &rgb_knobs_value) + 2));
         }
+
+        //Propagate change
+        Resolve_R_Callbacks(red_);
+        Resolve_G_Callbacks(green_);
+        Resolve_B_Callbacks(blue_);
 
         /* Assign value read from knobs to the basic signed and unsigned types */
         int_val = rgb_knobs_value;
@@ -189,7 +190,7 @@ void Perifery::Register_G_Callback(t_callback callback, std::string key) {
 }
 
 void Perifery::Register_B_Callback(t_callback callback, std::string key) {
-    R_callbacks_[key] = callback;
+    B_callbacks_[key] = callback;
 }
 
 void Perifery::ResolveCallbacks(std::map<std::string, t_callback> callbacks, int value) {
@@ -202,10 +203,10 @@ void Perifery::UnRegister_R_Callback(std::string key) {
 }
 
 void Perifery::UnRegister_G_Callback(std::string key) {
-
+    G_callbacks_.erase(G_callbacks_.find(key));
 }
 
 void Perifery::UnRegister_B_Callback(std::string key) {
-
+    B_callbacks_.erase(B_callbacks_.find(key));
 }
 
