@@ -194,6 +194,7 @@ void Perifery::Register_B_Callback(t_callback callback, std::string key) {
 }
 
 void Perifery::ResolveCallbacks(std::map<std::string, t_callback> callbacks, int value) {
+    std::cout << "callback called" << callbacks.size()<< "\n";
     for (std::map<std::string, t_callback>::iterator it=callbacks.begin(); it!=callbacks.end(); ++it)
     {
         std::cout << "callback called \n";
