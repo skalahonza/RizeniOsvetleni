@@ -6,13 +6,13 @@ using namespace std;
 void test(SPINDIRECTION a, int value) {
     switch (a) {
         case UNCHANGED:
-            cout << "Value " << value << "Unchanged \n";
+            cout << "Value: " << value << " Unchanged \n";
             break;
         case LEFT:
-            cout << "Value " << value <<  "LEFT \n";
+            cout << "Value: " << value <<  " LEFT \n";
             break;
         case RIGHT:
-            cout << "Value " << value <<  "RIGHT \n";
+            cout << "Value: " << value <<  " RIGHT \n";
             break;
     }
 }
