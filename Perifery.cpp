@@ -179,7 +179,7 @@ SPINDIRECTION Perifery::SpinDirection(unsigned char prew, unsigned char now) {
     //0 -> 255 ... 0 = 0, 19 = 255 ... 1 dil 13,42;
     if (prew == now)
         return UNCHANGED;
-    else if ((prew == 255) && (now < 30))
+    else if ((prew > 250) && (now < 30))
         return RIGHT;
     else if ((prew == 0) && (now > 30))
         return LEFT;
