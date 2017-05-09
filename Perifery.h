@@ -40,15 +40,13 @@ private:
 
     void *map_phys_address(off_t region_base, size_t region_size, int opt_cached);
 
-    void ResolveCallbacks(std::vector<std::function<void(int)>> callbackList, int value);
+    void ResolveCallbacks(std::map<std::string, std::function<void(int)>> callbacks, int value);
 
     void Resolve_R_Callbacks(int value);
 
     void Resolve_G_Callbacks(int value);
 
     void Resolve_B_Callbacks(int value);
-
-    void UNregisterFrom(std::map<std::string, std::function<void(int)>> callbacks, std::string key);
 
     char SpinDirection(unsigned char previous, unsigned char current);
 

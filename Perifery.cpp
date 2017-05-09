@@ -161,22 +161,15 @@ void Perifery::Clear_B_Callbacks() {
 }
 
 void Perifery::Resolve_R_Callbacks(int value) {
-    //ResolveCallbacks(R_callbacks_, value);
-}
-
-void Perifery::ResolveCallbacks(std::vector<std::function<void(int)>> callbackList, int value) {
-    for (int i = 0; i < callbackList.size(); ++i) {
-        //Call the registered methods
-        callbackList.at((unsigned long) i)(value);
-    }
+    ResolveCallbacks(R_callbacks_, value);
 }
 
 void Perifery::Resolve_G_Callbacks(int value) {
-    //ResolveCallbacks(G_callbacks_, value);
+    ResolveCallbacks(G_callbacks_, value);
 }
 
 void Perifery::Resolve_B_Callbacks(int value) {
-    //ResolveCallbacks(B_callbacks_, value);
+    ResolveCallbacks(B_callbacks_, value);
 }
 
 char Perifery::SpinDirection(unsigned char previous, unsigned char current) {
@@ -198,8 +191,22 @@ void Perifery::Register_B_Callback(std::function<void(int)> callback, std::strin
     R_callbacks_[key] = callback;
 }
 
-void Perifery::UNregisterFrom(std::map<std::string, std::function<void(int)>> callbacks, std::string key) {
-    auto it = callbacks.find(key);
-    callbacks.erase(it);
+void Perifery::ResolveCallbacks(std::map<std::string, std::function<void(int)>> callbacks, int value) {
+    for (auto any : callbacks) {
+        any.second(value);
+    }
+}
+
+void Perifery::UnRegister_R_Callback(std::string key) {
+    auto it = R_callbacks_.find(key);
+    R_callbacks_.erase(it);
+}
+
+void Perifery::UnRegister_G_Callback(std::string key) {
+
+}
+
+void Perifery::UnRegister_B_Callback(std::string key) {
+
 }
 
