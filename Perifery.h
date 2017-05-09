@@ -16,7 +16,7 @@ enum SPINDIRECTION {
     RIGHT
 };
 
-typedef void (*t_callback)(SPINDIRECTION);
+typedef void (*t_callback)(SPINDIRECTION,int);
 
 class Perifery {
 public:
@@ -49,13 +49,13 @@ private:
 
     void *map_phys_address(off_t region_base, size_t region_size, int opt_cached);
 
-    void ResolveCallbacks(std::map<std::string, t_callback> callbacks, SPINDIRECTION value);
+    void ResolveCallbacks(std::map<std::string, t_callback> callbacks, SPINDIRECTION direction, int value);
 
-    void Resolve_R_Callbacks(SPINDIRECTION value);
+    void Resolve_R_Callbacks(SPINDIRECTION direction, int value) ;
 
-    void Resolve_G_Callbacks(SPINDIRECTION value);
+    void Resolve_G_Callbacks(SPINDIRECTION direction, int value) ;
 
-    void Resolve_B_Callbacks(SPINDIRECTION value);
+    void Resolve_B_Callbacks(SPINDIRECTION direction, int value) ;
 
     SPINDIRECTION SpinDirection(unsigned char previous, unsigned char current);
 

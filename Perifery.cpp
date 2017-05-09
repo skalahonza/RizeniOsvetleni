@@ -135,9 +135,9 @@ void Perifery::CheckLoop() {
         printf("RED: %d GREEN: %d BLUE: %d\n",red_, green_, blue_);
 
         //Propagate change
-        Resolve_R_Callbacks(SpinDirection(prevR, red_));
-        Resolve_G_Callbacks(SpinDirection(prevG, green_));
-        Resolve_B_Callbacks(SpinDirection(prevB, blue_));
+        Resolve_R_Callbacks(SpinDirection(prevR, red_),red_);
+        Resolve_G_Callbacks(SpinDirection(prevG, green_),green_);
+        Resolve_B_Callbacks(SpinDirection(prevB, blue_),blue_);
 
         //Save to previous
         prevR = red_;
@@ -163,16 +163,16 @@ void Perifery::Clear_B_Callbacks() {
     B_callbacks_.clear();
 }
 
-void Perifery::Resolve_R_Callbacks(SPINDIRECTION value) {
-    ResolveCallbacks(R_callbacks_, value);
+void Perifery::Resolve_R_Callbacks(SPINDIRECTION direction, int value) {
+    ResolveCallbacks(R_callbacks_, direction,value);
 }
 
-void Perifery::Resolve_G_Callbacks(SPINDIRECTION value) {
-    ResolveCallbacks(G_callbacks_, value);
+void Perifery::Resolve_G_Callbacks(SPINDIRECTION direction, int value) {
+    ResolveCallbacks(G_callbacks_, direction,value);
 }
 
-void Perifery::Resolve_B_Callbacks(SPINDIRECTION value) {
-    ResolveCallbacks(B_callbacks_, value);
+void Perifery::Resolve_B_Callbacks(SPINDIRECTION direction, int value) {
+    ResolveCallbacks(B_callbacks_, direction,value);
 }
 
 SPINDIRECTION Perifery::SpinDirection(unsigned char prew, unsigned char now) {
@@ -201,9 +201,9 @@ void Perifery::Register_B_Callback(t_callback callback, std::string key) {
     B_callbacks_[key] = callback;
 }
 
-void Perifery::ResolveCallbacks(std::map<std::string, t_callback> callbacks, SPINDIRECTION value) {
+void Perifery::ResolveCallbacks(std::map<std::string, t_callback> callbacks, SPINDIRECTION direction, int value) {
     for (std::map<std::string, t_callback>::iterator it = callbacks.begin(); it != callbacks.end(); ++it) {
-        it->second(value);
+        it->second(direction,value);
     };
 }
 
