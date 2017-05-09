@@ -132,7 +132,6 @@ void Perifery::CheckLoop() {
             green_ = *g;
             blue_ = *b;
         }
-        printf("RED: %d GREEN: %d BLUE: %d\n",red_, green_, blue_);
 
         //Propagate change
         Resolve_R_Callbacks(SpinDirection(prevR, red_),red_);
