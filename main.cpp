@@ -8,8 +8,8 @@ void test(int a) {
 }
 
 int main() {
-    cout << "Infinite loop\n";
-    auto controller = Perifery();
+    Perifery controller = Perifery();
     controller.Register_R_Callback(test, "printer");
+    controller.Init();
     return 0;
 }
