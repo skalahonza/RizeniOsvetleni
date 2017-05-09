@@ -8,7 +8,6 @@ void test(int a) {
 }
 
 int main() {
-    cout << "Infinite loop\n";
     Perifery controller = Perifery();
     controller.Register_R_Callback(test, "printer");
     controller.Init();
