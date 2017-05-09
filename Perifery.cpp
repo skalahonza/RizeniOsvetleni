@@ -95,12 +95,12 @@ void Perifery::CheckLoop() {
         return;
     }
     uint32_t rgb_knobs_value_previous = 0;
-    unsigned char r = 0, g = 0, b = 0;
+
+    unsigned char prevR = 0, prevG = 0, prevB = 0;
     bool firstRead = true;
     while (loop_) {
         uint32_t rgb_knobs_value;
-        int int_val;
-        unsigned int uint_val;
+        unsigned char *r = 0, *g = 0, *b = 0;
 
         /*
          * Access register holding 8 bit relative knobs position
@@ -115,38 +115,34 @@ void Perifery::CheckLoop() {
         if (rgb_knobs_value_previous == rgb_knobs_value)
             continue;
 
+        r = g = b = (unsigned char *) &rgb_knobs_value;
+        r += 2;
+        g += 1;
+
         //First reading
         if (firstRead) {
-            red_ = r = *(unsigned char *) &rgb_knobs_value; //red spinner first byte - values: 0-20
-            green_ = g = *(((unsigned char *) &rgb_knobs_value) + 1); //green spinner second byte - values: 0-20
-            blue_ = b = *(((unsigned char *) &rgb_knobs_value) + 2); //blue spinner third byte - values: 0-20
-
+            prevR = red_ = *r;
+            prevG = green_ = *g;
+            prevB = blue_ = *b;
             firstRead = false;
         }
             //Not first reading
         else {
-            red_ += SpinDirection(r, *(unsigned char *) &rgb_knobs_value);
-            green_ += SpinDirection(g, *(((unsigned char *) &rgb_knobs_value) + 1));
-            red_ += SpinDirection(b, *(((unsigned char *) &rgb_knobs_value) + 2));
+            red_ = *r;
+            green_ = *g;
+            blue_ = *b;
         }
         printf("RED: %d GREEN: %d BLUE: %d\n",red_, green_, blue_);
 
         //Propagate change
-        Resolve_R_Callbacks(SpinDirection(r, red_));
-        Resolve_G_Callbacks(SpinDirection(g, green_));
-        Resolve_B_Callbacks(SpinDirection(b, blue_));
+        Resolve_R_Callbacks(SpinDirection(prevR, red_));
+        Resolve_G_Callbacks(SpinDirection(prevG, green_));
+        Resolve_B_Callbacks(SpinDirection(prevB, blue_));
 
         //Save to previous
-        red_ = r;
-        green_ = g;
-        blue_ = b;
-
-        /* Assign value read from knobs to the basic signed and unsigned types */
-        int_val = rgb_knobs_value;
-        uint_val = rgb_knobs_value;
-
-        /* Print values */
-        printf("int %10d uint 0x%08x\n", int_val, uint_val);
+        prevR = red_;
+        prevG = green_;
+        prevB = blue_;
 
         rgb_knobs_value_previous = rgb_knobs_value;
         // wait 200ms
