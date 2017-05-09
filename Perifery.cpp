@@ -131,9 +131,14 @@ void Perifery::CheckLoop() {
         }
 
         //Propagate change
-        Resolve_R_Callbacks(red_);
-        Resolve_G_Callbacks(green_);
-        Resolve_B_Callbacks(blue_);
+        Resolve_R_Callbacks(SpinDirection(r, red_));
+        Resolve_G_Callbacks(SpinDirection(g, green_));
+        Resolve_B_Callbacks(SpinDirection(b, blue_);
+
+        //Save to previous
+        red_ = r;
+        green_ = g;
+        blue_ = b;
 
         /* Assign value read from knobs to the basic signed and unsigned types */
         int_val = rgb_knobs_value;
@@ -161,15 +166,15 @@ void Perifery::Clear_B_Callbacks() {
     B_callbacks_.clear();
 }
 
-void Perifery::Resolve_R_Callbacks(int value) {
+void Perifery::Resolve_R_Callbacks(SPINDIRECTION value) {
     ResolveCallbacks(R_callbacks_, value);
 }
 
-void Perifery::Resolve_G_Callbacks(int value) {
+void Perifery::Resolve_G_Callbacks(SPINDIRECTION value) {
     ResolveCallbacks(G_callbacks_, value);
 }
 
-void Perifery::Resolve_B_Callbacks(int value) {
+void Perifery::Resolve_B_Callbacks(SPINDIRECTION value) {
     ResolveCallbacks(B_callbacks_, value);
 }
 
@@ -199,9 +204,8 @@ void Perifery::Register_B_Callback(t_callback callback, std::string key) {
     B_callbacks_[key] = callback;
 }
 
-void Perifery::ResolveCallbacks(std::map<std::string, t_callback> callbacks, int value) {
-    for (std::map<std::string, t_callback>::iterator it=callbacks.begin(); it!=callbacks.end(); ++it)
-    {
+void Perifery::ResolveCallbacks(std::map<std::string, t_callback> callbacks, SPINDIRECTION value) {
+    for (std::map<std::string, t_callback>::iterator it = callbacks.begin(); it != callbacks.end(); ++it) {
         it->second(value);
     };
 }
