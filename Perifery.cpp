@@ -148,18 +148,6 @@ void Perifery::CheckLoop() {
     }
 }
 
-void Perifery::Register_R_Callback(std::function<void(int)> callback) {
-    R_callbacks_.push_back(callback);
-}
-
-void Perifery::Register_G_Callback(std::function<void(int)> callback) {
-    G_callbacks_.push_back(callback);
-}
-
-void Perifery::Register_B_Callback(std::function<void(int)> callback) {
-    B_callbacks_.push_back(callback);
-}
-
 void Perifery::Clear_R_Callbacks() {
     R_callbacks_.clear();
 }
@@ -173,7 +161,7 @@ void Perifery::Clear_B_Callbacks() {
 }
 
 void Perifery::Resolve_R_Callbacks(int value) {
-    ResolveCallbacks(R_callbacks_, value);
+    //ResolveCallbacks(R_callbacks_, value);
 }
 
 void Perifery::ResolveCallbacks(std::vector<std::function<void(int)>> callbackList, int value) {
@@ -184,11 +172,11 @@ void Perifery::ResolveCallbacks(std::vector<std::function<void(int)>> callbackLi
 }
 
 void Perifery::Resolve_G_Callbacks(int value) {
-    ResolveCallbacks(G_callbacks_, value);
+    //ResolveCallbacks(G_callbacks_, value);
 }
 
 void Perifery::Resolve_B_Callbacks(int value) {
-    ResolveCallbacks(B_callbacks_, value);
+    //ResolveCallbacks(B_callbacks_, value);
 }
 
 char Perifery::SpinDirection(unsigned char previous, unsigned char current) {
@@ -196,5 +184,22 @@ char Perifery::SpinDirection(unsigned char previous, unsigned char current) {
     // Return +1 or - 1 based on previous and current relative position
     //Return zero if unchanged
     return 0;
+}
+
+void Perifery::Register_R_Callback(std::function<void(int)> callback, std::string key) {
+    R_callbacks_[key] = callback;
+}
+
+void Perifery::Register_G_Callback(std::function<void(int)> callback, std::string key) {
+    G_callbacks_[key] = callback;
+}
+
+void Perifery::Register_B_Callback(std::function<void(int)> callback, std::string key) {
+    R_callbacks_[key] = callback;
+}
+
+void Perifery::UNregisterFrom(std::map<std::string, std::function<void(int)>> callbacks, std::string key) {
+    auto it = callbacks.find(key);
+    callbacks.erase(it);
 }
 
