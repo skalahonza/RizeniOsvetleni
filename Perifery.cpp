@@ -222,3 +222,45 @@ void Perifery::Init() {
     CheckLoop();
 }
 
+void Perifery::ResolvePressedCallbacks(std::map<std::string, t_pressed_callback> callbacks) {
+    for (std::map<std::string, t_pressed_callback>::iterator it = callbacks.begin(); it != callbacks.end(); ++it) {
+        it->second();
+    };
+}
+
+void Perifery::Resolve_R_Pressed_Callbacks() {
+ResolvePressedCallbacks(R_pressed_callbacks_);
+}
+
+void Perifery::Resolve_G_Pressed_Callbacks() {
+    ResolvePressedCallbacks(G_pressed_callbacks_);
+}
+
+void Perifery::Resolve_B_Pressed_Callbacks() {
+    ResolvePressedCallbacks(B_pressed_callbacks_);
+}
+
+void Perifery::Clear_R_Pressed_Callbacks() {
+    R_pressed_callbacks_.clear();
+}
+
+void Perifery::Clear_G_Pressed_Callbacks() {
+    G_pressed_callbacks_.clear();
+}
+
+void Perifery::Clear_B_Pressed_Callbacks() {
+    B_pressed_callbacks_.clear();
+}
+
+void Perifery::Register_R_Pressed_Callback(t_pressed_callback callback, std::string key) {
+    R_pressed_callbacks_[key] = callback;
+}
+
+void Perifery::Register_G_Pressed_Callback(t_pressed_callback callback, std::string key) {
+    G_pressed_callbacks_[key] = callback;
+}
+
+void Perifery::Register_B_Pressed_Callback(t_pressed_callback callback, std::string key) {
+    B_pressed_callbacks_[key] = callback;
+}
+

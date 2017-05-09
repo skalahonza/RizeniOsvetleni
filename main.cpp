@@ -17,11 +17,17 @@ void test(SPINDIRECTION a, int value) {
     }
 }
 
+void pressed(){
+    cout << "Pressed\n";
+}
+
 int main() {
     Perifery controller = Perifery();
     controller.Register_R_Callback(test, "printer");
     controller.Register_G_Callback(test, "printer");
     controller.Register_B_Callback(test, "printer");
+
+    controller.Register_R_Pressed_Callback(pressed,"123");
     controller.Init();
     return 0;
 }
