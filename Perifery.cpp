@@ -137,13 +137,13 @@ void Perifery::CheckLoop() {
         //Check button press
         switch(*pressed){
             case 1:
-                Resolve_R_Pressed_Callbacks();
+                Resolve_B_Pressed_Callbacks();
                 break;
             case 2:
                 Resolve_G_Pressed_Callbacks();
                 break;
             case 4:
-                Resolve_B_Pressed_Callbacks();
+                Resolve_R_Pressed_Callbacks();
                 break;
         }
 
