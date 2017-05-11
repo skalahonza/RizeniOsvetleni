@@ -10,11 +10,20 @@
 #include <map>
 #include "HardwareEndpoints.h"
 
-typedef void (*t_callback)(int);
+enum SPINDIRECTION {
+    UNCHANGED,
+    LEFT,
+    RIGHT
+};
+
+typedef void (*t_callback)(SPINDIRECTION,int);
+typedef void (*t_pressed_callback)();
 
 class Perifery {
 public:
     Perifery();
+
+    void Init();
 
     void Register_R_Callback(t_callback callback, std::string key);
 
@@ -22,17 +31,33 @@ public:
 
     void Register_B_Callback(t_callback callback, std::string key);
 
+    void Register_R_Pressed_Callback(t_pressed_callback callback, std::string key);
+    void Register_G_Pressed_Callback(t_pressed_callback callback, std::string key);
+    void Register_B_Pressed_Callback(t_pressed_callback callback, std::string key);
+
     void UnRegister_R_Callback(std::string key);
 
     void UnRegister_G_Callback(std::string key);
 
     void UnRegister_B_Callback(std::string key);
 
+    void UnRegister_R_Pressed_Callback(std::string key);
+
+    void UnRegister_G_Pressed_Callback(std::string key);
+
+    void UnRegister_B_Pressed_Callback(std::string key);
+
     void Clear_R_Callbacks();
 
     void Clear_G_Callbacks();
 
     void Clear_B_Callbacks();
+
+    void Clear_R_Pressed_Callbacks();
+
+    void Clear_G_Pressed_Callbacks();
+
+    void Clear_B_Pressed_Callbacks();
 
     virtual ~Perifery();
 
@@ -41,15 +66,20 @@ private:
 
     void *map_phys_address(off_t region_base, size_t region_size, int opt_cached);
 
-    void ResolveCallbacks(std::map<std::string, t_callback> callbacks, int value);
+    void ResolveCallbacks(std::map<std::string, t_callback> callbacks, SPINDIRECTION direction, int value);
 
-    void Resolve_R_Callbacks(int value);
+    void Resolve_R_Callbacks(SPINDIRECTION direction, int value) ;
 
-    void Resolve_G_Callbacks(int value);
+    void Resolve_G_Callbacks(SPINDIRECTION direction, int value) ;
 
-    void Resolve_B_Callbacks(int value);
+    void Resolve_B_Callbacks(SPINDIRECTION direction, int value) ;
 
-    char SpinDirection(unsigned char previous, unsigned char current);
+    void Resolve_R_Pressed_Callbacks();
+    void Resolve_G_Pressed_Callbacks();
+    void Resolve_B_Pressed_Callbacks();
+    void ResolvePressedCallbacks(std::map<std::string, t_pressed_callback > callbacks);
+
+    SPINDIRECTION SpinDirection(unsigned char previous, unsigned char current);
 
     char *memdev;
     volatile bool loop_;
@@ -57,6 +87,9 @@ private:
     std::map<std::string, t_callback> R_callbacks_;
     std::map<std::string, t_callback> G_callbacks_;
     std::map<std::string, t_callback> B_callbacks_;
+    std::map<std::string, t_pressed_callback> R_pressed_callbacks_;
+    std::map<std::string, t_pressed_callback> G_pressed_callbacks_;
+    std::map<std::string, t_pressed_callback> B_pressed_callbacks_;
 };
 
 

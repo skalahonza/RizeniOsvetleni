@@ -74,7 +74,6 @@ void *Perifery::map_phys_address(off_t region_base, size_t region_size, int opt_
 Perifery::Perifery() {
     loop_ = true;
     memdev = (char *) "/dev/mem";
-    CheckLoop();
 }
 
 Perifery::~Perifery() {
@@ -96,12 +95,12 @@ void Perifery::CheckLoop() {
         return;
     }
     uint32_t rgb_knobs_value_previous = 0;
-    unsigned char r = 0, g = 0, b = 0;
+
+    unsigned char prevR = 0, prevG = 0, prevB = 0;
     bool firstRead = true;
     while (loop_) {
         uint32_t rgb_knobs_value;
-        int int_val;
-        unsigned int uint_val;
+        unsigned char *r = 0, *g = 0, *b = 0, *pressed = 0;
 
         /*
          * Access register holding 8 bit relative knobs position
@@ -116,31 +115,57 @@ void Perifery::CheckLoop() {
         if (rgb_knobs_value_previous == rgb_knobs_value)
             continue;
 
-        //First reading
-        if (firstRead) {
-            red_ = r = *(unsigned char *) &rgb_knobs_value; //red spinner first byte - values: 0-20
-            green_ = g = *(((unsigned char *) &rgb_knobs_value) + 1); //green spinner second byte - values: 0-20
-            blue_ = b = *(((unsigned char *) &rgb_knobs_value) + 2); //blue spinner third byte - values: 0-20
+        r = g = b = pressed = (unsigned char *) &rgb_knobs_value;
+        pressed += 3;
+        r += 2;
+        g += 1;
 
-            //Propagate change
-            Resolve_R_Callbacks(red_);
-            Resolve_G_Callbacks(green_);
-            Resolve_B_Callbacks(blue_);
+        //First reading - previous = current
+        if (firstRead) {
+            prevR = red_ = *r;
+            prevG = green_ = *g;
+            prevB = blue_ = *b;
             firstRead = false;
         }
             //Not first reading
         else {
-            red_ += SpinDirection(r, *(unsigned char *) &rgb_knobs_value);
-            green_ += SpinDirection(g, *(((unsigned char *) &rgb_knobs_value) + 1));
-            red_ += SpinDirection(b, *(((unsigned char *) &rgb_knobs_value) + 2));
+            red_ = *r;
+            green_ = *g;
+            blue_ = *b;
         }
 
-        /* Assign value read from knobs to the basic signed and unsigned types */
-        int_val = rgb_knobs_value;
-        uint_val = rgb_knobs_value;
+        //Check button press
+        switch (*pressed) {
+            case 1:
+                Resolve_B_Pressed_Callbacks();
+                break;
+            case 2:
+                Resolve_G_Pressed_Callbacks();
+                break;
+            case 4:
+                Resolve_R_Pressed_Callbacks();
+                break;
+        }
 
-        /* Print values */
-        printf("int %10d uint 0x%08x\n", int_val, uint_val);
+        //GEt spin direction
+        SPINDIRECTION red_spin = SpinDirection(prevR, red_);
+        SPINDIRECTION green_spin = SpinDirection(prevG, green_);
+        SPINDIRECTION blue_spin = SpinDirection(prevB, blue_);
+
+        if (red_spin != UNCHANGED) {
+            Resolve_R_Callbacks(red_spin, red_);
+            prevR = red_;
+        }
+
+        if (green_spin != UNCHANGED) {
+            Resolve_G_Callbacks(green_spin, green_);
+            prevG = green_;
+        }
+
+        if (blue_spin != UNCHANGED) {
+            Resolve_B_Callbacks(blue_spin, blue_);
+            prevB = blue_;
+        }
 
         rgb_knobs_value_previous = rgb_knobs_value;
         // wait 200ms
@@ -161,23 +186,32 @@ void Perifery::Clear_B_Callbacks() {
     B_callbacks_.clear();
 }
 
-void Perifery::Resolve_R_Callbacks(int value) {
-    ResolveCallbacks(R_callbacks_, value);
+void Perifery::Resolve_R_Callbacks(SPINDIRECTION direction, int value) {
+    ResolveCallbacks(R_callbacks_, direction, value);
 }
 
-void Perifery::Resolve_G_Callbacks(int value) {
-    ResolveCallbacks(G_callbacks_, value);
+void Perifery::Resolve_G_Callbacks(SPINDIRECTION direction, int value) {
+    ResolveCallbacks(G_callbacks_, direction, value);
 }
 
-void Perifery::Resolve_B_Callbacks(int value) {
-    ResolveCallbacks(B_callbacks_, value);
+void Perifery::Resolve_B_Callbacks(SPINDIRECTION direction, int value) {
+    ResolveCallbacks(B_callbacks_, direction, value);
 }
 
-char Perifery::SpinDirection(unsigned char previous, unsigned char current) {
-    //TODO Reimplement this
-    // Return +1 or - 1 based on previous and current relative position
-    //Return zero if unchanged
-    return 0;
+SPINDIRECTION Perifery::SpinDirection(unsigned char prew, unsigned char now) {
+    //0 -> 255 ... 0 = 0, 19 = 255 ... 1 dil 13,42;
+    // skip non-complete rotation
+    if (prew == now)
+        return UNCHANGED;
+    else if ((prew > 250) && (now < 30))
+        return RIGHT;
+    else if ((prew == 0) && (now > 30))
+        return LEFT;
+
+    else if (prew < now)//now - prew < 3
+        return RIGHT;
+    else
+        return LEFT;
 }
 
 void Perifery::Register_R_Callback(t_callback callback, std::string key) {
@@ -189,12 +223,13 @@ void Perifery::Register_G_Callback(t_callback callback, std::string key) {
 }
 
 void Perifery::Register_B_Callback(t_callback callback, std::string key) {
-    R_callbacks_[key] = callback;
+    B_callbacks_[key] = callback;
 }
 
-void Perifery::ResolveCallbacks(std::map<std::string, t_callback> callbacks, int value) {
-    for (std::map<std::string, t_callback>::iterator it=callbacks.begin(); it!=callbacks.end(); ++it)
-        it->second(value);
+void Perifery::ResolveCallbacks(std::map<std::string, t_callback> callbacks, SPINDIRECTION direction, int value) {
+    for (std::map<std::string, t_callback>::iterator it = callbacks.begin(); it != callbacks.end(); ++it) {
+        it->second(direction, value);
+    };
 }
 
 void Perifery::UnRegister_R_Callback(std::string key) {
@@ -202,10 +237,56 @@ void Perifery::UnRegister_R_Callback(std::string key) {
 }
 
 void Perifery::UnRegister_G_Callback(std::string key) {
-
+    G_callbacks_.erase(G_callbacks_.find(key));
 }
 
 void Perifery::UnRegister_B_Callback(std::string key) {
+    B_callbacks_.erase(B_callbacks_.find(key));
+}
 
+void Perifery::Init() {
+    CheckLoop();
+}
+
+void Perifery::ResolvePressedCallbacks(std::map<std::string, t_pressed_callback> callbacks) {
+    for (std::map<std::string, t_pressed_callback>::iterator it = callbacks.begin(); it != callbacks.end(); ++it) {
+        it->second();
+    };
+}
+
+void Perifery::Resolve_R_Pressed_Callbacks() {
+    ResolvePressedCallbacks(R_pressed_callbacks_);
+}
+
+void Perifery::Resolve_G_Pressed_Callbacks() {
+    ResolvePressedCallbacks(G_pressed_callbacks_);
+}
+
+void Perifery::Resolve_B_Pressed_Callbacks() {
+    ResolvePressedCallbacks(B_pressed_callbacks_);
+}
+
+void Perifery::Clear_R_Pressed_Callbacks() {
+    R_pressed_callbacks_.clear();
+}
+
+void Perifery::Clear_G_Pressed_Callbacks() {
+    G_pressed_callbacks_.clear();
+}
+
+void Perifery::Clear_B_Pressed_Callbacks() {
+    B_pressed_callbacks_.clear();
+}
+
+void Perifery::Register_R_Pressed_Callback(t_pressed_callback callback, std::string key) {
+    R_pressed_callbacks_[key] = callback;
+}
+
+void Perifery::Register_G_Pressed_Callback(t_pressed_callback callback, std::string key) {
+    G_pressed_callbacks_[key] = callback;
+}
+
+void Perifery::Register_B_Pressed_Callback(t_pressed_callback callback, std::string key) {
+    B_pressed_callbacks_[key] = callback;
 }
 
