@@ -201,7 +201,7 @@ void Perifery::Resolve_B_Callbacks(SPINDIRECTION direction, int value) {
 SPINDIRECTION Perifery::SpinDirection(unsigned char prew, unsigned char now) {
     //0 -> 255 ... 0 = 0, 19 = 255 ... 1 dil 13,42;
     // skip non-complete rotation
-    if (prew == now || abs(prew - now) < 4)
+    if (prew == now)
         return UNCHANGED;
     else if ((prew > 250) && (now < 30))
         return RIGHT;
