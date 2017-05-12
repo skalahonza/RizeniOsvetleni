@@ -27,8 +27,8 @@ void Line::Render(int16_t display[320][480]) {
 
     for (int i = 0; i < length; ++i) {
         //compute coordinates for each point of the line
-        int x = (int) (x_ + i * vx / length);
-        int y = (int) (y_ + i * vy / length);
+        int x = (int) floor(x_ + i * vx / length);
+        int y = (int) floor(y_ + i * vy / length);
 
         //display overflow control
         if (InsideDisplay(x, y))

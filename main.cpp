@@ -39,8 +39,8 @@ int main() {
 
     vector<Point> points = {
             Point(30, 319, stroke),
-            Point(50, 289, stroke),
-            Point(80, 319, stroke),
+            Point(50, 319 - 20, stroke),
+            Point(70, 319, stroke),
     };
 
     Polygon polygon = Polygon(points, stroke);
