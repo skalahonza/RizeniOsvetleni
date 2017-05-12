@@ -38,6 +38,6 @@ bool Shape::InsideDisplay(int x, int y) {
     return ((x > 0 && x < 480) && (y > 0 && y < 320));
 }
 
-Shape::Shape(Color stroke_) : stroke_(stroke_) {
+Shape::Shape(float x, float y, Color Stroke) : stroke_(Stroke), x_(x), y_(y) {
     IsVisible = true;
 }

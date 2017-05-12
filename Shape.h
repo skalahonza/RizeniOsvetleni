@@ -32,7 +32,7 @@ public:
     bool IsVisible;
 
 protected:
-    Shape(Color stroke_);
+    Shape(float x, float y, Color Stroke);
     float x_;
     float y_;
     Color stroke_;

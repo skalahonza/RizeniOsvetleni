@@ -10,10 +10,7 @@ void Rectangle::Render(int16_t display[320][480]) {
 
 }
 
-Rectangle::Rectangle(float x1, float y1, float x2, float y2, Color Stroke) : Shape(Color(Stroke)) {
-    x_ = x1;
-    y_ = y1;
-    x2_ = x2;
-    y2_ = y2;
+Rectangle::Rectangle(float x1, float y1, Color Stroke, float x2, float y2) : Shape(x1, y1, Color(Stroke)), x2_(x2),
+                                                                             y2_(y2_) {
 }
 
