@@ -17,14 +17,6 @@ public:
      */
     virtual void Render(int16_t display[320][480]) = 0;
 
-    float getX() const;
-
-    float getY() const;
-
-    void setX(float x_);
-
-    void setY(float y_);
-
     void Show();
 
     void Hide();
@@ -33,6 +25,8 @@ public:
 
 protected:
     Shape(float x, float y, Color Stroke);
+
+    Shape(Color Stroke);
     float x_;
     float y_;
     Color stroke_;

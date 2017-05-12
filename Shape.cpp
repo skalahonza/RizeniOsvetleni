@@ -18,26 +18,14 @@ void Shape::Hide() {
     if (IsVisible) IsVisible = false;
 }
 
-float Shape::getX() const {
-    return x_;
-}
-
-float Shape::getY() const {
-    return y_;
-}
-
-void Shape::setX(float x_) {
-    Shape::x_ = x_;
-}
-
-void Shape::setY(float y_) {
-    Shape::y_ = y_;
-}
-
 bool Shape::InsideDisplay(int x, int y) {
     return ((x >= 0 && x < 480) && (y >= 0 && y < 320));
 }
 
 Shape::Shape(float x, float y, Color Stroke) : stroke_(Stroke), x_(x), y_(y) {
+    IsVisible = true;
+}
+
+Shape::Shape(Color Stroke) : stroke_(Stroke) {
     IsVisible = true;
 }

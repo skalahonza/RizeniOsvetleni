@@ -2,6 +2,7 @@
 #include "Perifery.h"
 #include "Line.h"
 #include "Rectangle.h"
+#include "Polygon.h"
 
 using namespace std;
 
@@ -33,8 +34,17 @@ int main() {
     Rectangle rectangle = Rectangle(stroke, 0, 280, 25, 39);
     rectangle.Render(display);
 
-    Rectangle rectangle2 = Rectangle(80, 300, 120, 319, stroke);
-    rectangle2.Render(display);
+    //Rectangle rectangle2 = Rectangle(80, 300, 120, 319, stroke);
+    //rectangle2.Render(display);
+
+    vector<Point> points = {
+            Point(30, 319, stroke),
+            Point(50, 289, stroke),
+            Point(80, 319, stroke),
+    };
+
+    Polygon polygon = Polygon(points, stroke);
+    polygon.Render(display);
 
     for (int y = 0; y < 320; ++y) {
         for (int x = 0; x < 480; ++x) {

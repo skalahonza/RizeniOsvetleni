@@ -13,6 +13,9 @@ class Point : public Shape {
 public:
     Point(float x, float y, Color stroke);
 
+    float Getx();
+
+    float Gety();
     virtual void Render(int16_t display[320][480]);
 };
 

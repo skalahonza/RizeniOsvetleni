@@ -30,7 +30,7 @@ void Line::Render(int16_t display[320][480]) {
         int x = (int) (x_ + i * vx / length);
         int y = (int) (y_ + i * vy / length);
 
-        //display owerflow control
+        //display overflow control
         if (InsideDisplay(x, y))
             display[y][x] = (int16_t) stroke_.getRGB565();
     }
