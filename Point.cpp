@@ -4,12 +4,13 @@
 
 #include "Point.h"
 
-Point::Point(float x, float y, Color stroke) : stroke_(stroke_) {
+Point::Point(float x, float y, Color stroke) : stroke_(stroke) {
     x_ = x;
     y_ = y;
+    IsVisible = true;
 }
 
 void Point::Render(int16_t display[320][480]) {
-    if (!isIsVisible()) return;
+    if (!IsVisible) return;
     display[(int) y_][(int) x_] = stroke_.getRGB565();
 }

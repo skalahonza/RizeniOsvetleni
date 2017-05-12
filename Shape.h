@@ -20,8 +20,6 @@ public:
 
     float getY() const;
 
-    bool isIsVisible() const;
-
     void setX(float x_);
 
     void setY(float y_);
@@ -30,10 +28,12 @@ public:
 
     void Hide();
 
+    bool IsVisible;
+
 protected:
     float x_;
     float y_;
-    bool IsVisible;
+
 
     inline int signum(int number);
 };

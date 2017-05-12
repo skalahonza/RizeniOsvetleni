@@ -26,10 +26,6 @@ float Shape::getY() const {
     return y_;
 }
 
-bool Shape::isIsVisible() const {
-    return IsVisible;
-}
-
 void Shape::setX(float x_) {
     Shape::x_ = x_;
 }
