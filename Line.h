@@ -12,17 +12,17 @@
 class Line : public Shape {
 
 public:
-    Line(unsigned short x1, unsigned short y1, unsigned short x2, unsigned short y2, Color stroke);
+    Line(float x1, float y1, float x2, float y2, Color stroke);
 
-    virtual void Render(__uint16_t display[320][480]);
+    virtual void Render(int16_t display[320][480]);
 
-    unsigned short getX2() const;
+    float getX2() const;
 
-    unsigned short getY2() const;
+    float getY2() const;
 
 private:
-    unsigned short int x2_;
-    unsigned short int y2_;
+    float x2_;
+    float y2_;
     Color stroke_;
 };
 

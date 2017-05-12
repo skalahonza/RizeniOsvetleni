@@ -1,5 +1,6 @@
 #include <iostream>
 #include "Perifery.h"
+#include "Line.h"
 
 using namespace std;
 
@@ -25,6 +26,18 @@ void pressed3(){
 }
 
 int main() {
+    int16_t display[320][480] = {0};
+    Color stroke = Color(35, 35, 35);
+    Line line = Line(0, 319, 25, 319 - 50, stroke);
+    line.Render(display);
+    for (int y = 0; y < 320; ++y) {
+        for (int x = 0; x < 480; ++x) {
+            printf("%d", display[y][x]);
+        }
+        cout << "\n";
+    }
+
+    return 0;
     Perifery controller = Perifery();
     controller.Register_R_Callback(test, "printer");
     controller.Register_G_Callback(test, "printer");

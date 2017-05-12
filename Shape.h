@@ -6,7 +6,7 @@
 #define UDPTASK_IDRAWABLE_H
 
 
-#include <bits/types.h>
+#include <sys/param.h>
 
 class Shape {
 public:
@@ -14,21 +14,26 @@ public:
      * Renders the object on target display
      * @param display Pointer to display 320x480
      */
-    virtual void Render(__uint16_t display[320][480]) = 0;
+    virtual void Render(int16_t display[320][480]) = 0;
 
-    unsigned short int GetX() const;
+    float getX() const;
 
-    unsigned short int GetY() const;
+    float getY() const;
 
-    bool IsVisible;
+    bool isIsVisible() const;
+
+    void setX(float x_);
+
+    void setY(float y_);
 
     void Show();
 
     void Hide();
 
 protected:
-    unsigned short int x_;
-    unsigned short int y_;
+    float x_;
+    float y_;
+    bool IsVisible;
 
     inline int signum(int number);
 };

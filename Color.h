@@ -19,13 +19,15 @@ class Color {
 public:
     Color(RGBcolor rgb888);
 
+    Color(unsigned char r, unsigned char g, unsigned char b);
+
     RGBcolor getRGB888();
 
-    u_int16_t getRGB565();
+    int16_t getRGB565();
 
 private:
     RGBcolor rgb888_;
-    u_int16_t rgb565_;
+    int16_t rgb565_;
 };
 
 

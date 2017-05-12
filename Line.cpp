@@ -5,31 +5,34 @@
 #include <cmath>
 #include "Line.h"
 
-unsigned short Line::getX2() const {
+float Line::getX2() const {
     return x2_;
 }
 
-unsigned short Line::getY2() const {
+float Line::getY2() const {
     return y2_;
 }
 
-Line::Line(unsigned short x1, unsigned short y1, unsigned short x2, unsigned short y2, Color stroke)
+Line::Line(float x1, float y1, float x2, float y2, Color stroke)
         : stroke_(stroke), x2_(x2), y2_(y2) {
     x_ = x1;
     y_ = y1;
     IsVisible = true;
 }
 
-void Line::Render(__uint16_t display[320][480]) {
+void Line::Render(int16_t display[320][480]) {
     if (!IsVisible)
         return;
 
-    int vx = x2_ - x_;// vector x
-    int vy = y2_ - y_;// vector y
-    int length = (int) sqrt(vx * vx + vy * vy); // vector size
+    float vx = x2_ - x_;// vector x
+    float vy = y2_ - y_;// vector y
+    float length = (int) sqrt(vx * vx + vy * vy); // vector size
 
     for (int i = 0; i < length; ++i) {
-        //display[y_ + length * ()]
+        //compute coordinates for each point of the line
+        int x = (int) (x_ + i * vx / length);
+        int y = (int) (y_ + i * vy / length);
+        display[y][x] = (int16_t) stroke_.getRGB565();
     }
 }
 
