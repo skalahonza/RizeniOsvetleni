@@ -14,7 +14,7 @@ class Line : public Shape {
 public:
     Line(unsigned short x1, unsigned short y1, unsigned short x2, unsigned short y2, Color stroke);
 
-    virtual void Render(char display[320][480]);
+    virtual void Render(__uint16_t display[320][480]);
 
     unsigned short getX2() const;
 
