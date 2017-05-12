@@ -33,3 +33,7 @@ void Shape::setX(float x_) {
 void Shape::setY(float y_) {
     Shape::y_ = y_;
 }
+
+bool Shape::InsideDisplay(int x, int y) {
+    return ((x > 0 && x < 480) && (y > 0 && y < 320));
+}

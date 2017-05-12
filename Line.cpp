@@ -32,7 +32,10 @@ void Line::Render(int16_t display[320][480]) {
         //compute coordinates for each point of the line
         int x = (int) (x_ + i * vx / length);
         int y = (int) (y_ + i * vy / length);
-        display[y][x] = (int16_t) stroke_.getRGB565();
+
+        //display owerflow control
+        if (InsideDisplay(x, y))
+            display[y][x] = (int16_t) stroke_.getRGB565();
     }
 }
 

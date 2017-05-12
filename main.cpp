@@ -29,7 +29,7 @@ void pressed3(){
 int main() {
     int16_t display[320][480] = {0};
     Color stroke = Color(35, 35, 35);
-    Line line = Line(50, 319, 25, 319 - 50, stroke);
+    Line line = Line(50, 359, 25, 319 - 50, stroke);
     line.Render(display);
 
     Point point = Point(0, 319, stroke);

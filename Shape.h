@@ -34,6 +34,7 @@ protected:
     float x_;
     float y_;
 
+    bool InsideDisplay(int x, int y);
 
     inline int signum(int number);
 };
