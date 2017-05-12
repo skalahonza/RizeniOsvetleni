@@ -11,7 +11,9 @@
 
 class Rectangle : public Shape {
 public:
-    Rectangle(float x1, float y1, Color Stroke, float x2, float y2);
+    Rectangle(float x1, float y1, float x2, float y2, Color Stroke);
+
+    Rectangle(Color Stroke, float x, float y, int width, int height);
 
     virtual void Render(int16_t display[320][480]);
 

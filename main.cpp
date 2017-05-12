@@ -1,7 +1,7 @@
 #include <iostream>
 #include "Perifery.h"
 #include "Line.h"
-#include "Point.h"
+#include "Rectangle.h"
 
 using namespace std;
 
@@ -28,16 +28,17 @@ void pressed3(){
 
 int main() {
     int16_t display[320][480] = {0};
-    Color stroke = Color(35, 35, 35);
-    Line line = Line(50, 359, 25, 319 - 50, stroke);
-    line.Render(display);
+    Color stroke = Color(0, 0, 1);
 
-    Point point = Point(0, 319, stroke);
-    point.Render(display);
+    Rectangle rectangle = Rectangle(stroke, 0, 280, 25, 39);
+    rectangle.Render(display);
+
+    Rectangle rectangle2 = Rectangle(80, 300, 120, 319, stroke);
+    rectangle2.Render(display);
 
     for (int y = 0; y < 320; ++y) {
         for (int x = 0; x < 480; ++x) {
-            printf("%d", display[y][x]);
+            cout << display[y][x];
         }
         cout << "\n";
     }

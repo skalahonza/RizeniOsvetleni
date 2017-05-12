@@ -35,7 +35,7 @@ void Shape::setY(float y_) {
 }
 
 bool Shape::InsideDisplay(int x, int y) {
-    return ((x > 0 && x < 480) && (y > 0 && y < 320));
+    return ((x >= 0 && x < 480) && (y >= 0 && y < 320));
 }
 
 Shape::Shape(float x, float y, Color Stroke) : stroke_(Stroke), x_(x), y_(y) {
