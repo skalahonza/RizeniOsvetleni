@@ -14,10 +14,9 @@ float Line::getY2() const {
 }
 
 Line::Line(float x1, float y1, float x2, float y2, Color stroke)
-        : stroke_(stroke), x2_(x2), y2_(y2) {
+        : x2_(x2), y2_(y2), Shape(Color(stroke)) {
     x_ = x1;
     y_ = y1;
-    IsVisible = true;
 }
 
 void Line::Render(int16_t display[320][480]) {

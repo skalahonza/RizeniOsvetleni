@@ -4,10 +4,9 @@
 
 #include "Point.h"
 
-Point::Point(float x, float y, Color stroke) : stroke_(stroke) {
+Point::Point(float x, float y, Color stroke) : Shape(Color(stroke)) {
     x_ = x;
     y_ = y;
-    IsVisible = true;
 }
 
 void Point::Render(int16_t display[320][480]) {

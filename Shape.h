@@ -7,6 +7,7 @@
 
 
 #include <sys/param.h>
+#include "Color.h"
 
 class Shape {
 public:
@@ -31,8 +32,10 @@ public:
     bool IsVisible;
 
 protected:
+    Shape(Color stroke_);
     float x_;
     float y_;
+    Color stroke_;
 
     bool InsideDisplay(int x, int y);
 

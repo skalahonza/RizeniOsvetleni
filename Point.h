@@ -14,9 +14,6 @@ public:
     Point(float x, float y, Color stroke);
 
     virtual void Render(int16_t display[320][480]);
-
-private:
-    Color stroke_;
 };
 
 
