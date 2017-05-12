@@ -7,11 +7,12 @@
 
 
 #include "Shape.h"
+#include "Color.h"
 
 class Line : public Shape {
 
 public:
-    Line(unsigned short x1, unsigned short y1, unsigned short x2, unsigned short y2);
+    Line(unsigned short x1, unsigned short y1, unsigned short x2, unsigned short y2, Color stroke);
 
     virtual void Render(char display[320][480]);
 
@@ -22,6 +23,7 @@ public:
 private:
     unsigned short int x2_;
     unsigned short int y2_;
+    Color stroke_;
 };
 
 

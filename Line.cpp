@@ -12,11 +12,8 @@ unsigned short Line::getY2() const {
     return y2_;
 }
 
-Line::Line(unsigned short x1, unsigned short y1, unsigned short x2, unsigned short y2) {
-    x_ = x1;
-    y_ = y1;
-    x2_ = x2;
-    y2_ = y2;
+Line::Line(unsigned short x1, unsigned short y1, unsigned short x2, unsigned short y2, Color stroke)
+        : stroke_(stroke), x_(x1), y_(y1), x2_(x2), y2_(y2) {
 }
 
 void Line::Render(char display[320][480]) {
