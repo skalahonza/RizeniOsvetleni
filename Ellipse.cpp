@@ -15,7 +15,8 @@ void Ellipse::Render(int16_t display[320][480]) {
     for (int y = -height; y <= height; y++) {
         for (int x = -width_; x <= width_; x++) {
             if (x * x * height * height + y * y * width_ * width_ <= height * height * width_ * width_)
-                display[(int) (y_ + y)][(int) (x_ + x)] = stroke_.getRGB565();
+                if (InsideDisplay((int) (y_ + y), (int) (x_ + x)))
+                    display[(int) (y_ + y)][(int) (x_ + x)] = stroke_.getRGB565();
         }
     }
 }

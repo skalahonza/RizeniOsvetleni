@@ -47,7 +47,7 @@ int main() {
     Polygon polygon = Polygon(points, stroke);
     polygon.Render(display);
 
-    Ellipse ellipse = Ellipse(160, 280, 30, 30, stroke);
+    Ellipse ellipse = Ellipse(160, 280, 50, 50, stroke);
     ellipse.Render(display);
 
     for (int y = 0; y < 320; ++y) {
