@@ -4,6 +4,7 @@
 #include "Rectangle.h"
 #include "Polygon.h"
 #include "Ellipse.h"
+#include "TextBox.h"
 
 using namespace std;
 
@@ -33,7 +34,7 @@ int main() {
     Color stroke = Color(0, 0, 1);
 
     Rectangle rectangle = Rectangle(stroke, 0, 280, 25, 39);
-    rectangle.Render(display);
+    //rectangle.Render(display);
 
     //Rectangle rectangle2 = Rectangle(80, 300, 120, 319, stroke);
     //rectangle2.Render(display);
@@ -45,10 +46,14 @@ int main() {
     };
 
     Polygon polygon = Polygon(points, stroke);
-    polygon.Render(display);
+    //polygon.Render(display);
 
     Ellipse ellipse = Ellipse(160, 280, 50, 50, stroke);
-    ellipse.Render(display);
+    //ellipse.Render(display);
+
+    TextBox tb = TextBox(0, 300, stroke, 200, 200);
+    tb.setText_("Hello");
+    tb.Render(display);
 
     for (int y = 0; y < 320; ++y) {
         for (int x = 0; x < 480; ++x) {
