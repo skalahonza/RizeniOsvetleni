@@ -15,8 +15,8 @@
 
  *******************************************************************/
 
-#ifndef MZAPO_PHYS_H
-#define MZAPO_PHYS_H
+#ifndef FONT_TYPES_H
+#define FONT_TYPES_H
 
 #include <stdint.h>
 
