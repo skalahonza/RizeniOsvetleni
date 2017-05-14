@@ -3,6 +3,7 @@
 #include "Line.h"
 #include "Rectangle.h"
 #include "Polygon.h"
+#include "Ellipse.h"
 
 using namespace std;
 
@@ -45,6 +46,9 @@ int main() {
 
     Polygon polygon = Polygon(points, stroke);
     polygon.Render(display);
+
+    Ellipse ellipse = Ellipse(160, 280, 30, 30, stroke);
+    ellipse.Render(display);
 
     for (int y = 0; y < 320; ++y) {
         for (int x = 0; x < 480; ++x) {
