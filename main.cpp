@@ -51,7 +51,7 @@ int main() {
     Ellipse ellipse = Ellipse(160, 280, 50, 50, stroke);
     //ellipse.Render(display);
 
-    TextBox tb = TextBox(0, 300, stroke, 200, 200);
+    TextBox tb = TextBox(0, 319 - 16, 200, 200, stroke);
     tb.setText_("Hello");
     tb.Render(display);
 

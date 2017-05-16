@@ -5,7 +5,7 @@
 #include "TextBox.h"
 #include "font_rom8x16.h"
 
-TextBox::TextBox(float x, float y, Color Stroke, int width, int height) :
+TextBox::TextBox(float x, float y, int width, int height, Color Stroke) :
         Shape(x, y, Stroke), width_(width), height_(height) {
 
 }
@@ -37,6 +37,8 @@ void TextBox::setText_(const std::string &text_) {
 void TextBox::Render(int16_t display[320][480]) {
     if (!IsVisible) return;
 
+    int renderX = (int) x_;
+
     //Iterate through all letters - without null terminator
     for (int i = 0; i < text_.length(); ++i) {
         //GEt letter pattern from array
@@ -45,10 +47,12 @@ void TextBox::Render(int16_t display[320][480]) {
         for (int y = 0; y < 16; ++y) {
             font_bits_t character = rom8x16_bits[text_[i] * 16 + y];
             for (int x = 0; x < 8; ++x) {
-                int mask = 0b10000000;
-                if ((mask >> x) & character)
-                    display[(int) (y_ + y)][(int) (x_ + x)] = stroke_.getRGB565();
+                if (character > 0)
+                    if ((character >> 15 - x) & 1)
+                        if (InsideDisplay((int) (y_ + y), renderX + x))
+                            display[(int) (y_ + y)][renderX + x] = stroke_.getRGB565();
             }
         }
+        renderX += 8;
     }
 }
