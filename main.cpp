@@ -31,24 +31,28 @@ void pressed3(){
 int main() {
     Color stroke = Color(255, 255, 255);
     Color light_green = Color(152, 251, 152);
+    DisplayHandler &handler = DisplayHandler::getInstance();
 
-    LightUnit unit = LightUnit(2, "obyvak");
+    std::vector<LightUnit> units;
+    units.push_back(LightUnit(1, "obyvak"));
+    units.push_back(LightUnit(2, "kuchyn"));
 
     Line green_line = Line(0, 16, 115, 16, light_green);
     TextBox first_text = TextBox(1, 1, 200, 200, light_green);
     first_text.setText_("Light Control:");
 
-    TextBox unitText = TextBox(1, 17, 0, 0, stroke);
-    unitText.setText_(unit.debugString());
+    for (int i = 0; i < units.size(); ++i) {
+        //create textboxes
+        //units[i]
+        //add to display
+    }
 
     //Rectangle rectangle = Rectangle(stroke, 0, 280, 25, 39);
     // TextBox tb = TextBox(100, 319 - 16, 200, 200, stroke);
     //tb.setText_("Hello");
 
-    DisplayHandler &handler = DisplayHandler::getInstance();
     handler.addShape(&first_text);
     handler.addShape(&green_line);
-    handler.addShape(&unitText);
     //handler.addShape(&rectangle);
     //handler.addShape(&tb);
 
