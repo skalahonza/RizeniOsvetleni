@@ -6,16 +6,17 @@
 #define UDPTASK_LIGHTUNIT_H
 
 
-#include <cstdint>
+#include <inttypes.h>
+#include <string>
 #include "Color.h"
 
 class LightUnit {
 public:
-    LightUnit(uint32_t ALC1, const char label[16]);
+    LightUnit(uint32_t ALC1, std::string label);
 
     uint32_t getALC1_() const;
 
-    const char *getLabel_() const;
+    const std::string &getLabel_() const;
 
     const Color &getCeil_() const;
 
@@ -29,7 +30,7 @@ public:
 
 private:
     uint32_t ALC1_;
-    const char label_[16];
+    std::string label_;
     Color ceil_;
     Color wall_;
     uint16_t icon[256];

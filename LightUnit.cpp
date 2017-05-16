@@ -4,7 +4,7 @@
 
 #include "LightUnit.h"
 
-LightUnit::LightUnit(uint32_t ALC1, const char label[16]) :
+LightUnit::LightUnit(uint32_t ALC1, std::string label) :
         ALC1_(ALC1), label_(label) {
 
 }
@@ -33,6 +33,6 @@ uint32_t LightUnit::getALC1_() const {
     return ALC1_;
 }
 
-const char *LightUnit::getLabel_() const {
+const std::string &LightUnit::getLabel_() const {
     return label_;
 }
