@@ -80,16 +80,13 @@ Perifery::~Perifery() {
 }
 
 void Perifery::CheckLoop() {
-
-    unsigned char *mem_base;
-
     /*
      * Setup memory mapping which provides access to the peripheral
      * registers region of RGB LEDs, knobs and line of yellow LEDs.
      */
-    mem_base = (unsigned char *) map_phys_address(SPILED_REG_BASE_PHYS, SPILED_REG_SIZE, 0);
+    mem_base_ = (unsigned char *) map_phys_address(SPILED_REG_BASE_PHYS, SPILED_REG_SIZE, 0);
 
-    if (mem_base == NULL) {
+    if (mem_base_ == NULL) {
         //Error
         std::cerr << "Error during perifery address initialization.\n";
         return;
@@ -110,7 +107,7 @@ void Perifery::CheckLoop() {
          * integer. The "volatile" keyword ensures that compiler
          * cannot reuse previously read value of the location.
          */
-        rgb_knobs_value = *(volatile uint32_t *) (mem_base + SPILED_REG_KNOBS_8BIT_o);
+        rgb_knobs_value = *(volatile uint32_t *) (mem_base_ + SPILED_REG_KNOBS_8BIT_o);
         //No change detected
         if (rgb_knobs_value_previous == rgb_knobs_value)
             continue;

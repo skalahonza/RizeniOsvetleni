@@ -15,8 +15,8 @@
 
  *******************************************************************/
 
-#ifndef MZAPO_PHYS_H
-#define MZAPO_PHYS_H
+#ifndef FONT_TYPES_H
+#define FONT_TYPES_H
 
 #include <stdint.h>
 
@@ -28,7 +28,7 @@ typedef uint16_t font_bits_t;
 
 /* builtin C-based proportional/fixed font structure*/
 typedef struct {
-        char *                  name;           /* font name*/
+    const char *name;           /* font name*/
         int                             maxwidth;       /* max width in pixels*/
         unsigned int    height;         /* height in pixels*/
         int                             ascent;         /* ascent (baseline) height*/

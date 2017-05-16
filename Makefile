@@ -2,7 +2,7 @@ SHELL := /bin/bash
 CFLAGS+= -Wall -std=c++11
 objects := $(patsubst %.cpp,%.o,$(wildcard *.cpp))
 program: $(objects)
-	g++ ${CFLAGS} -o program $(objects) -lm
+	g++ -Wall -std=c++11 -o program $(objects) -lm
 run:
 	./program
 
