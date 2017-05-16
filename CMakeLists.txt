@@ -3,5 +3,5 @@ project(UdpTask)
 
 set(CMAKE_CXX_STANDARD 11)
 
-set(SOURCE_FILES main.cpp Drawer.cpp Drawer.h Communicator.cpp Communicator.h Perifery.cpp Perifery.h HardwareEndpoints.h Shape.cpp Shape.h Line.cpp Line.h Color.cpp Color.h Point.cpp Point.h Rectangle.cpp Rectangle.h Polygon.cpp Polygon.h Ellipse.cpp Ellipse.h TextBox.cpp TextBox.h)
+set(SOURCE_FILES main.cpp Drawer.cpp Drawer.h Communicator.cpp Communicator.h Perifery.cpp Perifery.h HardwareEndpoints.h Shape.cpp Shape.h Line.cpp Line.h Color.cpp Color.h Point.cpp Point.h Rectangle.cpp Rectangle.h Polygon.cpp Polygon.h Ellipse.cpp Ellipse.h TextBox.cpp TextBox.h DisplayHandler.cpp DisplayHandler.h)
 add_executable(UdpTask ${SOURCE_FILES})

@@ -8,7 +8,9 @@
 #include <sys/types.h>
 #include <vector>
 #include <map>
+#include <string>
 #include "HardwareEndpoints.h"
+#include <inttypes.h>
 
 enum SPINDIRECTION {
     UNCHANGED,
@@ -59,12 +61,12 @@ public:
 
     void Clear_B_Pressed_Callbacks();
 
+    void *map_phys_address(off_t region_base, size_t region_size, int opt_cached);
+
     virtual ~Perifery();
 
 private:
     void CheckLoop();
-
-    void *map_phys_address(off_t region_base, size_t region_size, int opt_cached);
 
     void ResolveCallbacks(std::map<std::string, t_callback> callbacks, SPINDIRECTION direction, int value);
 
@@ -81,6 +83,7 @@ private:
 
     SPINDIRECTION SpinDirection(unsigned char previous, unsigned char current);
 
+    unsigned char *mem_base_;
     char *memdev;
     volatile bool loop_;
     unsigned char red_, green_, blue_;
