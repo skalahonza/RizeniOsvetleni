@@ -71,6 +71,9 @@ int main() {
     controller.Register_G_Callback(test, "printer");
     controller.Register_B_Callback(test, "printer");
 
+    //controller.UnRegister_R_Callback("printer"); smaže toho který se jemnuje printer
+    //controller.Clear_R_Callbacks(); smaže všechny
+
     controller.Register_R_Pressed_Callback(pressed1,"redclick");
     controller.Register_G_Pressed_Callback(pressed2,"greenclick");
     controller.Register_B_Pressed_Callback(pressed3,"blueclick");
