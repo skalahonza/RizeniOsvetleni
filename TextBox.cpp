@@ -56,3 +56,6 @@ void TextBox::Render(int16_t display[320][480]) {
         renderX += 8;
     }
 }
+
+TextBox::TextBox() : Shape(0, 0, Color()) {
+}

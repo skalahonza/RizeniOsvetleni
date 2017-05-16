@@ -32,6 +32,8 @@ int main() {
     Color stroke = Color(255, 255, 255);
     Color light_green = Color(152, 251, 152);
     DisplayHandler &handler = DisplayHandler::getInstance();
+    TextBox unitsTb[10];
+
 
     std::vector<LightUnit> units;
     units.push_back(LightUnit(1, "obyvak"));
@@ -42,10 +44,15 @@ int main() {
     first_text.setText_("Light Control:");
 
     for (int i = 0; i < units.size(); ++i) {
+        unitsTb[i] = TextBox(1, i * 20 + 20, 200, 200, stroke);
+        unitsTb[i].setText_(units[i].debugString());
+        handler.addShape(&(unitsTb[i]));
+
         //create textboxes
         //units[i]
         //add to display
     }
+    //
 
     //Rectangle rectangle = Rectangle(stroke, 0, 280, 25, 39);
     // TextBox tb = TextBox(100, 319 - 16, 200, 200, stroke);

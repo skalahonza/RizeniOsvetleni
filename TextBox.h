@@ -11,6 +11,7 @@
 
 class TextBox : public Shape {
 public:
+    TextBox();
     TextBox(float x, float y, int width, int height, Color Stroke);
 
     int getWidth_() const;
