@@ -1,9 +1,9 @@
 #include <iostream>
 #include "Perifery.h"
 #include "Line.h"
-#include "Rectangle.h"
 #include "TextBox.h"
 #include "DisplayHandler.h"
+#include "LightUnit.h"
 
 using namespace std;
 
@@ -30,15 +30,34 @@ void pressed3(){
 
 int main() {
     Color stroke = Color(255, 255, 255);
-
-    Rectangle rectangle = Rectangle(stroke, 0, 280, 25, 39);
-    TextBox tb = TextBox(100, 319 - 16, 200, 200, stroke);
-    tb.setText_("Hello");
-
+    Color light_green = Color(152, 251, 152);
     DisplayHandler &handler = DisplayHandler::getInstance();
-    handler.addShape(&rectangle);
-    handler.addShape(&tb);
+
+    std::vector<LightUnit> units;
+    units.push_back(LightUnit(1, "obyvak"));
+    units.push_back(LightUnit(2, "kuchyn"));
+
+    Line green_line = Line(0, 16, 115, 16, light_green);
+    TextBox first_text = TextBox(1, 1, 200, 200, light_green);
+    first_text.setText_("Light Control:");
+
+    for (int i = 0; i < units.size(); ++i) {
+        //create textboxes
+        //units[i]
+        //add to display
+    }
+
+    //Rectangle rectangle = Rectangle(stroke, 0, 280, 25, 39);
+    // TextBox tb = TextBox(100, 319 - 16, 200, 200, stroke);
+    //tb.setText_("Hello");
+
+    handler.addShape(&first_text);
+    handler.addShape(&green_line);
+    //handler.addShape(&rectangle);
+    //handler.addShape(&tb);
+
     handler.Refresh();
+
 
     Perifery controller = Perifery();
     controller.Register_R_Callback(test, "printer");
