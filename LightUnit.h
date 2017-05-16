@@ -12,6 +12,11 @@
 
 class LightUnit {
 public:
+    /**
+     * Create instance of light control unit
+     * @param ALC1 Unit Id
+     * @param label Unit description max length - 16 characters
+     */
     LightUnit(uint32_t ALC1, std::string label);
 
     uint32_t getALC1_() const;
@@ -27,6 +32,8 @@ public:
     void setWall_(const Color &wall_);
 
     const uint16_t *getIcon() const;
+
+    std::string debugString();
 
 private:
     uint32_t ALC1_;

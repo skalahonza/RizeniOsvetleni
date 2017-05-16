@@ -2,6 +2,7 @@
 // Created by skala on 16.5.17.
 //
 
+#include <sstream>
 #include "LightUnit.h"
 
 LightUnit::LightUnit(uint32_t ALC1, std::string label) :
@@ -35,4 +36,10 @@ uint32_t LightUnit::getALC1_() const {
 
 const std::string &LightUnit::getLabel_() const {
     return label_;
+}
+
+std::string LightUnit::debugString() {
+    std::stringstream stream;
+    stream << "ID: " << ALC1_ << " Label: " << label_;
+    return stream.str();
 }
