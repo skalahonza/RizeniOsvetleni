@@ -386,13 +386,13 @@ int main(int argc, char *argv[]) {
     //Broadcast daemon
     pid_t pid = fork();
 
-    if (pid == 0)
-    {
-        // child process
-        cout << "broadcasting...\n";
-        Broadcaster::getInstance().broadcastData(host);
-        sleep(1);
-
+    if (pid == 0) {
+        while (true) {
+            // child process
+            cout << "broadcasting...\n";
+            Broadcaster::getInstance().broadcastData(host);
+            sleep(1);
+        }
     }
 
     //listening thread
