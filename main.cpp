@@ -14,6 +14,7 @@ unsigned int mode = 1; //mode 1,2,3 - which screen do I have
 
 std::vector<LightUnit> units;
 DisplayHandler &handler = DisplayHandler::getInstance();
+TextBox unitsTb[10];
 
 void test(SPINDIRECTION a, int value) {
     //ignore small steps
@@ -60,7 +61,6 @@ void choosing_screen() {
 void home_screen() { //originally in main
     Color stroke = Color(255, 255, 255);
     Color light_green = Color(152, 251, 152);
-    TextBox unitsTb[10];
     selection_rectangle = new Rectangle(Color(255, 255, 255), 0, 28, 450,
                                         20);
 
