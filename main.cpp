@@ -24,7 +24,7 @@ void scroll_blue_value(SPINDIRECTION a, int value);
 
 void scroll_attribute_list(SPINDIRECTION a, int value);
 
-void update_textboxes(SPINDIRECTION a, int value);
+void update_textboxes();
 
 void confirm_wall_managment();
 
@@ -107,11 +107,6 @@ void unit_management_screen(LightUnit &unit, SETUP_MODE mode) {
     stringstream streamr;
     stringstream streamg;
     stringstream streamb;
-
-    //For textbox updates
-    controller.Register_G_Callback(update_textboxes, "update_textboxes");
-    controller.Register_B_Callback(update_textboxes, "update_textboxes");
-    controller.Register_R_Callback(update_textboxes, "update_textboxes");
 
     switch (mode) {
         case WALL:
@@ -317,6 +312,7 @@ void scroll_red_value(SPINDIRECTION a, int value) {
             break;
     }
     printf("r value: %d\n", r);
+    update_textboxes();
 }
 
 void scroll_green_value(SPINDIRECTION a, int value) {
@@ -331,6 +327,7 @@ void scroll_green_value(SPINDIRECTION a, int value) {
             break;
     }
     printf("g value: %d\n", g);
+    update_textboxes();
 }
 
 void scroll_blue_value(SPINDIRECTION a, int value) {
@@ -345,9 +342,10 @@ void scroll_blue_value(SPINDIRECTION a, int value) {
             break;
     }
     printf("b value: %d\n", b);
+    update_textboxes();
 }
 
-void update_textboxes(SPINDIRECTION a, int value) {
+void update_textboxes() {
     stringstream streamr;
     stringstream streamg;
     stringstream streamb;
