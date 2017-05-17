@@ -10,7 +10,7 @@ using namespace std;
 
 Rectangle rectangle = Rectangle(Color(255, 255, 255), 0, 28, 450,
                                 20); //LZE TO TAKTO DEKLAROVAT?? a prepise se to, tak jak chci?
-unsigned int chosen_id; //(1-list_index), max. 10, min 1
+unsigned int chosen_id = 1; //(1-list_index), max. 10, min 1
 unsigned int list_size = 1; // need to get vector size
 unsigned int mode = 1; //mode 1,2,3 - which screen do I have
 DisplayHandler &handler = DisplayHandler::getInstance();
@@ -77,7 +77,7 @@ void home_screen() { //originally in main
     std::vector<LightUnit> units;
     units.push_back(LightUnit(1, "obyvak"));
     units.push_back(LightUnit(2, "kuchyn"));
-    list_size = units.size();
+    list_size = (unsigned int) units.size();
 
     Line green_line = Line(0, 16, 115, 16, light_green);
     TextBox first_text = TextBox(1, 1, 200, 200, light_green);
