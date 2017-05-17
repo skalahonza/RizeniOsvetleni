@@ -5,6 +5,7 @@
 #include <sstream>
 #include <cstring>
 #include "LightUnit.h"
+#include "StateMessage.h"
 
 LightUnit::LightUnit(uint32_t ALC1, std::string label) :
         ALC1_(ALC1), label_(label) {
@@ -44,8 +45,4 @@ std::string LightUnit::debugString() {
     std::stringstream stream;
     stream << "ID: " << ALC1_ << " Label: " << label_;
     return stream.str();
-}
-
-void LightUnit::broadcastData() {
-
 }

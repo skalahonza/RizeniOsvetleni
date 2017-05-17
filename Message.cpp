@@ -4,18 +4,10 @@
 
 #include "Message.h"
 
-Message::Message(uint32_t ALC1_, uint32_t ProtVEr_, uint32_t MessageType_)
-        : ALC1_(ALC1_), ProtVEr_(ProtVEr_),
-          MessageType_(MessageType_) {}
-
-Message::Message(uint32_t ALC1_, uint32_t MessageType_)
-        : Message(ALC1_, PROTOCOL_VER, MessageType_) {
-
-}
 
 std::vector<char> Message::buildPaketBUffer() {
     std::vector<char> buffer;
-    SerializeUINT32(ALC1_, buffer);
+    SerializeUINT32(unit_.getALC1_(), buffer);
     SerializeUINT32(ProtVEr_, buffer);
     SerializeUINT32(MessageType_, buffer);
     return buffer;
@@ -45,4 +37,12 @@ MessageType Message::GetMessageType(char *buffer, int len) {
         default:
             return INVALID;
     }
+}
+
+Message::Message(LightUnit unit, uint32_t protVer, uint32_t messageType) : unit_(unit) {
+    ProtVEr_ = protVer;
+    MessageType_ = messageType;
+}
+
+Message::Message(LightUnit unit, uint32_t messageType) : Message(unit, PROTOCOL_VER, messageType) {
 }

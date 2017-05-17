@@ -35,8 +35,6 @@ public:
 
     std::string debugString();
 
-    void broadcastData();
-
 private:
     uint32_t ALC1_;
     std::string label_;

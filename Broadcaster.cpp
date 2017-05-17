@@ -4,6 +4,7 @@
 
 #include "Broadcaster.h"
 #include "global_const.h"
+#include "StateMessage.h"
 
 Broadcaster::Broadcaster() {
     if ((sockfd = socket(AF_INET, SOCK_DGRAM, 0)) == -1) {
@@ -31,4 +32,10 @@ void Broadcaster::errno_abort(const char *header) {
 void Broadcaster::broadcastData(char *data, int len) {
     socklen_t sinlen = sizeof(braddr);
     sendto(sockfd, data, (size_t) len, 0, (struct sockaddr *) &braddr, sinlen);
+}
+
+void Broadcaster::broadcastData(LightUnit &unit) {
+    StateMessage message = StateMessage(unit);
+    std::vector<char> buffer = message.buildPaketBUffer();
+    broadcastData(buffer.data(), (int) buffer.size());
 }
