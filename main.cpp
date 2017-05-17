@@ -350,9 +350,9 @@ void update_textboxes() {
     stringstream streamg;
     stringstream streamb;
 
-    streamr << examined_unit->getCeil_().getRGB888().r;
-    streamg << examined_unit->getCeil_().getRGB888().g;
-    streamb << examined_unit->getCeil_().getRGB888().b;
+    streamr << (int) r;
+    streamg << (int) g;
+    streamb << (int) b;
 
     r_value->setText_(streamr.str());
     g_value->setText_(streamg.str());
