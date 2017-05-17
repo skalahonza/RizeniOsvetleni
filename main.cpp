@@ -68,14 +68,15 @@ void unit_screen(LightUnit unit) {
 
     TextBox *wallValue = new TextBox(1, 50, 200, 200, Color(255, 255, 255));
     stringstream stream;
-    stream << "Wall color:  R: " << unit.getWall_().getRGB888().r << "G: " << unit.getWall_().getRGB888().g << "B: "
+    stream << "Wall color:  R: " << unit.getWall_().getRGB888().r << " G: " << unit.getWall_().getRGB888().g << " B: "
            << unit.getWall_().getRGB888().b;
     wallValue->setText_(stream.str());
     handler.addShape(wallValue);
 
     TextBox *ceilValue = new TextBox(1, 70, 200, 200, Color(255, 255, 255));
     stringstream stream2;
-    stream2 << "Ceiling color:  R: " << unit.getCeil_().getRGB888().r << "G: " << unit.getCeil_().getRGB888().g << "B: "
+    stream2 << "Ceiling color:  R: " << unit.getCeil_().getRGB888().r << " G: " << unit.getCeil_().getRGB888().g
+            << " B: "
             << unit.getCeil_().getRGB888().b;
     ceilValue->setText_(stream2.str());
     handler.addShape(ceilValue);
