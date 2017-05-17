@@ -6,7 +6,9 @@
 #include "DisplayHandler.h"
 #include "Rectangle.h"
 #include "LightUnit.h"
+#include "Broadcaster.h"
 #include <stdio.h>
+#include <thread>
 
 using namespace std;
 
@@ -365,9 +367,10 @@ void confirm_ceil_managment() {
 
 int main(int argc, char *argv[]) {
     //MOCK LIGHT UNITS
-    LightUnit living_room = LightUnit(1, "Living room");
-    living_room.setCeil_(Color(100, 200, 30));
-    living_room.setWall_(Color(10, 20, 30));
+    LightUnit host = LightUnit(1, "Living room");
+    host.setCeil_(Color(100, 200, 30));
+    host.setWall_(Color(10, 20, 30));
+    host.setIsHost(true);
 
     LightUnit kitchen = LightUnit(2, "KItchen");
     kitchen.setCeil_(Color(11, 22, 33));
@@ -375,11 +378,21 @@ int main(int argc, char *argv[]) {
 
     LightUnit bedroom = LightUnit(3, "bedroom");
 
-    units.push_back(living_room);
+    units.push_back(host);
     units.push_back(kitchen);
     units.push_back(bedroom);
 
     home_screen();
+
+    //Broadcast daemon
+    std::thread broadcst_thread([] {
+        while (true) {
+            Broadcaster::getInstance().broadcastData(host);
+            sleep(1);
+        }
+    });
+
+    //listening thread
 
     controller.Init();
     return 0;
