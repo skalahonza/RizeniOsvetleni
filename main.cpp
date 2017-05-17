@@ -23,6 +23,10 @@ void scroll_blue_value(SPINDIRECTION a, int value);
 
 void scroll_attribute_list(SPINDIRECTION a, int value);
 
+void update_wall(SPINDIRECTION a, int value);
+
+void update_ceil(SPINDIRECTION a, int value);
+
 Rectangle *selection_rectangle = new Rectangle(Color(255, 255, 255), 0, 28, 450,
                                                20);
 unsigned int selectedIdx = 0; //selected index for listboxes
@@ -35,6 +39,10 @@ TextBox *unitsTb[10];
 TextBox *r_value = new TextBox(13, 50, 200, 200, Color(255, 255, 255));
 TextBox *g_value = new TextBox(102, 50, 200, 200, Color(255, 255, 255));
 TextBox *b_value = new TextBox(192, 50, 200, 200, Color(255, 255, 255));
+
+unsigned char r = 0, g = 0, b = 0;
+
+LightUnit *examined_unit = NULL;
 
 enum SETUP_MODE {
     WALL,
@@ -100,6 +108,9 @@ void unit_management_screen(LightUnit &unit, SETUP_MODE mode) {
     switch (mode) {
         case WALL:
             changingName_text->setText_("Wall:");
+            controller.Register_R_Callback(update_wall, "update_wall");
+            controller.Register_G_Callback(update_wall, "update_wall");
+            controller.Register_B_Callback(update_wall, "update_wall");
 
             streamr << unit.getWall_().getRGB888().r;
             streamg << unit.getWall_().getRGB888().g;
@@ -107,6 +118,10 @@ void unit_management_screen(LightUnit &unit, SETUP_MODE mode) {
             break;
         case CEIL:
             changingName_text->setText_("Ceil:");
+            controller.Register_G_Callback(update_ceil, "update_ceil");
+            controller.Register_B_Callback(update_ceil, "update_ceil");
+            controller.Register_R_Callback(update_ceil, "update_ceil");
+
             streamr << unit.getCeil_().getRGB888().r;
             streamg << unit.getCeil_().getRGB888().g;
             streamb << unit.getCeil_().getRGB888().b;
@@ -122,10 +137,9 @@ void unit_management_screen(LightUnit &unit, SETUP_MODE mode) {
     handler.Refresh();
 }
 
-
-
 void unit_screen(LightUnit &unit) {
     handler.clearDisplay();
+    examined_unit = &unit;
 
     controller.Clear_R_Callbacks();
     controller.Clear_G_Callbacks();
@@ -170,26 +184,25 @@ void unit_screen(LightUnit &unit) {
     TextBox *turn_offCeil = new TextBox(1, 90, 200, 200, Color(220, 220, 220));
     turn_offCeil->setText_("TURN OFF WALL");
     handler.addShape(turn_offCeil);
-    //TO DO
+    //TODO add select callback
 
     TextBox *turn_offWall = new TextBox(1, 110, 200, 200, Color(220, 220, 220));
     turn_offWall->setText_("TURN OFF CEILING");
     handler.addShape(turn_offWall);
-    //TO DO
+    //TODO add select callback
     handler.Refresh();
 
     TextBox *turn_onWall = new TextBox(1, 130, 200, 200, Color(150, 150, 150));
     turn_onWall->setText_("TURN ON WALL");
     handler.addShape(turn_onWall);
-    //TO DO
+    //TODO add select callback
 
     TextBox *turn_onCeil = new TextBox(1, 150, 200, 200, Color(150, 150, 150));
     turn_onCeil->setText_("TURN ON CEILING");
     handler.addShape(turn_onCeil);
-    //TO DO
+    //TODO add select callback
     handler.Refresh();
 }
-
 
 void home_screen() {
     selectedIdx = 0;
@@ -235,7 +248,6 @@ void home_screen() {
     handler.Refresh();
 }
 
-
 void go_home() {
     home_screen();
 }
@@ -273,46 +285,74 @@ void scroll_attribute_list(SPINDIRECTION a, int value) {
 }
 
 void scroll_red_value(SPINDIRECTION a, int value) {
-    //DO NOT ignore small steps
-    //if (value % 4 != 0 || units.size() == 0) return;
-    stringstream streamr;
+    //ignore small steps
+    if (value % 4 != 0 || units.size() == 0) return;
     switch (a) {
         case LEFT:
-            //TO DO red value --; (to TextBox r_value)
-            //streamr << (char) (unit.getCeil_().getRGB888().r - 1);
-            //r_value->setText_(streamr.str());
+            r--;
             break;
         case RIGHT:
-            //TO DO red value ++;
+            r++;
             break;
     }
-    handler.Refresh();
 }
 
 void scroll_green_value(SPINDIRECTION a, int value) {
-    stringstream streamg;
+    //ignore small steps
+    if (value % 4 != 0 || units.size() == 0) return;
     switch (a) {
         case LEFT:
-            //TO DO green value --; (to TextBox g_value)
+            g--;
             break;
         case RIGHT:
-            //TO DO green value ++;
+            g++;
             break;
     }
-    handler.Refresh();
 }
 
 void scroll_blue_value(SPINDIRECTION a, int value) {
-    stringstream streamg;
+    //ignore small steps
+    if (value % 4 != 0 || units.size() == 0) return;
     switch (a) {
         case LEFT:
-            //TO DO blue value --; (to TextBox b_value)
+            b--;
             break;
         case RIGHT:
-            //TO DO blue value ++;
+            b++;
             break;
     }
-    handler.Refresh();
+}
+
+void update_wall(SPINDIRECTION a, int value) {
+    examined_unit->setWall_(Color(r, g, b));
+
+    stringstream streamr;
+    stringstream streamg;
+    stringstream streamb;
+
+    streamr << examined_unit->getWall_().getRGB888().r;
+    streamg << examined_unit->getWall_().getRGB888().g;
+    streamb << examined_unit->getWall_().getRGB888().b;
+
+    r_value->setText_(streamr.str());
+    g_value->setText_(streamg.str());
+    b_value->setText_(streamb.str());
+}
+
+void update_ceil(SPINDIRECTION a, int value) {
+    examined_unit->setCeil_(Color(r, g, b));
+
+    stringstream streamr;
+    stringstream streamg;
+    stringstream streamb;
+
+    streamr << examined_unit->getCeil_().getRGB888().r;
+    streamg << examined_unit->getCeil_().getRGB888().g;
+    streamb << examined_unit->getCeil_().getRGB888().b;
+
+    r_value->setText_(streamr.str());
+    g_value->setText_(streamg.str());
+    b_value->setText_(streamb.str());
 }
 
 int main() {
