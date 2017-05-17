@@ -8,7 +8,7 @@
 
 using namespace std;
 
-Rectangle selection_rectangle;
+Rectangle *selection_rectangle;
 unsigned int selectedIdx = 0; //(1-list_index), max. 10, min 1
 unsigned int mode = 1; //mode 1,2,3 - which screen do I have
 
@@ -31,8 +31,8 @@ void test(SPINDIRECTION a, int value) {
             selectedIdx %= units.size();
             break;
     }
-    selection_rectangle.setY_(28 + selectedIdx * 20);
-    selection_rectangle.setY2_(28 + selectedIdx * 20);
+    selection_rectangle->setY_(28 + selectedIdx * 20);
+    selection_rectangle->setY2_(28 + selectedIdx * 20);
     handler.Refresh();
 }
 
@@ -61,8 +61,8 @@ void home_screen() { //originally in main
     Color stroke = Color(255, 255, 255);
     Color light_green = Color(152, 251, 152);
     TextBox unitsTb[10];
-    selection_rectangle = Rectangle(Color(255, 255, 255), 0, 28, 450,
-                                    20);
+    selection_rectangle = new Rectangle(Color(255, 255, 255), 0, 28, 450,
+                                        20);
 
     units.push_back(LightUnit(1, "obyvak"));
     units.push_back(LightUnit(2, "kuchyn"));
@@ -80,7 +80,7 @@ void home_screen() { //originally in main
     }
     handler.addShape(&first_text);
     handler.addShape(&green_line);
-    handler.addShape(&selection_rectangle);
+    handler.addShape(selection_rectangle);
     handler.addShape(&use_text);
     mode = 1;
     handler.Refresh();
