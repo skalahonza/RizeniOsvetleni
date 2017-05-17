@@ -67,21 +67,21 @@ void home_screen() { //originally in main
     units.push_back(LightUnit(1, "obyvak"));
     units.push_back(LightUnit(2, "kuchyn"));
 
-    Line green_line = Line(0, 16, 115, 16, light_green);
-    TextBox first_text = TextBox(1, 1, 200, 200, light_green);
-    TextBox use_text = TextBox(1, 300, 200, 200, Color(255, 0, 0));
-    first_text.setText_("LIGHT CONTROL:");
-    use_text.setText_("Rotate the button, choose the device and confirm with press.");
+    Line *green_line = new Line(0, 16, 115, 16, light_green);
+    TextBox *first_text = new TextBox(1, 1, 200, 200, light_green);
+    TextBox *use_text = new TextBox(1, 300, 200, 200, Color(255, 0, 0));
+    first_text->setText_("LIGHT CONTROL:");
+    use_text->setText_("Rotate the button, choose the device and confirm with press.");
 
     for (int i = 0; i < units.size(); ++i) {
         unitsTb[i] = TextBox(1, i * 20 + 30, 200, 200, stroke);
         unitsTb[i].setText_(units[i].debugString());
         handler.addShape(&(unitsTb[i]));
     }
-    handler.addShape(&first_text);
-    handler.addShape(&green_line);
+    handler.addShape(first_text);
+    handler.addShape(green_line);
     handler.addShape(selection_rectangle);
-    handler.addShape(&use_text);
+    handler.addShape(use_text);
     mode = 1;
     handler.Refresh();
 }
