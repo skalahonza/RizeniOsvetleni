@@ -366,7 +366,7 @@ void confirm_ceil_managment() {
 
 int main(int argc, char *argv[]) {
     //MOCK LIGHT UNITS
-    LightUnit host = LightUnit(1, "Living room");
+    LightUnit host = LightUnit(1, "host room");
     host.setCeil_(Color(100, 200, 30));
     host.setWall_(Color(10, 20, 30));
     host.setIsHost(true);
@@ -389,7 +389,7 @@ int main(int argc, char *argv[]) {
     if (pid == 0) {
         while (true) {
             // child process
-            cout << "broadcasting...\n";
+            cout << "Broadcasting: " << host.broadcstDebugString() << "\n";
             Broadcaster::getInstance().broadcastData(host);
             sleep(1);
         }

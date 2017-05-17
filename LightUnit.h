@@ -41,6 +41,8 @@ public:
 
     void setIsHost(bool isHost);
 
+    std::string broadcstDebugString();
+
 private:
     uint32_t ALC1_;
     std::string label_;
@@ -48,6 +50,7 @@ private:
     Color wall_;
     uint16_t icon[256];
     bool isHost;
+
 };
 
 
