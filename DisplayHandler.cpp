@@ -25,6 +25,7 @@ void DisplayHandler::Refresh() {
 
     //Render all shapes
     for (int i = 0; i < shapes_.size(); ++i) {
+        std::cout << "Calling render\n";
         shapes_[i]->Render(display);
     }
 

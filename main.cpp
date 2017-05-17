@@ -13,11 +13,12 @@ unsigned int selectedIdx = 0; //(1-list_index), max. 10, min 1
 unsigned int mode = 1; //mode 1,2,3 - which screen do I have
 
 std::vector<LightUnit> units;
+DisplayHandler &handler = DisplayHandler::getInstance();
 
 void test(SPINDIRECTION a, int value) {
     //ignore small steps
     if (value % 4 != 0 || units.size() == 0) return;
-    DisplayHandler &handler = DisplayHandler::getInstance();
+
     switch (a) {
         case LEFT:
             cout << "Value: " << value <<  " LEFT \n";
@@ -36,7 +37,6 @@ void test(SPINDIRECTION a, int value) {
 }
 
 void choosing_screen() {
-    DisplayHandler &handler = DisplayHandler::getInstance();
     handler.clearDisplay();
     Color light_green = Color(152, 251, 152);
     TextBox chooseChange_text = TextBox(1, 1, 200, 200, light_green);
@@ -58,7 +58,6 @@ void choosing_screen() {
 
 
 void home_screen() { //originally in main
-    DisplayHandler &handler = DisplayHandler::getInstance();
     Color stroke = Color(255, 255, 255);
     Color light_green = Color(152, 251, 152);
     TextBox unitsTb[10];
@@ -90,7 +89,7 @@ void home_screen() { //originally in main
 
 void pressed1() {
     cout << "Red Pressed\n";
-    DisplayHandler::getInstance().clearDisplay();
+    handler.clearDisplay();
 }
 
 void pressed2() {
