@@ -363,20 +363,24 @@ void confirm_ceil_managment() {
     home_screen();
 }
 
-int main() {
+int main(int argc, char *argv[]) {
     //MOCK LIGHT UNITS
-    LightUnit living_room = LightUnit(1, "obyvak");
+    LightUnit living_room = LightUnit(1, "Living room");
     living_room.setCeil_(Color(100, 200, 30));
     living_room.setWall_(Color(10, 20, 30));
 
-    LightUnit kitchen = LightUnit(2, "kuchyn");
+    LightUnit kitchen = LightUnit(2, "KItchen");
     kitchen.setCeil_(Color(11, 22, 33));
     kitchen.setWall_(Color(22, 33, 44));
 
+    LightUnit bedroom = LightUnit(3, "bedroom");
+
     units.push_back(living_room);
     units.push_back(kitchen);
+    units.push_back(bedroom);
 
     home_screen();
+
     controller.Init();
     return 0;
 }
