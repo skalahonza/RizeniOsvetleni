@@ -34,7 +34,7 @@ public:
 
     void broadcastData(char *data, int len);
 
-    void broadcastData(LightUnit &unit);
+    void broadcastData(volatile LightUnit unit);
 };
 
 

@@ -47,6 +47,7 @@ TextBox *b_value = new TextBox(192, 50, 200, 200, Color(255, 255, 255));
 unsigned char r = 0, g = 0, b = 0;
 
 LightUnit *examined_unit = NULL;
+volatile LightUnit *broadcsted_unit = NULL;
 
 enum SETUP_MODE {
     WALL,
@@ -259,11 +260,9 @@ void go_manage() {
     cout << selectedIdx << "\n";
     switch (selectedIdx) {
         case 0: //configure wall
-            //examined_unit = &units[selectedIdx];
             unit_management_screen(WALL);
             break;
         case 1: //configure ceiling
-            //examined_unit = &units[selectedIdx];
             unit_management_screen(CEIL);
             break;
     }
@@ -356,6 +355,8 @@ void update_textboxes() {
 void confirm_wall_managment() {
     examined_unit->setWall_(Color(r, g, b));
     Broadcaster::getInstance().broadcastData(*examined_unit);
+    if (examined_unit->isIsHost())
+        broadcsted_unit = examined_unit;
     examined_unit = NULL;
     home_screen();
 }
@@ -363,6 +364,8 @@ void confirm_wall_managment() {
 void confirm_ceil_managment() {
     examined_unit->setCeil_(Color(r, g, b));
     Broadcaster::getInstance().broadcastData(*examined_unit);
+    if (examined_unit->isIsHost())
+        broadcsted_unit = examined_unit;
     examined_unit = NULL;
     home_screen();
 }
@@ -373,6 +376,7 @@ int main(int argc, char *argv[]) {
     host.setCeil_(Color(100, 200, 30));
     host.setWall_(Color(10, 20, 30));
     host.setIsHost(true);
+    broadcsted_unit = (volatile LightUnit *) &host;
 
     LightUnit kitchen = LightUnit(2, "KItchen");
     kitchen.setCeil_(Color(11, 22, 33));
@@ -392,8 +396,8 @@ int main(int argc, char *argv[]) {
     if (pid == 0) {
         while (true) {
             // child process
-            if (units.size() > 0) {
-                Broadcaster::getInstance().broadcastData(units[0]);
+            if (broadcsted_unit != NULL {
+                Broadcaster::getInstance().broadcastData(*broadcsted_unit);
             }
             sleep(1);
         }
