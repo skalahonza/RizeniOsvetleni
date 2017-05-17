@@ -365,6 +365,17 @@ void confirm_ceil_managment() {
     home_screen();
 }
 
+void *broadcast_loop(void *obj) {
+    while (true) {
+        // child process
+        if (units.size() > 0) {
+            Broadcaster::getInstance().broadcastData(units[0]);
+        }
+        sleep(1);
+    }
+    return NULL;
+}
+
 int main(int argc, char *argv[]) {
     //MOCK LIGHT UNITS
     LightUnit host = LightUnit(1, "host room");
@@ -384,18 +395,10 @@ int main(int argc, char *argv[]) {
 
     home_screen();
 
-    //Broadcast daemon
-    pid_t pid = fork();
+    //Broadcast thread
+    pthread_t *thread;
+    pthread_create(thread, NULL, broadcast_loop, NULL);
 
-    if (pid == 0) {
-        while (true) {
-            // child process
-            if (units.size() > 0) {
-                Broadcaster::getInstance().broadcastData(units[0]);
-            }
-            sleep(1);
-        }
-    }
 
     //listening thread
 

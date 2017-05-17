@@ -1,8 +1,9 @@
 SHELL := /bin/bash
-CFLAGS+= -Wall -std=c++11
+CFLAGS+= -Wall -g -std=c++0x
 objects := $(patsubst %.cpp,%.o,$(wildcard *.cpp))
 program: $(objects)
-	g++ -o program $(objects) -std=c++11 -lm
+	g++ -std=c++11 $(objects) -lpthread -o program -lm
+
 run:
 	./program
 
