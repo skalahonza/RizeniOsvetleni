@@ -28,8 +28,6 @@ private:
 
     void parlcd_write_cmd(int16_t cmd);
 
-    void clear_display();
-
 public:
     static DisplayHandler &getInstance() {
         static DisplayHandler INSTANCE;

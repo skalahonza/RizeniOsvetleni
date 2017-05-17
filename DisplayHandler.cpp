@@ -19,6 +19,7 @@ void DisplayHandler::addShape(Shape *shape) {
 
 void DisplayHandler::Refresh() {
     //CLean display
+    parlcd_write_cmd(0x2c);
     memset(display, 0, sizeof(display[0][0]) * 320 * 480);
 
     //Render all shapes
@@ -41,19 +42,7 @@ void DisplayHandler::parlcd_write_cmd(int16_t cmd) {
     *(volatile uint16_t *) (parlcd_mem_base_ + PARLCD_REG_CMD_o) = (uint16_t) cmd;
 }
 
-void DisplayHandler::clear_display() {
-    // move to beginning
-    parlcd_write_cmd(0x2c);
-    for (int i = 0; i < 320; i++) {
-        for (int j = 0; j < 480; j++) {
-            parlcd_write_data(0);
-        }
-    }
-    parlcd_write_cmd(0x2c);
-}
-
 void DisplayHandler::clearDisplay() {
-    memset(display, 0, sizeof(display[0][0]) * 320 * 480);
     shapes_.clear();
-    clear_display();
+    Refresh();
 }
