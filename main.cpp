@@ -9,6 +9,10 @@
 
 using namespace std;
 
+void go_home();
+
+void select_unit();
+
 Rectangle *selection_rectangle = new Rectangle(Color(255, 255, 255), 0, 28, 450,
                                                20);
 unsigned int selectedIdx = 0; //selected index for listboxes
@@ -122,7 +126,6 @@ void go_home() {
 void select_unit() {
     unit_screen(units[selectedIdx]);
 }
-
 
 int main() {
     home_screen();
