@@ -32,3 +32,27 @@ Shape::Shape(Color Stroke) : stroke_(Stroke) {
 
 Shape::Shape() : Shape(Color()) {
 }
+
+float Shape::getX_() const {
+    return x_;
+}
+
+void Shape::setX_(float x_) {
+    Shape::x_ = x_;
+}
+
+float Shape::getY_() const {
+    return y_;
+}
+
+void Shape::setY_(float y_) {
+    Shape::y_ = y_;
+}
+
+const Color &Shape::getStroke_() const {
+    return stroke_;
+}
+
+void Shape::setStroke_(const Color &stroke_) {
+    Shape::stroke_ = stroke_;
+}
