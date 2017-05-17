@@ -91,10 +91,6 @@ void unit_screen(LightUnit &unit) {
 
 
 void home_screen() {
-    selectedIdx = 0;
-    units.clear();
-    handler.clearDisplay();
-
     controller.Clear_R_Callbacks();
     controller.Clear_G_Callbacks();
     controller.Clear_B_Callbacks();
@@ -106,6 +102,10 @@ void home_screen() {
 
     controller.Register_R_Pressed_Callback(go_home, "redclick");
     controller.Register_G_Pressed_Callback(select_unit, "greenclick");
+
+    selectedIdx = 0;
+    units.clear();
+    handler.clearDisplay();
 
     Color stroke = Color(255, 255, 255);
     Color light_green = Color(152, 251, 152);
