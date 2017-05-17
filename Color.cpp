@@ -9,7 +9,7 @@ Color::Color(RGBcolor rgb888) {
     rgb565_ = (int16_t) ((rgb888_.r << 11) | (rgb888_.g << 5) | rgb888_.b);
 }
 
-RGBcolor Color::getRGB888() {
+RGBcolor Color::getRGB888() const {
     return rgb888_;
 }
 

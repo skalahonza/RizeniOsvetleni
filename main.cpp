@@ -1,4 +1,5 @@
 #include <iostream>
+#include <sstream>
 #include "Perifery.h"
 #include "Line.h"
 #include "TextBox.h"
@@ -10,25 +11,25 @@ using namespace std;
 
 Rectangle *selection_rectangle = new Rectangle(Color(255, 255, 255), 0, 28, 450,
                                                20);
-unsigned int selectedIdx = 0; //(1-list_index), max. 10, min 1
-unsigned int mode = 1; //mode 1,2,3 - which screen do I have
+unsigned int selectedIdx = 0; //selected index for listboxes
 
 std::vector<LightUnit> units;
 DisplayHandler &handler = DisplayHandler::getInstance();
-TextBox unitsTb[10];
+Perifery controller = Perifery();
+TextBox *unitsTb[10];
 
-void test(SPINDIRECTION a, int value) {
+void scroll_unit_list(SPINDIRECTION a, int value) {
     //ignore small steps
     if (value % 4 != 0 || units.size() == 0) return;
 
     switch (a) {
         case LEFT:
-            cout << "Value: " << value <<  " LEFT \n";
+            cout << "Value: " << value << " LEFT \n";
             selectedIdx--;
             selectedIdx %= units.size();
             break;
         case RIGHT:
-            cout << "Value: " << value <<  " RIGHT \n";
+            cout << "Value: " << value << " RIGHT \n";
             selectedIdx++;
             selectedIdx %= units.size();
             break;
@@ -39,22 +40,43 @@ void test(SPINDIRECTION a, int value) {
     handler.Refresh();
 }
 
-void choosing_screen() {
+void scroll_attribute_list(SPINDIRECTION a, int value) {
+
+}
+
+void unit_screen(LightUnit unit) {
     handler.clearDisplay();
+    controller.Clear_R_Callbacks();
+    controller.Clear_G_Callbacks();
+    controller.Clear_B_Callbacks();
+    controller.Clear_G_Pressed_Callbacks();
+
     Color light_green = Color(152, 251, 152);
-    TextBox chooseChange_text = TextBox(1, 1, 200, 200, light_green);
-    chooseChange_text.setText_("CHOOSE WHAT DO YOU WANT TO CHANGE:");
-    TextBox ceiling = TextBox(1, 30, 200, 200, Color(255, 0, 0));
-    TextBox wall = TextBox(1, 50, 200, 200, Color(255, 0, 0));
-    ceiling.setText_("Ceiling");
-    wall.setText_("Walls");
-    handler.addShape(&chooseChange_text);
-    handler.addShape(&ceiling);
-    handler.addShape(&wall);
-    mode = 2;
+
+    TextBox *chooseChange_text = new TextBox(1, 1, 200, 200, light_green);
+    chooseChange_text->setText_(unit.getLabel_());
+    handler.addShape(chooseChange_text);
+
+    TextBox *first_text = new TextBox(1, 30, 200, 200, light_green);
+    first_text->setText_("CONFIGURE:");
+
+
+    TextBox *wallValue = new TextBox(1, 50, 200, 200, unit.getWall_());
+    stringstream stream;
+    stream << "Wall color:  R: " << unit.getWall_().getRGB888().r << "G: " << unit.getWall_().getRGB888().g << "B: "
+           << unit.getWall_().getRGB888().b;
+    wallValue->setText_(stream.str());
+    handler.addShape(wallValue);
+
+    TextBox *ceilValue = new TextBox(1, 70, 200, 200, unit.getCeil_());
+    stringstream stream2;
+    stream2 << "Ceiling color:  R: " << unit.getCeil_().getRGB888().r << "G: " << unit.getCeil_().getRGB888().g << "B: "
+            << unit.getCeil_().getRGB888().b;
+    wallValue->setText_(stream.str());
+    handler.addShape(ceilValue);
+
     selectedIdx = 1; //now choosing from 1,2
     handler.Refresh();
-
 }
 
 
@@ -72,47 +94,36 @@ void home_screen() { //originally in main
     use_text->setText_("Rotate the button, choose the device and confirm with press.");
 
     for (int i = 0; i < units.size(); ++i) {
-        unitsTb[i] = TextBox(1, i * 20 + 30, 200, 200, stroke);
-        unitsTb[i].setText_(units[i].debugString());
-        handler.addShape(&(unitsTb[i]));
+        unitsTb[i] = new TextBox(1, i * 20 + 30, 200, 200, stroke);
+        unitsTb[i]->setText_(units[i].debugString());
+        handler.addShape((unitsTb[i]));
     }
     handler.addShape(first_text);
     handler.addShape(green_line);
     handler.addShape(selection_rectangle);
     handler.addShape(use_text);
-    mode = 1;
     handler.Refresh();
 }
 
 
-void pressed1() {
-    cout << "Red Pressed\n";
-    handler.clearDisplay();
+void go_home() {
+    home_screen();
 }
 
-void pressed2() {
-    cout << "Green Pressed\n"; //only this button can confirm now
-    if (mode == 1) {
-        choosing_screen();
-    }
-}
-
-void pressed3() {
-    cout << "Blue Pressed\n";
+void select_unit() {
+    unit_screen(units[selectedIdx]);
 }
 
 
 int main() {
     home_screen();
 
-    Perifery controller = Perifery();
-    controller.Register_R_Callback(test, "printer");
-    controller.Register_G_Callback(test, "printer");
-    controller.Register_B_Callback(test, "printer");
+    controller.Register_R_Callback(scroll_unit_list, "printer");
+    controller.Register_G_Callback(scroll_unit_list, "printer");
+    controller.Register_B_Callback(scroll_unit_list, "printer");
 
-    controller.Register_R_Pressed_Callback(pressed1, "redclick");
-    controller.Register_G_Pressed_Callback(pressed2, "greenclick");
-    controller.Register_B_Pressed_Callback(pressed3,"blueclick");
+    controller.Register_R_Pressed_Callback(go_home, "redclick");
+    controller.Register_G_Pressed_Callback(select_unit, "greenclick");
     controller.Init();
     return 0;
 }

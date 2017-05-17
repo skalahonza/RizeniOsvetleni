@@ -43,6 +43,7 @@ void DisplayHandler::parlcd_write_cmd(int16_t cmd) {
 }
 
 void DisplayHandler::clearDisplay() {
+    //TODO Clear objects
     shapes_.clear();
     Refresh();
 }

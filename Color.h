@@ -22,7 +22,7 @@ public:
 
     Color(unsigned char r, unsigned char g, unsigned char b);
 
-    RGBcolor getRGB888();
+    RGBcolor getRGB888() const;
 
     int16_t getRGB565();
 
