@@ -28,3 +28,7 @@ Color::Color(int r, int g, int b) {
 
 Color::Color() : Color(0, 0, 0) {
 }
+
+u_int32_t Color::toUINT32() const {
+    return (u_int32_t) (((rgb888_.r & 0xff) << 16) + ((rgb888_.g & 0xff) << 8) + (rgb888_.b & 0xff));
+}

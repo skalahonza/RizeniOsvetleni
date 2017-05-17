@@ -3,7 +3,9 @@
 //
 
 #include <sstream>
+#include <cstring>
 #include "LightUnit.h"
+#include "StateMessage.h"
 
 LightUnit::LightUnit(uint32_t ALC1, std::string label) :
         ALC1_(ALC1), label_(label) {
