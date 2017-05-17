@@ -71,7 +71,7 @@ void scroll_unit_list(SPINDIRECTION a, int value) {
     handler.Refresh();
 }
 
-void unit_management_screen(LightUnit &unit, SETUP_MODE mode) {
+void unit_management_screen(SETUP_MODE mode) {
     controller.Clear_R_Callbacks();
     controller.Clear_G_Callbacks();
     controller.Clear_B_Callbacks();
@@ -84,7 +84,7 @@ void unit_management_screen(LightUnit &unit, SETUP_MODE mode) {
     handler.clearDisplay();
     Color light_green = Color(152, 251, 152);
     TextBox *unitName_text = new TextBox(1, 1, 200, 200, light_green);
-    unitName_text->setText_(unit.getLabel_());
+    unitName_text->setText_(examined_unit->getLabel_());
     handler.addShape(unitName_text);
 
     TextBox *changingName_text = new TextBox(1, 20, 200, 200, light_green);
@@ -111,26 +111,26 @@ void unit_management_screen(LightUnit &unit, SETUP_MODE mode) {
     switch (mode) {
         case WALL:
             changingName_text->setText_("Wall:");
-            r = (unsigned char) unit.getWall_().getRGB888().r;
-            g = (unsigned char) unit.getWall_().getRGB888().g;
-            b = (unsigned char) unit.getWall_().getRGB888().b;
+            r = (unsigned char) examined_unit->getWall_().getRGB888().r;
+            g = (unsigned char) examined_unit->getWall_().getRGB888().g;
+            b = (unsigned char) examined_unit->getWall_().getRGB888().b;
 
-            streamr << unit.getWall_().getRGB888().r;
-            streamg << unit.getWall_().getRGB888().g;
-            streamb << unit.getWall_().getRGB888().b;
+            streamr << examined_unit->getWall_().getRGB888().r;
+            streamg << examined_unit->getWall_().getRGB888().g;
+            streamb << examined_unit->getWall_().getRGB888().b;
 
             controller.Register_G_Pressed_Callback(confirm_wall_managment, "confirm_wall_managment");
             break;
         case CEIL:
             changingName_text->setText_("Ceil:");
 
-            r = (unsigned char) unit.getCeil_().getRGB888().r;
-            g = (unsigned char) unit.getCeil_().getRGB888().g;
-            b = (unsigned char) unit.getCeil_().getRGB888().b;
+            r = (unsigned char) examined_unit->getCeil_().getRGB888().r;
+            g = (unsigned char) examined_unit->getCeil_().getRGB888().g;
+            b = (unsigned char) examined_unit->getCeil_().getRGB888().b;
 
-            streamr << unit.getCeil_().getRGB888().r;
-            streamg << unit.getCeil_().getRGB888().g;
-            streamb << unit.getCeil_().getRGB888().b;
+            streamr << examined_unit->getCeil_().getRGB888().r;
+            streamg << examined_unit->getCeil_().getRGB888().g;
+            streamb << examined_unit->getCeil_().getRGB888().b;
 
             controller.Register_G_Pressed_Callback(confirm_ceil_managment, "confirm_ceil_managment");
             break;
@@ -145,9 +145,10 @@ void unit_management_screen(LightUnit &unit, SETUP_MODE mode) {
     handler.Refresh();
 }
 
-void unit_screen(LightUnit &unit) {
+void unit_screen() {
     handler.clearDisplay();
-    examined_unit = &unit;
+    examined_unit = &units[selectedIdx];
+    LightUnit &unit = *examined_unit;
 
     controller.Clear_R_Callbacks();
     controller.Clear_G_Callbacks();
@@ -270,14 +271,20 @@ void go_home() {
 
 void go_manage() {
     cout << selectedIdx << "\n";
-    if (selectedIdx == 0)
-        unit_management_screen((units[selectedIdx]), WALL);
-    else if (selectedIdx == 1)
-        unit_management_screen((units[selectedIdx]), CEIL);
+    switch (selectedIdx) {
+        case 0: //configure wall
+            examined_unit = &units[selectedIdx];
+            unit_management_screen(WALL);
+            break;
+        case 1: //configure ceiling
+            examined_unit = &units[selectedIdx];
+            unit_management_screen(CEIL);
+            break;
+    }
 }
 
 void select_unit() {
-    unit_screen(units[selectedIdx]);
+    unit_screen();
 }
 
 void scroll_attribute_list(SPINDIRECTION a, int value) {
