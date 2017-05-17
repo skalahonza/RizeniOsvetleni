@@ -38,6 +38,7 @@ public:
 
     void addShape(Shape *shape);
 
+    void clearDisplay();
     void Refresh();
 
 

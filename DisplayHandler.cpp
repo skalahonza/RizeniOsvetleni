@@ -52,4 +52,9 @@ void DisplayHandler::clear_display() {
     parlcd_write_cmd(0x2c);
 }
 
+void DisplayHandler::clearDisplay() {
+    shapes_.clear();
+    Refresh();
+}
+
 

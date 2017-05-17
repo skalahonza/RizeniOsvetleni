@@ -20,6 +20,7 @@ void test(SPINDIRECTION a, int value) {
 
 void pressed1(){
     cout << "Red Pressed\n";
+    DisplayHandler::getInstance().clearDisplay();
 }
 void pressed2(){
     cout << "Green Pressed\n";
