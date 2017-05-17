@@ -149,7 +149,6 @@ void unit_management_screen(SETUP_MODE mode) {
 void unit_screen() {
     handler.clearDisplay();
     examined_unit = &units[selectedIdx];
-    LightUnit &unit = *examined_unit;
 
     controller.Clear_R_Callbacks();
     controller.Clear_G_Callbacks();
@@ -169,7 +168,7 @@ void unit_screen() {
     handler.addShape(selection_rectangle);
 
     TextBox *chooseChange_text = new TextBox(1, 1, 200, 200, light_green);
-    chooseChange_text->setText_(unit.getLabel_());
+    chooseChange_text->setText_(examined_unit->getLabel_());
     handler.addShape(chooseChange_text);
 
     TextBox *first_text = new TextBox(1, 30, 200, 200, light_green);
@@ -178,16 +177,18 @@ void unit_screen() {
 
     TextBox *wallValue = new TextBox(1, 50, 200, 200, Color(255, 255, 255));
     stringstream stream;
-    stream << "Wall color:  R: " << unit.getWall_().getRGB888().r << " G: " << unit.getWall_().getRGB888().g << " B: "
-           << unit.getWall_().getRGB888().b;
+    stream << "Wall color:  R: " << examined_unit->getWall_().getRGB888().r << " G: "
+           << examined_unit->getWall_().getRGB888().g << " B: "
+           << examined_unit->getWall_().getRGB888().b;
     wallValue->setText_(stream.str());
     handler.addShape(wallValue);
 
     TextBox *ceilValue = new TextBox(1, 70, 200, 200, Color(255, 255, 255));
     stringstream stream2;
-    stream2 << "Ceiling color:  R: " << unit.getCeil_().getRGB888().r << " G: " << unit.getCeil_().getRGB888().g
+    stream2 << "Ceiling color:  R: " << examined_unit->getCeil_().getRGB888().r << " G: "
+            << examined_unit->getCeil_().getRGB888().g
             << " B: "
-            << unit.getCeil_().getRGB888().b;
+            << examined_unit->getCeil_().getRGB888().b;
     ceilValue->setText_(stream2.str());
     handler.addShape(ceilValue);
 
@@ -258,11 +259,11 @@ void go_manage() {
     cout << selectedIdx << "\n";
     switch (selectedIdx) {
         case 0: //configure wall
-            examined_unit = &units[selectedIdx];
+            //examined_unit = &units[selectedIdx];
             unit_management_screen(WALL);
             break;
         case 1: //configure ceiling
-            examined_unit = &units[selectedIdx];
+            //examined_unit = &units[selectedIdx];
             unit_management_screen(CEIL);
             break;
     }
