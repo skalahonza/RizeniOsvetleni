@@ -28,3 +28,7 @@ Rectangle::Rectangle(Color Stroke, float x, float y, int width, int height) : Sh
     y2_ = y + height;
 }
 
+Rectangle::Rectangle() {
+
+}
+

@@ -26,6 +26,7 @@ public:
 protected:
     Shape(float x, float y, Color Stroke);
 
+    Shape();
     Shape(Color Stroke);
     float x_;
     float y_;

@@ -20,3 +20,7 @@ void Ellipse::Render(int16_t display[320][480]) {
         }
     }
 }
+
+Ellipse::Ellipse() {
+
+}

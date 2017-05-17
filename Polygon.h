@@ -12,6 +12,7 @@
 
 class Polygon : public Shape {
 public:
+    Polygon();
     Polygon(std::vector<Point>, Color Stroke);
 
     virtual void Render(int16_t display[320][480]);
