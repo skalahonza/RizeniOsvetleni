@@ -356,12 +356,14 @@ void update_textboxes() {
 void confirm_wall_managment() {
     examined_unit->setWall_(Color(r, g, b));
     examined_unit = NULL;
+    Broadcaster::getInstance().broadcastData(*examined_unit);
     home_screen();
 }
 
 void confirm_ceil_managment() {
     examined_unit->setCeil_(Color(r, g, b));
     examined_unit = NULL;
+    Broadcaster::getInstance().broadcastData(*examined_unit);
     home_screen();
 }
 
@@ -391,7 +393,6 @@ int main(int argc, char *argv[]) {
         while (true) {
             // child process
             if (units.size() > 0) {
-                cout << "Broadcasting: " << units[0].broadcstDebugString() << "\n";
                 Broadcaster::getInstance().broadcastData(units[0]);
             }
             sleep(1);

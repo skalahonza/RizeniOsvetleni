@@ -51,7 +51,8 @@ std::string LightUnit::broadcstDebugString(){
     std::stringstream stream;
     stream << debugString();
     char data[100] = {0};
-    sprintf(data,"Wall(%d,%d,%d) Ceil(%d,%d,%d)",wall_.getRGB888().r,wall_.getRGB888().g,wall_.getRGB888().b, ceil_.getRGB888().r,ceil_.getRGB888().g,ceil_.getRGB888().b);
+    sprintf(data, " Wall(%d,%d,%d) Ceil(%d,%d,%d)", wall_.getRGB888().r, wall_.getRGB888().g, wall_.getRGB888().b,
+            ceil_.getRGB888().r, ceil_.getRGB888().g, ceil_.getRGB888().b);
     stream << data;
     return stream.str();
 }
