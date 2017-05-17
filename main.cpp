@@ -16,6 +16,8 @@ unsigned int mode = 1; //mode 1,2,3 - which screen do I have
 DisplayHandler &handler = DisplayHandler::getInstance();
 
 void test(SPINDIRECTION a, int value) {
+    //ignore small steps
+    if (value % 4 != 0) return;
     switch (a) {
         case LEFT:
             cout << "Value: " << value <<  " LEFT \n";
