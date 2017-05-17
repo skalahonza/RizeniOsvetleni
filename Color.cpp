@@ -17,7 +17,7 @@ int16_t Color::getRGB565() {
     return rgb565_;
 }
 
-Color::Color(unsigned char r, unsigned char g, unsigned char b) {
+Color::Color(int r, int g, int b) {
     RGBcolor color;
     color.r = r;
     color.g = g;

@@ -77,7 +77,7 @@ void unit_screen(LightUnit unit) {
     stringstream stream2;
     stream2 << "Ceiling color:  R: " << unit.getCeil_().getRGB888().r << "G: " << unit.getCeil_().getRGB888().g << "B: "
             << unit.getCeil_().getRGB888().b;
-    ceilValue->setText_(stream.str());
+    ceilValue->setText_(stream2.str());
     handler.addShape(ceilValue);
 
     selectedIdx = 1; //now choosing from 1,2

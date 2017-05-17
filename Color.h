@@ -9,9 +9,9 @@
 #include <sys/param.h>
 
 typedef struct {
-    char r;
-    char g;
-    char b;
+    int r;
+    int g;
+    int b;
 } RGBcolor;
 
 
@@ -20,7 +20,7 @@ public:
     Color();
     Color(RGBcolor rgb888);
 
-    Color(unsigned char r, unsigned char g, unsigned char b);
+    Color(int r, int g, int b);
 
     RGBcolor getRGB888() const;
 
