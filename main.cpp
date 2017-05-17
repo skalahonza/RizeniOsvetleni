@@ -355,15 +355,15 @@ void update_textboxes() {
 
 void confirm_wall_managment() {
     examined_unit->setWall_(Color(r, g, b));
-    examined_unit = NULL;
     Broadcaster::getInstance().broadcastData(*examined_unit);
+    examined_unit = NULL;
     home_screen();
 }
 
 void confirm_ceil_managment() {
     examined_unit->setCeil_(Color(r, g, b));
-    examined_unit = NULL;
     Broadcaster::getInstance().broadcastData(*examined_unit);
+    examined_unit = NULL;
     home_screen();
 }
 
