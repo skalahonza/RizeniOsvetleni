@@ -112,6 +112,10 @@ void unit_management_screen(LightUnit &unit, SETUP_MODE mode) {
             controller.Register_G_Callback(update_wall, "update_wall");
             controller.Register_B_Callback(update_wall, "update_wall");
 
+            r = (unsigned char) unit.getWall_().getRGB888().r;
+            g = (unsigned char) unit.getWall_().getRGB888().g;
+            b = (unsigned char) unit.getWall_().getRGB888().b;
+
             streamr << unit.getWall_().getRGB888().r;
             streamg << unit.getWall_().getRGB888().g;
             streamb << unit.getWall_().getRGB888().b;
@@ -121,6 +125,10 @@ void unit_management_screen(LightUnit &unit, SETUP_MODE mode) {
             controller.Register_G_Callback(update_ceil, "update_ceil");
             controller.Register_B_Callback(update_ceil, "update_ceil");
             controller.Register_R_Callback(update_ceil, "update_ceil");
+
+            r = (unsigned char) unit.getCeil_().getRGB888().r;
+            g = (unsigned char) unit.getCeil_().getRGB888().g;
+            b = (unsigned char) unit.getCeil_().getRGB888().b;
 
             streamr << unit.getCeil_().getRGB888().r;
             streamg << unit.getCeil_().getRGB888().g;
@@ -227,8 +235,16 @@ void home_screen() {
     selection_rectangle = new Rectangle(Color(255, 255, 255), 0, 28, 450,
                                         20);
 
-    units.push_back(LightUnit(1, "obyvak"));
-    units.push_back(LightUnit(2, "kuchyn"));
+    LightUnit living_room = LightUnit(1, "obyvak");
+    living_room.setCeil_(Color(100, 200, 30));
+    living_room.setWall_(Color(10, 20, 30));
+
+    LightUnit kitchen = LightUnit(2, "kuchyn");
+    kitchen.setCeil_(Color(11, 22, 33));
+    kitchen.setWall_(Color(22, 33, 44));
+
+    units.push_back(living_room);
+    units.push_back(kitchen);
 
     Line *green_line = new Line(0, 16, 115, 16, light_green);
     TextBox *first_text = new TextBox(1, 1, 200, 200, light_green);
@@ -295,6 +311,7 @@ void scroll_red_value(SPINDIRECTION a, int value) {
             r++;
             break;
     }
+    printf("r value: %d", r);
 }
 
 void scroll_green_value(SPINDIRECTION a, int value) {
@@ -308,6 +325,7 @@ void scroll_green_value(SPINDIRECTION a, int value) {
             g++;
             break;
     }
+    printf("g value: %d", g);
 }
 
 void scroll_blue_value(SPINDIRECTION a, int value) {
@@ -321,6 +339,7 @@ void scroll_blue_value(SPINDIRECTION a, int value) {
             b++;
             break;
     }
+    printf("b value: %d", b);
 }
 
 void update_wall(SPINDIRECTION a, int value) {
