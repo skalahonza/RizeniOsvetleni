@@ -20,22 +20,19 @@
 class Broadcaster {
 private:
     Broadcaster();
-
     Broadcaster(Broadcaster const &); // Don't Implement
     void operator=(Broadcaster const &); // Don't implement
     void errno_abort(const char *header);
-
-    void broadcastData(char *data, int len);
-
     sockaddr_in braddr;
     int sockfd;
-
 
 public:
     static Broadcaster &getInstance() {
         static Broadcaster INSTANCE;
         return INSTANCE;
     }
+
+    void broadcastData(char *data, int len);
 };
 
 
