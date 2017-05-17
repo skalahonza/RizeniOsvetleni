@@ -24,9 +24,11 @@ void scroll_blue_value(SPINDIRECTION a, int value);
 
 void scroll_attribute_list(SPINDIRECTION a, int value);
 
-void update_wall(SPINDIRECTION a, int value);
+void update_textboxes(SPINDIRECTION a, int value);
 
-void update_ceil(SPINDIRECTION a, int value);
+void confirm_wall_managment();
+
+void confirm_ceil_managment();
 
 Rectangle *selection_rectangle = new Rectangle(Color(255, 255, 255), 0, 28, 450,
                                                20);
@@ -106,13 +108,14 @@ void unit_management_screen(LightUnit &unit, SETUP_MODE mode) {
     stringstream streamg;
     stringstream streamb;
 
+    //For textbox updates
+    controller.Register_G_Callback(update_textboxes, "update_textboxes");
+    controller.Register_B_Callback(update_textboxes, "update_textboxes");
+    controller.Register_R_Callback(update_textboxes, "update_textboxes");
+
     switch (mode) {
         case WALL:
             changingName_text->setText_("Wall:");
-            controller.Register_R_Callback(update_wall, "update_wall");
-            controller.Register_G_Callback(update_wall, "update_wall");
-            controller.Register_B_Callback(update_wall, "update_wall");
-
             r = (unsigned char) unit.getWall_().getRGB888().r;
             g = (unsigned char) unit.getWall_().getRGB888().g;
             b = (unsigned char) unit.getWall_().getRGB888().b;
@@ -120,12 +123,11 @@ void unit_management_screen(LightUnit &unit, SETUP_MODE mode) {
             streamr << unit.getWall_().getRGB888().r;
             streamg << unit.getWall_().getRGB888().g;
             streamb << unit.getWall_().getRGB888().b;
+
+            controller.Register_G_Pressed_Callback(confirm_wall_managment, "confirm_wall_managment");
             break;
         case CEIL:
             changingName_text->setText_("Ceil:");
-            controller.Register_G_Callback(update_ceil, "update_ceil");
-            controller.Register_B_Callback(update_ceil, "update_ceil");
-            controller.Register_R_Callback(update_ceil, "update_ceil");
 
             r = (unsigned char) unit.getCeil_().getRGB888().r;
             g = (unsigned char) unit.getCeil_().getRGB888().g;
@@ -134,6 +136,8 @@ void unit_management_screen(LightUnit &unit, SETUP_MODE mode) {
             streamr << unit.getCeil_().getRGB888().r;
             streamg << unit.getCeil_().getRGB888().g;
             streamb << unit.getCeil_().getRGB888().b;
+
+            controller.Register_G_Pressed_Callback(confirm_ceil_managment, "confirm_ceil_managment");
             break;
     }
     r_value->setText_(streamr.str());
@@ -303,7 +307,7 @@ void scroll_attribute_list(SPINDIRECTION a, int value) {
 
 void scroll_red_value(SPINDIRECTION a, int value) {
     //ignore small steps
-    if (value % 4 != 0 || units.size() == 0) return;
+    if (value % 4 != 0) return;
     switch (a) {
         case LEFT:
             r--;
@@ -317,7 +321,7 @@ void scroll_red_value(SPINDIRECTION a, int value) {
 
 void scroll_green_value(SPINDIRECTION a, int value) {
     //ignore small steps
-    if (value % 4 != 0 || units.size() == 0) return;
+    if (value % 4 != 0) return;
     switch (a) {
         case LEFT:
             g--;
@@ -331,7 +335,7 @@ void scroll_green_value(SPINDIRECTION a, int value) {
 
 void scroll_blue_value(SPINDIRECTION a, int value) {
     //ignore small steps
-    if (value % 4 != 0 || units.size() == 0) return;
+    if (value % 4 != 0) return;
     switch (a) {
         case LEFT:
             b--;
@@ -343,25 +347,7 @@ void scroll_blue_value(SPINDIRECTION a, int value) {
     printf("b value: %d", b);
 }
 
-void update_wall(SPINDIRECTION a, int value) {
-    examined_unit->setWall_(Color(r, g, b));
-
-    stringstream streamr;
-    stringstream streamg;
-    stringstream streamb;
-
-    streamr << examined_unit->getWall_().getRGB888().r;
-    streamg << examined_unit->getWall_().getRGB888().g;
-    streamb << examined_unit->getWall_().getRGB888().b;
-
-    r_value->setText_(streamr.str());
-    g_value->setText_(streamg.str());
-    b_value->setText_(streamb.str());
-}
-
-void update_ceil(SPINDIRECTION a, int value) {
-    examined_unit->setCeil_(Color(r, g, b));
-
+void update_textboxes(SPINDIRECTION a, int value) {
     stringstream streamr;
     stringstream streamg;
     stringstream streamb;
@@ -373,6 +359,18 @@ void update_ceil(SPINDIRECTION a, int value) {
     r_value->setText_(streamr.str());
     g_value->setText_(streamg.str());
     b_value->setText_(streamb.str());
+}
+
+void confirm_wall_managment() {
+    examined_unit->setWall_(Color(r, g, b));
+    examined_unit = NULL;
+    home_screen();
+}
+
+void confirm_ceil_managment() {
+    examined_unit->setCeil_(Color(r, g, b));
+    examined_unit = NULL;
+    home_screen();
 }
 
 int main() {
