@@ -35,8 +35,7 @@ void test(SPINDIRECTION a, int value) {
     }
     cout << selectedIdx << "\n";
     selection_rectangle->setY_(28 + selectedIdx * 20);
-    selection_rectangle->setY2_(28 + selectedIdx * 20);
-    cout << "y1 " << selection_rectangle->getY_() << " y2" << selection_rectangle->getY2_() << "\n";
+    selection_rectangle->setY2_(28 + selectedIdx * 20 + 20);
     handler.Refresh();
 }
 
