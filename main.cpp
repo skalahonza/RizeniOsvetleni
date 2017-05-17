@@ -389,7 +389,10 @@ int main(int argc, char *argv[]) {
     if (pid == 0)
     {
         // child process
+        cout << "broadcasting...\n";
         Broadcaster::getInstance().broadcastData(host);
+        sleep(1);
+
     }
 
     //listening thread
