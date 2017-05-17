@@ -5,7 +5,6 @@
 #include <cstring>
 #include "DisplayHandler.h"
 #include "Perifery.h"
-#include <iostream>
 
 DisplayHandler::DisplayHandler() {
     //Init display
@@ -19,9 +18,8 @@ void DisplayHandler::addShape(Shape *shape) {
 }
 
 void DisplayHandler::Refresh() {
-    std::cout << "Refreshing shapes size: " << shapes_.size() << "\n";
     //CLean display
-    clear_display();
+    memset(display, 0, sizeof(display[0][0]) * 320 * 480);
 
     //Render all shapes
     for (int i = 0; i < shapes_.size(); ++i) {
@@ -56,8 +54,5 @@ void DisplayHandler::clear_display() {
 
 void DisplayHandler::clearDisplay() {
     shapes_.clear();
-    std::cout << "clearing shapes size: " << shapes_.size() << "\n";
     clear_display();
 }
-
-
