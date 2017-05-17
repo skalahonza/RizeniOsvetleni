@@ -193,29 +193,24 @@ void unit_screen() {
     TextBox *turn_offCeil = new TextBox(1, 90, 200, 200, Color(220, 220, 220));
     turn_offCeil->setText_("TURN OFF WALL");
     handler.addShape(turn_offCeil);
-    //TODO add select callback
 
     TextBox *turn_offWall = new TextBox(1, 110, 200, 200, Color(220, 220, 220));
     turn_offWall->setText_("TURN OFF CEILING");
     handler.addShape(turn_offWall);
-    //TODO add select callback
     handler.Refresh();
 
     TextBox *turn_onWall = new TextBox(1, 130, 200, 200, Color(150, 150, 150));
     turn_onWall->setText_("TURN ON WALL");
     handler.addShape(turn_onWall);
-    //TODO add select callback
 
     TextBox *turn_onCeil = new TextBox(1, 150, 200, 200, Color(150, 150, 150));
     turn_onCeil->setText_("TURN ON CEILING");
     handler.addShape(turn_onCeil);
-    //TODO add select callback
     handler.Refresh();
 }
 
 void home_screen() {
     selectedIdx = 0;
-    units.clear();
     handler.clearDisplay();
 
     controller.Clear_R_Callbacks();
@@ -235,17 +230,6 @@ void home_screen() {
 
     selection_rectangle = new Rectangle(Color(255, 255, 255), 0, 28, 450,
                                         20);
-
-    LightUnit living_room = LightUnit(1, "obyvak");
-    living_room.setCeil_(Color(100, 200, 30));
-    living_room.setWall_(Color(10, 20, 30));
-
-    LightUnit kitchen = LightUnit(2, "kuchyn");
-    kitchen.setCeil_(Color(11, 22, 33));
-    kitchen.setWall_(Color(22, 33, 44));
-
-    units.push_back(living_room);
-    units.push_back(kitchen);
 
     Line *green_line = new Line(0, 16, 115, 16, light_green);
     TextBox *first_text = new TextBox(1, 1, 200, 200, light_green);
@@ -380,6 +364,18 @@ void confirm_ceil_managment() {
 }
 
 int main() {
+    //MOCK LIGHT UNITS
+    LightUnit living_room = LightUnit(1, "obyvak");
+    living_room.setCeil_(Color(100, 200, 30));
+    living_room.setWall_(Color(10, 20, 30));
+
+    LightUnit kitchen = LightUnit(2, "kuchyn");
+    kitchen.setCeil_(Color(11, 22, 33));
+    kitchen.setWall_(Color(22, 33, 44));
+
+    units.push_back(living_room);
+    units.push_back(kitchen);
+
     home_screen();
     controller.Init();
     return 0;
