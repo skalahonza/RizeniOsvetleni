@@ -35,7 +35,7 @@ void Broadcaster::broadcastData(char *data, int len) {
     sendto(sockfd, data, (size_t) len, 0, (struct sockaddr *) &braddr, sinlen);
 }
 
-void Broadcaster::broadcastData(volatile LightUnit unit) {
+void Broadcaster::broadcastData(LightUnit unit) {
     std::cout << "Broadcasting: " << unit.broadcstDebugString() << "\n";
     StateMessage message = StateMessage(unit);
     std::vector<char> buffer = message.buildPaketBUffer();
