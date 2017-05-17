@@ -13,6 +13,8 @@ void go_home();
 
 void select_unit();
 
+void scroll_attribute_list(SPINDIRECTION a, int value);
+
 Rectangle *selection_rectangle = new Rectangle(Color(255, 255, 255), 0, 28, 450,
                                                20);
 unsigned int selectedIdx = 0; //selected index for listboxes
@@ -28,34 +30,37 @@ void scroll_unit_list(SPINDIRECTION a, int value) {
 
     switch (a) {
         case LEFT:
-            cout << "Value: " << value << " LEFT \n";
             selectedIdx--;
             selectedIdx %= units.size();
             break;
         case RIGHT:
-            cout << "Value: " << value << " RIGHT \n";
             selectedIdx++;
             selectedIdx %= units.size();
             break;
     }
     cout << selectedIdx << "\n";
     selection_rectangle->setY_(28 + selectedIdx * 20);
-    selection_rectangle->setY2_(28 + selectedIdx * 20 + 20);
+    selection_rectangle->setY2_(selection_rectangle->getY_() + 20);
     handler.Refresh();
 }
 
-void scroll_attribute_list(SPINDIRECTION a, int value) {
-
-}
-
-void unit_screen(LightUnit unit) {
+void unit_screen(LightUnit &unit) {
     handler.clearDisplay();
+
     controller.Clear_R_Callbacks();
     controller.Clear_G_Callbacks();
     controller.Clear_B_Callbacks();
     controller.Clear_G_Pressed_Callbacks();
 
+    controller.Register_R_Callback(scroll_attribute_list, "scroll_attribute_list");
+    controller.Register_G_Callback(scroll_attribute_list, "scroll_attribute_list");
+    controller.Register_B_Callback(scroll_attribute_list, "scroll_attribute_list");
+
     Color light_green = Color(152, 251, 152);
+    selectedIdx = 0;
+    selection_rectangle = new Rectangle(Color(255, 255, 255), 0, 50, 450,
+                                        20);
+    handler.addShape(selection_rectangle);
 
     TextBox *chooseChange_text = new TextBox(1, 1, 200, 200, light_green);
     chooseChange_text->setText_(unit.getLabel_());
@@ -64,7 +69,6 @@ void unit_screen(LightUnit unit) {
     TextBox *first_text = new TextBox(1, 30, 200, 200, light_green);
     first_text->setText_("CONFIGURE:");
     handler.addShape(first_text);
-
 
     TextBox *wallValue = new TextBox(1, 50, 200, 200, Color(255, 255, 255));
     stringstream stream;
@@ -89,6 +93,11 @@ void unit_screen(LightUnit unit) {
 void home_screen() {
     units.clear();
     handler.clearDisplay();
+
+    controller.Clear_R_Callbacks();
+    controller.Clear_G_Callbacks();
+    controller.Clear_B_Callbacks();
+    controller.Clear_G_Pressed_Callbacks();
 
     controller.Register_R_Callback(scroll_unit_list, "printer");
     controller.Register_G_Callback(scroll_unit_list, "printer");
@@ -128,6 +137,26 @@ void go_home() {
 
 void select_unit() {
     unit_screen(units[selectedIdx]);
+}
+
+void scroll_attribute_list(SPINDIRECTION a, int value) {
+    //ignore small steps
+    if (value % 4 != 0 || units.size() == 0) return;
+
+    switch (a) {
+        case LEFT:
+            selectedIdx--;
+            selectedIdx %= 2;
+            break;
+        case RIGHT:
+            selectedIdx++;
+            selectedIdx %= 2;
+            break;
+    }
+    cout << selectedIdx << "\n";
+    selection_rectangle->setY_(50 + selectedIdx * 20);
+    selection_rectangle->setY2_(selection_rectangle->getY_() + 20);
+    handler.Refresh();
 }
 
 int main() {
