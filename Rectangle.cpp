@@ -8,7 +8,6 @@
 
 void Rectangle::Render(int16_t display[320][480]) {
     if (!IsVisible) return;
-    std::cout << "Render called.";
 
     Line a = Line(x_, y_, x2_, y_, stroke_);
     Line b = Line(x_, y_, x_, y2_, stroke_);
