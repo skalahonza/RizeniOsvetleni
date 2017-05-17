@@ -54,7 +54,7 @@ void DisplayHandler::clear_display() {
 
 void DisplayHandler::clearDisplay() {
     shapes_.clear();
-    Refresh();
+    clear_display();
 }
 
 

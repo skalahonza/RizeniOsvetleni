@@ -32,3 +32,19 @@ Rectangle::Rectangle() {
 
 }
 
+float Rectangle::getX2_() const {
+    return x2_;
+}
+
+void Rectangle::setX2_(float x2_) {
+    Rectangle::x2_ = x2_;
+}
+
+float Rectangle::getY2_() const {
+    return y2_;
+}
+
+void Rectangle::setY2_(float y2_) {
+    Rectangle::y2_ = y2_;
+}
+

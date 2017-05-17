@@ -31,7 +31,8 @@ void test(SPINDIRECTION a, int value) {
             selectedIdx %= units.size();
             break;
     }
-    selection_rectangle = Rectangle(Color(255, 255, 255), 0, 28 + selectedIdx * 20, 450, 20);
+    selection_rectangle.setY_(28 + selectedIdx * 20);
+    selection_rectangle.setY2_(28 + selectedIdx * 20);
     handler.Refresh();
 }
 

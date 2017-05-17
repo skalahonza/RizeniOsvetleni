@@ -23,6 +23,18 @@ public:
 
     bool IsVisible;
 
+    float getX_() const;
+
+    void setX_(float x_);
+
+    float getY_() const;
+
+    void setY_(float y_);
+
+    const Color &getStroke_() const;
+
+    void setStroke_(const Color &stroke_);
+
 protected:
     Shape(float x, float y, Color Stroke);
 

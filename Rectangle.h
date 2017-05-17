@@ -18,9 +18,13 @@ public:
 
     virtual void Render(int16_t display[320][480]);
 
-    float getX2() const;
+    float getX2_() const;
 
-    float getY2() const;
+    void setX2_(float x2_);
+
+    float getY2_() const;
+
+    void setY2_(float y2_);
 
 private:
     float x2_;
