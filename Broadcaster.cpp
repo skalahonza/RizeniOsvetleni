@@ -2,6 +2,7 @@
 // Created by skala on 17.5.17.
 //
 
+#include <iostream>
 #include "Broadcaster.h"
 #include "global_const.h"
 #include "StateMessage.h"
@@ -34,7 +35,8 @@ void Broadcaster::broadcastData(char *data, int len) {
     sendto(sockfd, data, (size_t) len, 0, (struct sockaddr *) &braddr, sinlen);
 }
 
-void Broadcaster::broadcastData(LightUnit &unit) {
+void Broadcaster::broadcastData(LightUnit unit) {
+    std::cout << "Broadcasting: " << unit.broadcstDebugString() << "\n";
     StateMessage message = StateMessage(unit);
     std::vector<char> buffer = message.buildPaketBUffer();
     broadcastData(buffer.data(), (int) buffer.size());

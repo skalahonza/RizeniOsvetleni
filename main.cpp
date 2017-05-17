@@ -6,6 +6,7 @@
 #include "DisplayHandler.h"
 #include "Rectangle.h"
 #include "LightUnit.h"
+#include "Broadcaster.h"
 #include <stdio.h>
 
 using namespace std;
@@ -148,7 +149,6 @@ void unit_management_screen(SETUP_MODE mode) {
 void unit_screen() {
     handler.clearDisplay();
     examined_unit = &units[selectedIdx];
-    LightUnit &unit = *examined_unit;
 
     controller.Clear_R_Callbacks();
     controller.Clear_G_Callbacks();
@@ -168,7 +168,7 @@ void unit_screen() {
     handler.addShape(selection_rectangle);
 
     TextBox *chooseChange_text = new TextBox(1, 1, 200, 200, light_green);
-    chooseChange_text->setText_(unit.getLabel_());
+    chooseChange_text->setText_(examined_unit->getLabel_());
     handler.addShape(chooseChange_text);
 
     TextBox *first_text = new TextBox(1, 30, 200, 200, light_green);
@@ -177,16 +177,18 @@ void unit_screen() {
 
     TextBox *wallValue = new TextBox(1, 50, 200, 200, Color(255, 255, 255));
     stringstream stream;
-    stream << "Wall color:  R: " << unit.getWall_().getRGB888().r << " G: " << unit.getWall_().getRGB888().g << " B: "
-           << unit.getWall_().getRGB888().b;
+    stream << "Wall color:  R: " << examined_unit->getWall_().getRGB888().r << " G: "
+           << examined_unit->getWall_().getRGB888().g << " B: "
+           << examined_unit->getWall_().getRGB888().b;
     wallValue->setText_(stream.str());
     handler.addShape(wallValue);
 
     TextBox *ceilValue = new TextBox(1, 70, 200, 200, Color(255, 255, 255));
     stringstream stream2;
-    stream2 << "Ceiling color:  R: " << unit.getCeil_().getRGB888().r << " G: " << unit.getCeil_().getRGB888().g
+    stream2 << "Ceiling color:  R: " << examined_unit->getCeil_().getRGB888().r << " G: "
+            << examined_unit->getCeil_().getRGB888().g
             << " B: "
-            << unit.getCeil_().getRGB888().b;
+            << examined_unit->getCeil_().getRGB888().b;
     ceilValue->setText_(stream2.str());
     handler.addShape(ceilValue);
 
@@ -257,11 +259,9 @@ void go_manage() {
     cout << selectedIdx << "\n";
     switch (selectedIdx) {
         case 0: //configure wall
-            examined_unit = &units[selectedIdx];
             unit_management_screen(WALL);
             break;
         case 1: //configure ceiling
-            examined_unit = &units[selectedIdx];
             unit_management_screen(CEIL);
             break;
     }
@@ -353,21 +353,35 @@ void update_textboxes() {
 
 void confirm_wall_managment() {
     examined_unit->setWall_(Color(r, g, b));
+    Broadcaster::getInstance().broadcastData(units[0]);
     examined_unit = NULL;
     home_screen();
 }
 
 void confirm_ceil_managment() {
     examined_unit->setCeil_(Color(r, g, b));
+    Broadcaster::getInstance().broadcastData(units[0]);
     examined_unit = NULL;
     home_screen();
 }
 
+void *broadcast_loop(void *) {
+    while (true) {
+        // child process
+        if (units.size() > 0) {
+            Broadcaster::getInstance().broadcastData(units[0]);
+        }
+        sleep(1);
+    }
+    return NULL;
+}
+
 int main(int argc, char *argv[]) {
     //MOCK LIGHT UNITS
-    LightUnit living_room = LightUnit(1, "Living room");
-    living_room.setCeil_(Color(100, 200, 30));
-    living_room.setWall_(Color(10, 20, 30));
+    LightUnit host = LightUnit(1, "host room");
+    host.setCeil_(Color(100, 200, 30));
+    host.setWall_(Color(10, 20, 30));
+    host.setIsHost(true);
 
     LightUnit kitchen = LightUnit(2, "KItchen");
     kitchen.setCeil_(Color(11, 22, 33));
@@ -375,11 +389,18 @@ int main(int argc, char *argv[]) {
 
     LightUnit bedroom = LightUnit(3, "bedroom");
 
-    units.push_back(living_room);
+    units.push_back(host);
     units.push_back(kitchen);
     units.push_back(bedroom);
 
     home_screen();
+
+    //Broadcast thread
+    pthread_t t1;
+    pthread_create(&t1, NULL, &broadcast_loop, NULL);
+
+
+    //listening thread
 
     controller.Init();
     return 0;
