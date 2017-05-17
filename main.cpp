@@ -365,7 +365,7 @@ void confirm_ceil_managment() {
     home_screen();
 }
 
-void *broadcast_loop(void *obj) {
+void *broadcast_loop(void *) {
     while (true) {
         // child process
         if (units.size() > 0) {
@@ -396,8 +396,8 @@ int main(int argc, char *argv[]) {
     home_screen();
 
     //Broadcast thread
-    pthread_t *thread;
-    pthread_create(thread, NULL, broadcast_loop, NULL);
+    pthread_t t1;
+    pthread_create(&t1, NULL, &broadcast_loop, NULL);
 
 
     //listening thread
