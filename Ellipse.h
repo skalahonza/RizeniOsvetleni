@@ -10,6 +10,7 @@
 
 class Ellipse : public Shape {
 public:
+    Ellipse();
     Ellipse(float x, float y, int width, int height, Color Stroke);
 
     virtual void Render(int16_t display[320][480]);

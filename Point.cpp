@@ -19,3 +19,7 @@ float Point::Getx() {
 float Point::Gety() {
     return y_;
 }
+
+Point::Point() {
+
+}

@@ -11,6 +11,7 @@
 
 class Rectangle : public Shape {
 public:
+    Rectangle();
     Rectangle(float x1, float y1, float x2, float y2, Color Stroke);
 
     Rectangle(Color Stroke, float x, float y, int width, int height);

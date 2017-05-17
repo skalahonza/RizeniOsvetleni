@@ -19,3 +19,7 @@ void Polygon::Render(int16_t display[320][480]) {
         line.Render(display);
     }
 }
+
+Polygon::Polygon() {
+
+}
