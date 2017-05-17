@@ -13,10 +13,11 @@ void go_home();
 
 void select_unit();
 
+void clear_all_callbacks();
+
 void scroll_attribute_list(SPINDIRECTION a, int value);
 
-Rectangle *selection_rectangle = new Rectangle(Color(255, 255, 255), 0, 28, 450,
-                                               20);
+Rectangle *selection_rectangle;
 unsigned int selectedIdx = 0; //selected index for listboxes
 
 std::vector<LightUnit> units;
@@ -89,12 +90,17 @@ void unit_screen(LightUnit &unit) {
     handler.Refresh();
 }
 
-
-void home_screen() {
+void clear_all_callbacks() {
     controller.Clear_R_Callbacks();
     controller.Clear_G_Callbacks();
     controller.Clear_B_Callbacks();
+    controller.Clear_R_Pressed_Callbacks();
     controller.Clear_G_Pressed_Callbacks();
+    controller.Clear_B_Pressed_Callbacks();
+}
+
+void home_screen() {
+    clear_all_callbacks();
 
     controller.Register_R_Callback(scroll_unit_list, "printer");
     controller.Register_G_Callback(scroll_unit_list, "printer");
@@ -109,6 +115,9 @@ void home_screen() {
 
     Color stroke = Color(255, 255, 255);
     Color light_green = Color(152, 251, 152);
+
+    selection_rectangle = new Rectangle(Color(255, 255, 255), 0, 28, 450,
+                                        20);
 
     units.push_back(LightUnit(1, "obyvak"));
     units.push_back(LightUnit(2, "kuchyn"));
