@@ -12,6 +12,8 @@
 
 class LightUnit {
 public:
+
+    LightUnit();
     /**
      * Create instance of light control unit
      * @param ALC1 Unit Id
@@ -35,12 +37,17 @@ public:
 
     std::string debugString();
 
+    bool isIsHost() const;
+
+    void setIsHost(bool isHost);
+
 private:
     uint32_t ALC1_;
     std::string label_;
     Color ceil_;
     Color wall_;
     uint16_t icon[256];
+    bool isHost;
 };
 
 

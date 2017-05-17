@@ -8,7 +8,7 @@
 #include "StateMessage.h"
 
 LightUnit::LightUnit(uint32_t ALC1, std::string label) :
-        ALC1_(ALC1), label_(label) {
+        ALC1_(ALC1), label_(label), isHost(false) {
     wall_ = Color();
     ceil_ = Color();
 }
@@ -45,4 +45,15 @@ std::string LightUnit::debugString() {
     std::stringstream stream;
     stream << "ID: " << ALC1_ << " Label: " << label_;
     return stream.str();
+}
+
+bool LightUnit::isIsHost() const {
+    return isHost;
+}
+
+void LightUnit::setIsHost(bool isHost) {
+    LightUnit::isHost = isHost;
+}
+
+LightUnit::LightUnit() : LightUnit(0, "") {
 }

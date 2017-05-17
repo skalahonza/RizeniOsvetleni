@@ -15,6 +15,12 @@ void go_manage();
 
 void select_unit();
 
+void scroll_red_value(SPINDIRECTION a, int value);
+
+void scroll_green_value(SPINDIRECTION a, int value);
+
+void scroll_blue_value(SPINDIRECTION a, int value);
+
 void scroll_attribute_list(SPINDIRECTION a, int value);
 
 Rectangle *selection_rectangle = new Rectangle(Color(255, 255, 255), 0, 28, 450,
@@ -25,6 +31,10 @@ std::vector<LightUnit> units;
 DisplayHandler &handler = DisplayHandler::getInstance();
 Perifery controller = Perifery();
 TextBox *unitsTb[10];
+
+TextBox *r_value = new TextBox(13, 50, 200, 200, Color(255, 255, 255));
+TextBox *g_value = new TextBox(102, 50, 200, 200, Color(255, 255, 255));
+TextBox *b_value = new TextBox(192, 50, 200, 200, Color(255, 255, 255));
 
 enum SETUP_MODE {
     WALL,
@@ -51,7 +61,15 @@ void scroll_unit_list(SPINDIRECTION a, int value) {
 }
 
 void unit_management_screen(LightUnit &unit, SETUP_MODE mode) {
-    cout << selectedIdx << "MANAGE!";
+    controller.Clear_R_Callbacks();
+    controller.Clear_G_Callbacks();
+    controller.Clear_B_Callbacks();
+    controller.Clear_G_Pressed_Callbacks();
+
+    controller.Register_R_Callback(scroll_red_value, "scroll_attribute_list");
+    controller.Register_G_Callback(scroll_green_value, "scroll_attribute_list");
+    controller.Register_B_Callback(scroll_blue_value, "scroll_attribute_list");
+
     handler.clearDisplay();
     Color light_green = Color(152, 251, 152);
     TextBox *unitName_text = new TextBox(1, 1, 200, 200, light_green);
@@ -64,19 +82,16 @@ void unit_management_screen(LightUnit &unit, SETUP_MODE mode) {
     r_text->setText_("R:");
     handler.addShape(r_text);
 
-    TextBox *r_value = new TextBox(13, 50, 200, 200, Color(255, 255, 255));
 
     TextBox *g_text = new TextBox(90, 50, 200, 200, Color(0, 255, 0));
     g_text->setText_("G:");
     handler.addShape(g_text);
 
-    TextBox *g_value = new TextBox(102, 50, 200, 200, Color(255, 255, 255));
 
     TextBox *b_text = new TextBox(180, 50, 200, 200, Color(0, 0, 255));
     b_text->setText_("B:");
     handler.addShape(b_text);
 
-    TextBox *b_value = new TextBox(192, 50, 200, 200, Color(255, 255, 255));
 
     stringstream streamr;
     stringstream streamg;
@@ -152,7 +167,26 @@ void unit_screen(LightUnit &unit) {
     ceilValue->setText_(stream2.str());
     handler.addShape(ceilValue);
 
-    // selectedIdx = 1; //now choosing from 1,2 K CEMU TO TADY BYLO?
+    TextBox *turn_offCeil = new TextBox(1, 90, 200, 200, Color(220, 220, 220));
+    turn_offCeil->setText_("TURN OFF WALL");
+    handler.addShape(turn_offCeil);
+    //TO DO
+
+    TextBox *turn_offWall = new TextBox(1, 110, 200, 200, Color(220, 220, 220));
+    turn_offWall->setText_("TURN OFF CEILING");
+    handler.addShape(turn_offWall);
+    //TO DO
+    handler.Refresh();
+
+    TextBox *turn_onWall = new TextBox(1, 130, 200, 200, Color(150, 150, 150));
+    turn_onWall->setText_("TURN ON WALL");
+    handler.addShape(turn_onWall);
+    //TO DO
+
+    TextBox *turn_onCeil = new TextBox(1, 150, 200, 200, Color(150, 150, 150));
+    turn_onCeil->setText_("TURN ON CEILING");
+    handler.addShape(turn_onCeil);
+    //TO DO
     handler.Refresh();
 }
 
@@ -225,16 +259,59 @@ void scroll_attribute_list(SPINDIRECTION a, int value) {
     switch (a) {
         case LEFT:
             selectedIdx--;
-            selectedIdx %= 2;
+            selectedIdx %= 6;
             break;
         case RIGHT:
             selectedIdx++;
-            selectedIdx %= 2;
+            selectedIdx %= 6;
             break;
     }
 
     selection_rectangle->setY_(50 + selectedIdx * 20);
     selection_rectangle->setY2_(selection_rectangle->getY_() + 20);
+    handler.Refresh();
+}
+
+void scroll_red_value(SPINDIRECTION a, int value) {
+    //DO NOT ignore small steps
+    //if (value % 4 != 0 || units.size() == 0) return;
+    stringstream streamr;
+    switch (a) {
+        case LEFT:
+            //TO DO red value --; (to TextBox r_value)
+            //streamr << (char) (unit.getCeil_().getRGB888().r - 1);
+            //r_value->setText_(streamr.str());
+            break;
+        case RIGHT:
+            //TO DO red value ++;
+            break;
+    }
+    handler.Refresh();
+}
+
+void scroll_green_value(SPINDIRECTION a, int value) {
+    stringstream streamg;
+    switch (a) {
+        case LEFT:
+            //TO DO green value --; (to TextBox g_value)
+            break;
+        case RIGHT:
+            //TO DO green value ++;
+            break;
+    }
+    handler.Refresh();
+}
+
+void scroll_blue_value(SPINDIRECTION a, int value) {
+    stringstream streamg;
+    switch (a) {
+        case LEFT:
+            //TO DO blue value --; (to TextBox b_value)
+            break;
+        case RIGHT:
+            //TO DO blue value ++;
+            break;
+    }
     handler.Refresh();
 }
 
