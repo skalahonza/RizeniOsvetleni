@@ -59,16 +59,17 @@ void unit_screen(LightUnit unit) {
 
     TextBox *first_text = new TextBox(1, 30, 200, 200, light_green);
     first_text->setText_("CONFIGURE:");
+    handler.addShape(first_text);
 
 
-    TextBox *wallValue = new TextBox(1, 50, 200, 200, unit.getWall_());
+    TextBox *wallValue = new TextBox(1, 50, 200, 200, Color(255, 255, 255));
     stringstream stream;
     stream << "Wall color:  R: " << unit.getWall_().getRGB888().r << "G: " << unit.getWall_().getRGB888().g << "B: "
            << unit.getWall_().getRGB888().b;
     wallValue->setText_(stream.str());
     handler.addShape(wallValue);
 
-    TextBox *ceilValue = new TextBox(1, 70, 200, 200, unit.getCeil_());
+    TextBox *ceilValue = new TextBox(1, 70, 200, 200, Color(255, 255, 255));
     stringstream stream2;
     stream2 << "Ceiling color:  R: " << unit.getCeil_().getRGB888().r << "G: " << unit.getCeil_().getRGB888().g << "B: "
             << unit.getCeil_().getRGB888().b;
@@ -80,7 +81,15 @@ void unit_screen(LightUnit unit) {
 }
 
 
-void home_screen() { //originally in main
+void home_screen() {
+    units.clear();
+    controller.Register_R_Callback(scroll_unit_list, "printer");
+    controller.Register_G_Callback(scroll_unit_list, "printer");
+    controller.Register_B_Callback(scroll_unit_list, "printer");
+
+    controller.Register_R_Pressed_Callback(go_home, "redclick");
+    controller.Register_G_Pressed_Callback(select_unit, "greenclick");
+
     Color stroke = Color(255, 255, 255);
     Color light_green = Color(152, 251, 152);
 
@@ -117,13 +126,6 @@ void select_unit() {
 
 int main() {
     home_screen();
-
-    controller.Register_R_Callback(scroll_unit_list, "printer");
-    controller.Register_G_Callback(scroll_unit_list, "printer");
-    controller.Register_B_Callback(scroll_unit_list, "printer");
-
-    controller.Register_R_Pressed_Callback(go_home, "redclick");
-    controller.Register_G_Pressed_Callback(select_unit, "greenclick");
     controller.Init();
     return 0;
 }
