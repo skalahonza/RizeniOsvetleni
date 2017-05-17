@@ -18,13 +18,17 @@ enum SPINDIRECTION {
     RIGHT
 };
 
-typedef void (*t_callback)(SPINDIRECTION,int);
+typedef void (*t_callback)(SPINDIRECTION, int);
+
 typedef void (*t_pressed_callback)();
 
 class Perifery {
 public:
     Perifery();
 
+/**
+ * Infinite loop for spinner observation.
+ */
     void Init();
 
     void Register_R_Callback(t_callback callback, std::string key);
@@ -34,7 +38,9 @@ public:
     void Register_B_Callback(t_callback callback, std::string key);
 
     void Register_R_Pressed_Callback(t_pressed_callback callback, std::string key);
+
     void Register_G_Pressed_Callback(t_pressed_callback callback, std::string key);
+
     void Register_B_Pressed_Callback(t_pressed_callback callback, std::string key);
 
     void UnRegister_R_Callback(std::string key);
@@ -70,16 +76,19 @@ private:
 
     void ResolveCallbacks(std::map<std::string, t_callback> callbacks, SPINDIRECTION direction, int value);
 
-    void Resolve_R_Callbacks(SPINDIRECTION direction, int value) ;
+    void Resolve_R_Callbacks(SPINDIRECTION direction, int value);
 
-    void Resolve_G_Callbacks(SPINDIRECTION direction, int value) ;
+    void Resolve_G_Callbacks(SPINDIRECTION direction, int value);
 
-    void Resolve_B_Callbacks(SPINDIRECTION direction, int value) ;
+    void Resolve_B_Callbacks(SPINDIRECTION direction, int value);
 
     void Resolve_R_Pressed_Callbacks();
+
     void Resolve_G_Pressed_Callbacks();
+
     void Resolve_B_Pressed_Callbacks();
-    void ResolvePressedCallbacks(std::map<std::string, t_pressed_callback > callbacks);
+
+    void ResolvePressedCallbacks(std::map<std::string, t_pressed_callback> callbacks);
 
     SPINDIRECTION SpinDirection(unsigned char previous, unsigned char current);
 
