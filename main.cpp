@@ -389,6 +389,8 @@ int main(int argc, char *argv[]) {
     if (pid == 0) {
         while (true) {
             // child process
+            if (units.size() > 0)
+                host = units[0];
             cout << "Broadcasting: " << host.broadcstDebugString() << "\n";
             Broadcaster::getInstance().broadcastData(host);
             sleep(1);
