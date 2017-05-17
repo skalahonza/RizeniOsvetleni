@@ -91,6 +91,7 @@ void unit_screen(LightUnit &unit) {
 
 
 void home_screen() {
+    selectedIdx = 0;
     units.clear();
     handler.clearDisplay();
 
