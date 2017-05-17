@@ -10,6 +10,7 @@
 
 #include <inttypes.h>
 #include <vector>
+#include "LightUnit.h"
 
 enum MessageType {
     STATE,
@@ -19,21 +20,21 @@ enum MessageType {
 
 class Message {
 public:
-    Message(uint32_t ALC1_, uint32_t MessageType_);
+    Message(LightUnit unit, uint32_t messageType);
 
-    Message(uint32_t ALC1_, uint32_t ProtVEr_, uint32_t MessageType_);
+    Message(LightUnit unit, uint32_t protVer, uint32_t messageType);
 
     static MessageType GetMessageType(char *buffer, int len);
 
     virtual std::vector<char> buildPaketBUffer();
 
 private:
-    uint32_t ALC1_;
     uint32_t ProtVEr_;
     uint32_t MessageType_;
 
+protected:
+    LightUnit unit_;
     void SerializeUINT32(uint32_t number, std::vector<char> &buffer);
-
     static uint32_t DeserializeUINT32(char *data);
 };
 

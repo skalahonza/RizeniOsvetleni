@@ -26,6 +26,8 @@ public:
 
     int16_t getRGB565();
 
+    u_int32_t toUINT32() const;
+
 private:
     RGBcolor rgb888_;
     int16_t rgb565_;
