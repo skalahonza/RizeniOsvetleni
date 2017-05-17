@@ -3,6 +3,7 @@
 //
 
 #include <sstream>
+#include <cstring>
 #include "LightUnit.h"
 
 LightUnit::LightUnit(uint32_t ALC1, std::string label) :
@@ -42,4 +43,8 @@ std::string LightUnit::debugString() {
     std::stringstream stream;
     stream << "ID: " << ALC1_ << " Label: " << label_;
     return stream.str();
+}
+
+void LightUnit::broadcastData() {
+
 }
