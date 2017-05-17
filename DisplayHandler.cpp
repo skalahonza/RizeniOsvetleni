@@ -53,6 +53,7 @@ void DisplayHandler::clear_display() {
 }
 
 void DisplayHandler::clearDisplay() {
+    memset(display, 0, sizeof(display[0][0]) * 320 * 480);
     shapes_.clear();
     clear_display();
 }

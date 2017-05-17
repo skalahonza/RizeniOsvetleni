@@ -8,7 +8,8 @@
 
 using namespace std;
 
-Rectangle *selection_rectangle;
+Rectangle *selection_rectangle = new Rectangle(Color(255, 255, 255), 0, 28, 450,
+                                               20);
 unsigned int selectedIdx = 0; //(1-list_index), max. 10, min 1
 unsigned int mode = 1; //mode 1,2,3 - which screen do I have
 
@@ -35,6 +36,7 @@ void test(SPINDIRECTION a, int value) {
     cout << selectedIdx << "\n";
     selection_rectangle->setY_(28 + selectedIdx * 20);
     selection_rectangle->setY2_(28 + selectedIdx * 20);
+    cout << "y1 " << selection_rectangle->getY_() << " y2" << selection_rectangle->getY2_() << "\n";
     handler.Refresh();
 }
 
@@ -47,11 +49,9 @@ void choosing_screen() {
     TextBox wall = TextBox(1, 50, 200, 200, Color(255, 0, 0));
     ceiling.setText_("Ceiling");
     wall.setText_("Walls");
-    //selection_rectangle = Rectangle(Color(255, 255, 255), 0, 28, 450, 20);
     handler.addShape(&chooseChange_text);
     handler.addShape(&ceiling);
     handler.addShape(&wall);
-    //handler.addShape(&selection_rectangle);
     mode = 2;
     selectedIdx = 1; //now choosing from 1,2
     handler.Refresh();
@@ -62,8 +62,6 @@ void choosing_screen() {
 void home_screen() { //originally in main
     Color stroke = Color(255, 255, 255);
     Color light_green = Color(152, 251, 152);
-    selection_rectangle = new Rectangle(Color(255, 255, 255), 0, 28, 450,
-                                        20);
 
     units.push_back(LightUnit(1, "obyvak"));
     units.push_back(LightUnit(2, "kuchyn"));
