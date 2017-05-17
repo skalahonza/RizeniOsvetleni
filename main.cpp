@@ -316,7 +316,7 @@ void scroll_red_value(SPINDIRECTION a, int value) {
             r++;
             break;
     }
-    printf("r value: %d", r);
+    printf("r value: %d\n", r);
 }
 
 void scroll_green_value(SPINDIRECTION a, int value) {
@@ -330,7 +330,7 @@ void scroll_green_value(SPINDIRECTION a, int value) {
             g++;
             break;
     }
-    printf("g value: %d", g);
+    printf("g value: %d\n", g);
 }
 
 void scroll_blue_value(SPINDIRECTION a, int value) {
@@ -344,7 +344,7 @@ void scroll_blue_value(SPINDIRECTION a, int value) {
             b++;
             break;
     }
-    printf("b value: %d", b);
+    printf("b value: %d\n", b);
 }
 
 void update_textboxes(SPINDIRECTION a, int value) {
@@ -359,6 +359,7 @@ void update_textboxes(SPINDIRECTION a, int value) {
     r_value->setText_(streamr.str());
     g_value->setText_(streamg.str());
     b_value->setText_(streamb.str());
+    handler.Refresh();
 }
 
 void confirm_wall_managment() {
