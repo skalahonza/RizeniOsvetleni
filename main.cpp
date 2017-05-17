@@ -6,6 +6,7 @@
 #include "DisplayHandler.h"
 #include "Rectangle.h"
 #include "LightUnit.h"
+#include <stdio.h>
 
 using namespace std;
 
