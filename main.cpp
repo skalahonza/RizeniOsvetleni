@@ -8,48 +8,35 @@
 
 using namespace std;
 
-Rectangle rectangle = Rectangle(Color(255, 255, 255), 0, 28, 450,
-                                20); //LZE TO TAKTO DEKLAROVAT?? a prepise se to, tak jak chci?
-unsigned int chosen_id = 1; //(1-list_index), max. 10, min 1
-unsigned int list_size = 1; // need to get vector size
+Rectangle selection_rectangle = Rectangle(Color(255, 255, 255), 0, 28, 450,
+                                          20); //LZE TO TAKTO DEKLAROVAT?? a prepise se to, tak jak chci?
+unsigned int selectedIdx = 0; //(1-list_index), max. 10, min 1
 unsigned int mode = 1; //mode 1,2,3 - which screen do I have
-DisplayHandler &handler = DisplayHandler::getInstance();
+
+std::vector<LightUnit> units;
 
 void test(SPINDIRECTION a, int value) {
     //ignore small steps
-    if (value % 4 != 0) return;
+    if (value % 4 != 0 || units.size() == 0) return;
+    DisplayHandler &handler = DisplayHandler::getInstance();
     switch (a) {
         case LEFT:
             cout << "Value: " << value <<  " LEFT \n";
-            if ((mode == 1) & (chosen_id > 1)) {
-                chosen_id--;
-                rectangle = Rectangle(Color(255, 255, 255), 0, 28 + (chosen_id - 1) * 20, 450, 20);
-                handler.Refresh();
-            }
-            if ((mode == 2) & (chosen_id > 1)) {
-                chosen_id--;
-                rectangle = Rectangle(Color(255, 255, 255), 0, 28 + (chosen_id - 1) * 20, 450,
-                                      20); //only 28 should be ok
-                handler.Refresh();
-            }
+            selectedIdx--;
+            selectedIdx %= units.size();
             break;
         case RIGHT:
             cout << "Value: " << value <<  " RIGHT \n";
-            if ((mode == 1) & (chosen_id < list_size)) {
-                chosen_id++;
-                rectangle = Rectangle(Color(255, 255, 255), 0, 28 + (chosen_id - 1) * 20, 450, 20);
-                handler.Refresh();
-            }
-            if ((mode == 2) & (chosen_id < 2)) {
-                chosen_id++;
-                rectangle = Rectangle(Color(255, 255, 255), 0, 28 + (chosen_id - 1) * 20, 450, 20);
-                handler.Refresh();
-            }
+            selectedIdx++;
+            selectedIdx %= units.size();
             break;
     }
+    selection_rectangle = Rectangle(Color(255, 255, 255), 0, 28 + selectedIdx * 20, 450, 20);
+    handler.Refresh();
 }
 
 void choosing_screen() {
+    DisplayHandler &handler = DisplayHandler::getInstance();
     handler.clearDisplay();
     Color light_green = Color(152, 251, 152);
     TextBox chooseChange_text = TextBox(1, 1, 200, 200, light_green);
@@ -58,28 +45,26 @@ void choosing_screen() {
     TextBox wall = TextBox(1, 50, 200, 200, Color(255, 0, 0));
     ceiling.setText_("Ceiling");
     wall.setText_("Walls");
-    rectangle = Rectangle(Color(255, 255, 255), 0, 28, 450, 20);
+    selection_rectangle = Rectangle(Color(255, 255, 255), 0, 28, 450, 20);
     handler.addShape(&chooseChange_text);
     handler.addShape(&ceiling);
     handler.addShape(&wall);
-    handler.addShape(&rectangle);
+    handler.addShape(&selection_rectangle);
     mode = 2;
-    chosen_id = 1; //now choosing from 1,2
+    selectedIdx = 1; //now choosing from 1,2
     handler.Refresh();
 
 }
 
 
 void home_screen() { //originally in main
+    DisplayHandler &handler = DisplayHandler::getInstance();
     Color stroke = Color(255, 255, 255);
     Color light_green = Color(152, 251, 152);
     TextBox unitsTb[10];
 
-    //need to get the service_list
-    std::vector<LightUnit> units;
     units.push_back(LightUnit(1, "obyvak"));
     units.push_back(LightUnit(2, "kuchyn"));
-    list_size = (unsigned int) units.size();
 
     Line green_line = Line(0, 16, 115, 16, light_green);
     TextBox first_text = TextBox(1, 1, 200, 200, light_green);
@@ -94,7 +79,7 @@ void home_screen() { //originally in main
     }
     handler.addShape(&first_text);
     handler.addShape(&green_line);
-    handler.addShape(&rectangle);
+    handler.addShape(&selection_rectangle);
     handler.addShape(&use_text);
     mode = 1;
     handler.Refresh();
@@ -118,16 +103,12 @@ void pressed3() {
 
 
 int main() {
-
     home_screen();
 
     Perifery controller = Perifery();
     controller.Register_R_Callback(test, "printer");
     controller.Register_G_Callback(test, "printer");
     controller.Register_B_Callback(test, "printer");
-
-    //controller.UnRegister_R_Callback("printer"); smaže toho který se jemnuje printer
-    //controller.Clear_R_Callbacks(); smaže všechny
 
     controller.Register_R_Pressed_Callback(pressed1, "redclick");
     controller.Register_G_Pressed_Callback(pressed2, "greenclick");
