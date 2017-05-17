@@ -8,7 +8,6 @@
 #include "LightUnit.h"
 #include "Broadcaster.h"
 #include <stdio.h>
-#include <thread>
 
 using namespace std;
 
@@ -385,12 +384,13 @@ int main(int argc, char *argv[]) {
     home_screen();
 
     //Broadcast daemon
-    std::thread broadcst_thread([] {
-        while (true) {
-            Broadcaster::getInstance().broadcastData(host);
-            sleep(1);
-        }
-    });
+    pid_t pid = fork();
+
+    if (pid == 0)
+    {
+        // child process
+        Broadcaster::getInstance().broadcastData(host);
+    }
 
     //listening thread
 
