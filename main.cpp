@@ -89,6 +89,7 @@ void home_screen() { //originally in main
 
 void pressed1() {
     cout << "Red Pressed\n";
+    DisplayHandler::getInstance().clearDisplay();
 }
 
 void pressed2() {
