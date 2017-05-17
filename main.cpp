@@ -11,19 +11,25 @@ using namespace std;
 
 void go_home();
 
-void select_unit();
+void go_manage();
 
-void clear_all_callbacks();
+void select_unit();
 
 void scroll_attribute_list(SPINDIRECTION a, int value);
 
-Rectangle *selection_rectangle;
+Rectangle *selection_rectangle = new Rectangle(Color(255, 255, 255), 0, 28, 450,
+                                               20);
 unsigned int selectedIdx = 0; //selected index for listboxes
 
 std::vector<LightUnit> units;
 DisplayHandler &handler = DisplayHandler::getInstance();
 Perifery controller = Perifery();
 TextBox *unitsTb[10];
+
+enum SETUP_MODE {
+    WALL,
+    CEIL
+};
 
 void scroll_unit_list(SPINDIRECTION a, int value) {
     //ignore small steps
@@ -39,11 +45,69 @@ void scroll_unit_list(SPINDIRECTION a, int value) {
             selectedIdx %= units.size();
             break;
     }
-    cout << selectedIdx << "\n";
     selection_rectangle->setY_(28 + selectedIdx * 20);
     selection_rectangle->setY2_(selection_rectangle->getY_() + 20);
     handler.Refresh();
 }
+
+void unit_management_screen(LightUnit &unit, SETUP_MODE mode) {
+    cout << selectedIdx << "MANAGE!";
+    handler.clearDisplay();
+    Color light_green = Color(152, 251, 152);
+    TextBox *unitName_text = new TextBox(1, 1, 200, 200, light_green);
+    unitName_text->setText_(unit.getLabel_());
+    handler.addShape(unitName_text);
+
+    TextBox *changingName_text = new TextBox(1, 20, 200, 200, light_green);
+
+    TextBox *r_text = new TextBox(1, 50, 200, 200, Color(255, 0, 0));
+    r_text->setText_("R:");
+    handler.addShape(r_text);
+
+    TextBox *r_value = new TextBox(13, 50, 200, 200, Color(255, 255, 255));
+
+    TextBox *g_text = new TextBox(90, 50, 200, 200, Color(0, 255, 0));
+    g_text->setText_("G:");
+    handler.addShape(g_text);
+
+    TextBox *g_value = new TextBox(102, 50, 200, 200, Color(255, 255, 255));
+
+    TextBox *b_text = new TextBox(180, 50, 200, 200, Color(0, 0, 255));
+    b_text->setText_("B:");
+    handler.addShape(b_text);
+
+    TextBox *b_value = new TextBox(192, 50, 200, 200, Color(255, 255, 255));
+
+    stringstream streamr;
+    stringstream streamg;
+    stringstream streamb;
+
+    switch (mode) {
+        case WALL:
+            changingName_text->setText_("Wall:");
+
+            streamr << unit.getWall_().getRGB888().r;
+            streamg << unit.getWall_().getRGB888().g;
+            streamb << unit.getWall_().getRGB888().b;
+            break;
+        case CEIL:
+            changingName_text->setText_("Ceil:");
+            streamr << unit.getCeil_().getRGB888().r;
+            streamg << unit.getCeil_().getRGB888().g;
+            streamb << unit.getCeil_().getRGB888().b;
+            break;
+    }
+    r_value->setText_(streamr.str());
+    g_value->setText_(streamg.str());
+    b_value->setText_(streamb.str());
+    handler.addShape(changingName_text);
+    handler.addShape(r_value);
+    handler.addShape(g_value);
+    handler.addShape(b_value);
+    handler.Refresh();
+}
+
+
 
 void unit_screen(LightUnit &unit) {
     handler.clearDisplay();
@@ -56,6 +120,8 @@ void unit_screen(LightUnit &unit) {
     controller.Register_R_Callback(scroll_attribute_list, "scroll_attribute_list");
     controller.Register_G_Callback(scroll_attribute_list, "scroll_attribute_list");
     controller.Register_B_Callback(scroll_attribute_list, "scroll_attribute_list");
+
+    controller.Register_G_Pressed_Callback(go_manage, "greenclick");
 
     Color light_green = Color(152, 251, 152);
     selectedIdx = 0;
@@ -86,21 +152,20 @@ void unit_screen(LightUnit &unit) {
     ceilValue->setText_(stream2.str());
     handler.addShape(ceilValue);
 
-    selectedIdx = 1; //now choosing from 1,2
+    // selectedIdx = 1; //now choosing from 1,2 K CEMU TO TADY BYLO?
     handler.Refresh();
 }
 
-void clear_all_callbacks() {
+
+void home_screen() {
+    selectedIdx = 0;
+    units.clear();
+    handler.clearDisplay();
+
     controller.Clear_R_Callbacks();
     controller.Clear_G_Callbacks();
     controller.Clear_B_Callbacks();
-    controller.Clear_R_Pressed_Callbacks();
     controller.Clear_G_Pressed_Callbacks();
-    controller.Clear_B_Pressed_Callbacks();
-}
-
-void home_screen() {
-    clear_all_callbacks();
 
     controller.Register_R_Callback(scroll_unit_list, "printer");
     controller.Register_G_Callback(scroll_unit_list, "printer");
@@ -108,10 +173,6 @@ void home_screen() {
 
     controller.Register_R_Pressed_Callback(go_home, "redclick");
     controller.Register_G_Pressed_Callback(select_unit, "greenclick");
-
-    selectedIdx = 0;
-    units.clear();
-    handler.clearDisplay();
 
     Color stroke = Color(255, 255, 255);
     Color light_green = Color(152, 251, 152);
@@ -145,6 +206,14 @@ void go_home() {
     home_screen();
 }
 
+void go_manage() {
+    cout << selectedIdx << "\n";
+    if (selectedIdx == 0)
+        unit_management_screen((units[selectedIdx]), WALL);
+    else if (selectedIdx == 1)
+        unit_management_screen((units[selectedIdx]), CEIL);
+}
+
 void select_unit() {
     unit_screen(units[selectedIdx]);
 }
@@ -163,7 +232,7 @@ void scroll_attribute_list(SPINDIRECTION a, int value) {
             selectedIdx %= 2;
             break;
     }
-    cout << selectedIdx << "\n";
+
     selection_rectangle->setY_(50 + selectedIdx * 20);
     selection_rectangle->setY2_(selection_rectangle->getY_() + 20);
     handler.Refresh();
