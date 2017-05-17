@@ -36,3 +36,7 @@ void Line::Render(int16_t display[320][480]) {
     }
 }
 
+Line::Line() {
+
+}
+

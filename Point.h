@@ -11,6 +11,7 @@
 
 class Point : public Shape {
 public:
+    Point();
     Point(float x, float y, Color stroke);
 
     float Getx();

@@ -29,3 +29,6 @@ Shape::Shape(float x, float y, Color Stroke) : stroke_(Stroke), x_(x), y_(y) {
 Shape::Shape(Color Stroke) : stroke_(Stroke) {
     IsVisible = true;
 }
+
+Shape::Shape() : Shape(Color()) {
+}
