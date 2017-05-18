@@ -15,6 +15,7 @@
 #include <netinet/in.h>
 #include <netdb.h>
 #include "LightUnit.h"
+#include "Message.h"
 
 
 class Broadcaster {
@@ -35,6 +36,8 @@ public:
     void broadcastData(char *data, int len);
 
     void broadcastData(LightUnit unit);
+
+    void broadcastData(Message *message);
 };
 
 

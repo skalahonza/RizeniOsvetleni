@@ -8,6 +8,7 @@
 #include "LightUnit.h"
 #include "Broadcaster.h"
 #include "Listener.h"
+#include "UpdateMessage.h"
 
 using namespace std;
 
@@ -348,16 +349,21 @@ void update_textboxes() {
     handler.Refresh();
 }
 
+void update_examined_unit() {
+    UpdateMessage update = UpdateMessage(*examined_unit);
+    Broadcaster::getInstance().broadcastData(&update);
+}
+
 void confirm_wall_managment() {
     examined_unit->setWall_(Color(r, g, b));
-    Broadcaster::getInstance().broadcastData(units[0]);
+    update_examined_unit();
     examined_unit = NULL;
     home_screen();
 }
 
 void confirm_ceil_managment() {
     examined_unit->setCeil_(Color(r, g, b));
-    Broadcaster::getInstance().broadcastData(units[0]);
+    update_examined_unit();
     examined_unit = NULL;
     home_screen();
 }
