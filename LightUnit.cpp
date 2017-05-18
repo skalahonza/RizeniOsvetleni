@@ -30,7 +30,7 @@ void LightUnit::setWall_(const Color &wall_) {
 }
 
 const uint16_t *LightUnit::getIcon() const {
-    return icon;
+    return icon_;
 }
 
 uint32_t LightUnit::getALC1_() const {
@@ -41,13 +41,13 @@ const std::string &LightUnit::getLabel_() const {
     return label_;
 }
 
-std::string LightUnit::debugString() {
+std::string LightUnit::debugString() const {
     std::stringstream stream;
     stream << "ID: " << ALC1_ << " Label: " << label_;
     return stream.str();
 }
 
-std::string LightUnit::broadcstDebugString(){
+std::string LightUnit::broadcstDebugString() const {
     std::stringstream stream;
     stream << debugString();
     char data[100] = {0};
@@ -66,4 +66,10 @@ void LightUnit::setIsHost(bool isHost) {
 }
 
 LightUnit::LightUnit() : LightUnit(0, "") {
+}
+
+void LightUnit::setIcon(uint16_t icon[256]) {
+    for (int i = 0; i < 256; ++i) {
+        icon_[i] = icon[i];
+    }
 }

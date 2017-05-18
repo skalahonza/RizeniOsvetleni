@@ -7,6 +7,7 @@
 
 
 #include <sys/param.h>
+#include <inttypes.h>
 
 typedef struct {
     int r;
@@ -26,7 +27,9 @@ public:
 
     int16_t getRGB565();
 
-    u_int32_t toUINT32() const;
+    uint32_t toUINT32() const;
+
+    static Color fromUINT32(uint32_t data);
 
 private:
     RGBcolor rgb888_;

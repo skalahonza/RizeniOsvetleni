@@ -13,8 +13,13 @@ class StateMessage : public Message {
 public:
     StateMessage(LightUnit &unit);
 
+    StateMessage(char *buf, int len);
     std::vector<char> buildPaketBUffer();
 
+    const LightUnit &getUnit_() const;
+
+private:
+    LightUnit unit_;
 };
 
 

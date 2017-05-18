@@ -19,21 +19,22 @@ enum MessageType {
 };
 
 class Message {
-public:
+protected:
     Message(LightUnit unit, uint32_t messageType);
 
     Message(LightUnit unit, uint32_t protVer, uint32_t messageType);
 
+    Message(char *buffer, int len);
+
+public:
     static MessageType GetMessageType(char *buffer, int len);
 
     virtual std::vector<char> buildPaketBUffer();
 
-private:
+protected:
+    uint32_t ALC1_;
     uint32_t ProtVEr_;
     uint32_t MessageType_;
-
-protected:
-    LightUnit unit_;
     void SerializeUINT32(uint32_t number, std::vector<char> &buffer);
     static uint32_t DeserializeUINT32(char *data);
 };
