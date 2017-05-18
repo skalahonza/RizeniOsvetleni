@@ -78,3 +78,7 @@ void LightUnit::Update(const LightUnit &unit) {
     ceil_ = unit.getCeil_();
     wall_ = unit.getWall_();
 }
+
+std::string LightUnit::getIp() {
+    return std::__cxx11::string();
+}

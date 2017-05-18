@@ -13,7 +13,7 @@
 #include <string.h>
 #include <arpa/inet.h>
 
-static class NetTools {
+class NetTools {
 public:
     static std::string getMyIp();
 

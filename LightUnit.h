@@ -48,6 +48,8 @@ public:
 
     void Update(const LightUnit &unit);
 
+    std::string getIp();
+
 private:
     uint32_t ALC1_;
     std::string label_;
