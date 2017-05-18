@@ -9,6 +9,7 @@
 #include "Broadcaster.h"
 #include "Listener.h"
 #include "NetTools.h"
+#include "global_const.h"
 
 using namespace std;
 
@@ -369,7 +370,7 @@ void *broadcast_loop(void *) {
         if (units.size() > 0) {
             Broadcaster::getInstance().broadcastData(units[0]);
         }
-        sleep(1);
+        sleep(BROADCAST_DELAY);
     }
     return NULL;
 }
@@ -381,8 +382,11 @@ void statusUpdate(StateMessage message) {
     for (int i = 0; i < units.size(); ++i) {
         //update existing
         if (units[i].getALC1_() == message.getUnit_().getALC1_()) {
-            units[i].Update(message.getUnit_());
-            cout << "Updating: " << message.getUnit_().getLabel_() << "\n";
+            if (i != 0) {
+                units[i].Update(message.getUnit_());
+                cout << "Updating: " << message.getUnit_().getLabel_() << "\n";
+            }
+            cout << "host update ignored \n";
             return;
         }
     }
@@ -401,11 +405,11 @@ void *listen(void *) {
 }
 
 int main(int argc, char *argv[]) {
-    //MOCK LIGHT UNITS
     LightUnit host = LightUnit(NetTools::getMyIp(), "host room");
     host.setCeil_(Color(100, 200, 30));
     host.setWall_(Color(10, 20, 30));
-    host.setIsHost(true);
+
+    //MOCK LIGHT UNITS
 
     LightUnit kitchen = LightUnit(2, "Kitchen");
     kitchen.setCeil_(Color(11, 22, 33));

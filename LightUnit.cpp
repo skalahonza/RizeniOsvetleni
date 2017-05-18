@@ -9,7 +9,7 @@
 #include "NetTools.h"
 
 LightUnit::LightUnit(uint32_t ALC1, std::string label) :
-        ALC1_(ALC1), label_(label), isHost(false) {
+        ALC1_(ALC1), label_(label) {
     wall_ = Color();
     ceil_ = Color();
 }
@@ -56,14 +56,6 @@ std::string LightUnit::broadcstDebugString() const {
             ceil_.getRGB888().r, ceil_.getRGB888().g, ceil_.getRGB888().b);
     stream << data;
     return stream.str();
-}
-
-bool LightUnit::isIsHost() const {
-    return isHost;
-}
-
-void LightUnit::setIsHost(bool isHost) {
-    LightUnit::isHost = isHost;
 }
 
 LightUnit::LightUnit() : LightUnit(0, "") {

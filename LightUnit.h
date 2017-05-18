@@ -45,10 +45,6 @@ public:
 
     std::string debugString() const;
 
-    bool isIsHost() const;
-
-    void setIsHost(bool isHost);
-
     std::string broadcstDebugString() const;
 
     void setIcon(uint16_t icon[256]);
@@ -63,7 +59,6 @@ private:
     Color ceil_;
     Color wall_;
     uint16_t icon_[256];
-    bool isHost;
 };
 
 
