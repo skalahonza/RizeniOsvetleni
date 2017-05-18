@@ -6,6 +6,7 @@
 #include <cstring>
 #include "LightUnit.h"
 #include "StateMessage.h"
+#include "NetTools.h"
 
 LightUnit::LightUnit(uint32_t ALC1, std::string label) :
         ALC1_(ALC1), label_(label), isHost(false) {
@@ -43,7 +44,7 @@ const std::string &LightUnit::getLabel_() const {
 
 std::string LightUnit::debugString() const {
     std::stringstream stream;
-    stream << "ID: " << ALC1_ << " Label: " << label_;
+    stream << "IP: " << getIp() << " Label: " << label_;
     return stream.str();
 }
 
@@ -77,4 +78,12 @@ void LightUnit::setIcon(uint16_t icon[256]) {
 void LightUnit::Update(const LightUnit &unit) {
     ceil_ = unit.getCeil_();
     wall_ = unit.getWall_();
+}
+
+std::string LightUnit::getIp()const {
+    return NetTools::fromUINT32(ALC1_);
+}
+
+LightUnit::LightUnit(std::string ip, std::string label)
+        : LightUnit(NetTools::toUINT32(ip), label) {
 }

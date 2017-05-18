@@ -8,7 +8,7 @@
 #include "LightUnit.h"
 #include "Broadcaster.h"
 #include "Listener.h"
-#include "UpdateMessage.h"
+#include "NetTools.h"
 
 using namespace std;
 
@@ -349,21 +349,16 @@ void update_textboxes() {
     handler.Refresh();
 }
 
-void update_examined_unit() {
-    UpdateMessage update = UpdateMessage(*examined_unit);
-    Broadcaster::getInstance().broadcastData(&update);
-}
-
 void confirm_wall_managment() {
     examined_unit->setWall_(Color(r, g, b));
-    update_examined_unit();
+    Broadcaster::getInstance().broadcastData(units[0]);
     examined_unit = NULL;
     home_screen();
 }
 
 void confirm_ceil_managment() {
     examined_unit->setCeil_(Color(r, g, b));
-    update_examined_unit();
+    Broadcaster::getInstance().broadcastData(units[0]);
     examined_unit = NULL;
     home_screen();
 }
@@ -407,12 +402,12 @@ void *listen(void *) {
 
 int main(int argc, char *argv[]) {
     //MOCK LIGHT UNITS
-    LightUnit host = LightUnit(1, "host room");
+    LightUnit host = LightUnit(NetTools::getMyIp(), "host room");
     host.setCeil_(Color(100, 200, 30));
     host.setWall_(Color(10, 20, 30));
     host.setIsHost(true);
 
-    LightUnit kitchen = LightUnit(2, "KItchen");
+    LightUnit kitchen = LightUnit(2, "Kitchen");
     kitchen.setCeil_(Color(11, 22, 33));
     kitchen.setWall_(Color(22, 33, 44));
 
