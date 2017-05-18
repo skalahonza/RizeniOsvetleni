@@ -6,6 +6,7 @@
 #include <cstring>
 #include "LightUnit.h"
 #include "StateMessage.h"
+#include "NetTools.h"
 
 LightUnit::LightUnit(uint32_t ALC1, std::string label) :
         ALC1_(ALC1), label_(label), isHost(false) {
@@ -80,5 +81,9 @@ void LightUnit::Update(const LightUnit &unit) {
 }
 
 std::string LightUnit::getIp() {
-    return std::__cxx11::string();
+    return NetTools::fromUINT32(ALC1_);
+}
+
+LightUnit::LightUnit(std::string ip, std::string label)
+        : LightUnit(NetTools::toUINT32(ip), label) {
 }

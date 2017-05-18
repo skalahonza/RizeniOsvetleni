@@ -22,6 +22,8 @@ public:
      */
     LightUnit(uint32_t ALC1, std::string label);
 
+    LightUnit(std::string ip, std::string label);
+
     uint32_t getALC1_() const;
 
     const std::string &getLabel_() const;
