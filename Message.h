@@ -37,6 +37,10 @@ protected:
     uint32_t MessageType_;
     void SerializeUINT32(uint32_t number, std::vector<char> &buffer);
     static uint32_t DeserializeUINT32(char *data);
+
+    void SerializeUINT16(uint16_t number, std::vector<char> &buffer);
+
+    static uint16_t DeserializeUINT16(char *data);
 };
 
 
