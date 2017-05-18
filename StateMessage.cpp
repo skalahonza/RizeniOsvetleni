@@ -59,3 +59,7 @@ StateMessage::StateMessage(char *buf, int len) : Message(buf, len) {
     unit_.setIcon(icon);
 }
 
+const LightUnit &StateMessage::getUnit_() const {
+    return unit_;
+}
+

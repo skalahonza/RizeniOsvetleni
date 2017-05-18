@@ -36,13 +36,13 @@ public:
 
     const uint16_t *getIcon() const;
 
-    std::string debugString();
+    std::string debugString() const;
 
     bool isIsHost() const;
 
     void setIsHost(bool isHost);
 
-    std::string broadcstDebugString();
+    std::string broadcstDebugString() const;
 
     void setIcon(uint16_t icon[256]);
 

@@ -5,7 +5,10 @@
 #include "Listener.h"
 #include "global_const.h"
 
-Listener::Listener() {
+Listener::Listener(t_status_rec_callback status_Rrceived_,
+                   t_invalid_message_callback invalid_message_)
+        : status_Rrceived_(status_Rrceived_),
+          invalid_message_(invalid_message_) {
 
     if ((sockfd_ = socket(AF_INET, SOCK_DGRAM, 0)) == -1) {
         perror("socket");

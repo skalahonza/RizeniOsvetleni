@@ -41,13 +41,13 @@ const std::string &LightUnit::getLabel_() const {
     return label_;
 }
 
-std::string LightUnit::debugString() {
+std::string LightUnit::debugString() const {
     std::stringstream stream;
     stream << "ID: " << ALC1_ << " Label: " << label_;
     return stream.str();
 }
 
-std::string LightUnit::broadcstDebugString(){
+std::string LightUnit::broadcstDebugString() const {
     std::stringstream stream;
     stream << debugString();
     char data[100] = {0};

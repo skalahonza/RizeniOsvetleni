@@ -7,7 +7,7 @@
 #include "Rectangle.h"
 #include "LightUnit.h"
 #include "Broadcaster.h"
-#include <stdio.h>
+#include "Listener.h"
 
 using namespace std;
 
@@ -302,7 +302,6 @@ void scroll_red_value(SPINDIRECTION a, int value) {
             r++;
             break;
     }
-    printf("r value: %d\n", r);
     update_textboxes();
 }
 
@@ -317,7 +316,6 @@ void scroll_green_value(SPINDIRECTION a, int value) {
             g++;
             break;
     }
-    printf("g value: %d\n", g);
     update_textboxes();
 }
 
@@ -332,7 +330,6 @@ void scroll_blue_value(SPINDIRECTION a, int value) {
             b++;
             break;
     }
-    printf("b value: %d\n", b);
     update_textboxes();
 }
 
@@ -376,6 +373,19 @@ void *broadcast_loop(void *) {
     return NULL;
 }
 
+void statusUpdate(StateMessage message) {
+    cout << "Received " << message.getUnit_().broadcstDebugString() << "\n";
+}
+
+void recvError() {
+    cout << "Error while receving...\n";
+}
+
+void *listen(void *) {
+    Listener listener = Listener(statusUpdate, recvError);
+    listener.startListening();
+}
+
 int main(int argc, char *argv[]) {
     //MOCK LIGHT UNITS
     LightUnit host = LightUnit(1, "host room");
@@ -393,15 +403,21 @@ int main(int argc, char *argv[]) {
     units.push_back(kitchen);
     units.push_back(bedroom);
 
-    home_screen();
+    //home_screen();
 
     //Broadcast thread
     pthread_t t1;
     pthread_create(&t1, NULL, &broadcast_loop, NULL);
 
-
     //listening thread
+    pthread_t t2;
+    pthread_create(&t2, NULL, &listen, NULL);
 
-    controller.Init();
+
+    //controller.Init();
+
+    char *b;
+    pthread_join(t1, (void **) &b);
+    pthread_join(t2, (void **) &b);
     return 0;
 }

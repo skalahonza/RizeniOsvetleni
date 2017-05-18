@@ -23,7 +23,7 @@ typedef void (*t_invalid_message_callback)();
 
 class Listener {
 public:
-    Listener();
+    Listener(t_status_rec_callback status_Rrceived_, t_invalid_message_callback invalid_message_);
 
     void startListening();
 
@@ -31,7 +31,6 @@ public:
 
 private:
     void listeningLoop();
-
     volatile bool loop_;
     int sockfd_;
     struct sockaddr_in bindaddr_;

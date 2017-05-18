@@ -34,8 +34,8 @@ uint32_t Color::toUINT32() const {
 }
 
 Color Color::fromUINT32(uint32_t data) {
-    char r = (char) (data >> 16);
-    char g = (char) (data >> 8);
-    char b = (char) (data);
+    unsigned char r = (unsigned char) (char) (data >> 16);
+    unsigned char g = (unsigned char) (char) (data >> 8);
+    unsigned char b = (unsigned char) (data);
     return Color(r, g, b);
 }
