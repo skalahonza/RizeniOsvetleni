@@ -44,7 +44,7 @@ const std::string &LightUnit::getLabel_() const {
 
 std::string LightUnit::debugString() const {
     std::stringstream stream;
-    stream << "ID: " << ALC1_ << " Label: " << label_;
+    stream << "IP: " << getIp() << " Label: " << label_;
     return stream.str();
 }
 
@@ -80,7 +80,7 @@ void LightUnit::Update(const LightUnit &unit) {
     wall_ = unit.getWall_();
 }
 
-std::string LightUnit::getIp() {
+std::string LightUnit::getIp()const {
     return NetTools::fromUINT32(ALC1_);
 }
 

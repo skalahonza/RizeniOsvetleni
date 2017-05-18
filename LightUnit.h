@@ -55,7 +55,7 @@ public:
 
     void Update(const LightUnit &unit);
 
-    std::string getIp();
+    std::string getIp()const;
 
 private:
     uint32_t ALC1_;

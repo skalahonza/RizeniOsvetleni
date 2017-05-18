@@ -31,7 +31,7 @@ std::string NetTools::getMyIp() {
 }
 
 uint32_t NetTools::toUINT32(std::string ip) {
-    unsigned char a, b, c, d;
+    int a, b, c, d;
     sscanf(ip.c_str(), "%d.%d.%d.%d", &a, &b, &c, &d);
     return (uint32_t) (((a & 0xff) << 24) + (((b & 0xff) << 16) + ((c & 0xff) << 8) + (d & 0xff)));
 }
@@ -41,8 +41,7 @@ std::string NetTools::fromUINT32(uint32_t data) {
     unsigned char b = (unsigned char) (char) (data >> 16);
     unsigned char c = (unsigned char) (char) (data >> 8);
     unsigned char d = (unsigned char) (data);
-    char tmp[16] = {0};
+    char tmp[50] = {0};
     sprintf(tmp, "%d.%d.%d.%d", a, b, c, d);
-    std::string result = tmp;
-    return result;
+    return std::string(tmp);
 }
