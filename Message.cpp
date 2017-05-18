@@ -7,7 +7,7 @@
 
 std::vector<char> Message::buildPaketBUffer() {
     std::vector<char> buffer;
-    SerializeUINT32(unit_.getALC1_(), buffer);
+    SerializeUINT32(ALC1_, buffer);
     SerializeUINT32(ProtVEr_, buffer);
     SerializeUINT32(MessageType_, buffer);
     return buffer;
@@ -39,10 +39,17 @@ MessageType Message::GetMessageType(char *buffer, int len) {
     }
 }
 
-Message::Message(LightUnit unit, uint32_t protVer, uint32_t messageType) : unit_(unit) {
+Message::Message(LightUnit unit, uint32_t protVer, uint32_t messageType) {
+    ALC1_ = unit.getALC1_();
     ProtVEr_ = protVer;
     MessageType_ = messageType;
 }
 
 Message::Message(LightUnit unit, uint32_t messageType) : Message(unit, PROTOCOL_VER, messageType) {
+}
+
+Message::Message(char *buffer, int len) {
+    ALC1_ = DeserializeUINT32(buffer);
+    ProtVEr_ = DeserializeUINT32(buffer + 4);
+    MessageType_ = DeserializeUINT32(buffer + 4);
 }

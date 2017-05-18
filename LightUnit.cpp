@@ -30,7 +30,7 @@ void LightUnit::setWall_(const Color &wall_) {
 }
 
 const uint16_t *LightUnit::getIcon() const {
-    return icon;
+    return icon_;
 }
 
 uint32_t LightUnit::getALC1_() const {
@@ -66,4 +66,10 @@ void LightUnit::setIsHost(bool isHost) {
 }
 
 LightUnit::LightUnit() : LightUnit(0, "") {
+}
+
+void LightUnit::setIcon(uint16_t icon[256]) {
+    for (int i = 0; i < 256; ++i) {
+        icon_[i] = icon[i];
+    }
 }
