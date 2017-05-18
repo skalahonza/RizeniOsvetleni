@@ -73,3 +73,8 @@ void LightUnit::setIcon(uint16_t icon[256]) {
         icon_[i] = icon[i];
     }
 }
+
+void LightUnit::Update(const LightUnit &unit) {
+    ceil_ = unit.getCeil_();
+    wall_ = unit.getWall_();
+}
