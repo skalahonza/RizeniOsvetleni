@@ -46,6 +46,8 @@ public:
 
     void setIcon(uint16_t icon[256]);
 
+    void Update(const LightUnit &unit);
+
 private:
     uint32_t ALC1_;
     std::string label_;

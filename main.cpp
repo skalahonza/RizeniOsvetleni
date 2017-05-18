@@ -375,6 +375,19 @@ void *broadcast_loop(void *) {
 
 void statusUpdate(StateMessage message) {
     cout << "Received " << message.getUnit_().broadcstDebugString() << "\n";
+
+    //Seek list
+    for (int i = 0; i < units.size(); ++i) {
+        //update existing
+        if (units[i].getALC1_() == message.getUnit_().getALC1_()) {
+            units[i].Update(message.getUnit_());
+            cout << "Updating: " << message.getUnit_().getLabel_() << "\n";
+            return;
+        }
+    }
+
+    //not found - add new
+    units.push_back(message.getUnit_());
 }
 
 void recvError() {
