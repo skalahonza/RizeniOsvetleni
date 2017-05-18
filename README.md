@@ -42,7 +42,7 @@ nejvíce významným bytem (network order = big-endian).
 		<th class="col0"> Byte offset </th><th class="col1"> Datový typ </th><th class="col2 leftalign"> Význam                         </th>
 	</tr>
 	<tr class="row1">
-		<td class="col0 leftalign"> 0 … 3     </td><td class="col1 leftalign"> uint32_t   </td><td class="col2 leftalign"> Kontrolní číslo 'ALC1'         </td>
+		<td class="col0 leftalign"> 0 … 3     </td><td class="col1 leftalign"> uint32_t   </td><td class="col2 leftalign"> Kontrolní číslo 'ALC1' (ip adresa zařízení)</td>
 	</tr>
 	<tr class="row2">
 		<td class="col0 leftalign"> 4 … 7     </td><td class="col1 leftalign"> uint32_t   </td><td class="col2"> Verze protokolu 1.0 0x00010000 </td>

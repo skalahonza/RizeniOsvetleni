@@ -8,6 +8,7 @@
 #include "LightUnit.h"
 #include "Broadcaster.h"
 #include "Listener.h"
+#include "NetTools.h"
 
 using namespace std;
 
@@ -401,12 +402,12 @@ void *listen(void *) {
 
 int main(int argc, char *argv[]) {
     //MOCK LIGHT UNITS
-    LightUnit host = LightUnit(1, "host room");
+    LightUnit host = LightUnit(NetTools::getMyIp(), "host room");
     host.setCeil_(Color(100, 200, 30));
     host.setWall_(Color(10, 20, 30));
     host.setIsHost(true);
 
-    LightUnit kitchen = LightUnit(2, "KItchen");
+    LightUnit kitchen = LightUnit(2, "Kitchen");
     kitchen.setCeil_(Color(11, 22, 33));
     kitchen.setWall_(Color(22, 33, 44));
 
