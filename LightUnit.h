@@ -22,6 +22,11 @@ public:
      */
     LightUnit(uint32_t ALC1, std::string label);
 
+    /**
+     * Create instance of light control unit, used for sending
+     * @param ip IP address of the unit
+     * @param label Name of the unit
+     */
     LightUnit(std::string ip, std::string label);
 
     uint32_t getALC1_() const;
