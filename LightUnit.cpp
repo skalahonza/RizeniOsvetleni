@@ -79,3 +79,11 @@ std::string LightUnit::getIp()const {
 LightUnit::LightUnit(std::string ip, std::string label)
         : LightUnit(NetTools::toUINT32(ip), label) {
 }
+
+bool LightUnit::isIsHost_() const {
+    return isHost_;
+}
+
+void LightUnit::setIsHost_(bool isHost_) {
+    LightUnit::isHost_ = isHost_;
+}

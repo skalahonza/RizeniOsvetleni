@@ -53,12 +53,17 @@ public:
 
     std::string getIp()const;
 
+    bool isIsHost_() const;
+
+    void setIsHost_(bool isHost_);
+
 private:
     uint32_t ALC1_;
     std::string label_;
     Color ceil_;
     Color wall_;
     uint16_t icon_[256];
+    bool isHost_;
 };
 
 
