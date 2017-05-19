@@ -354,9 +354,10 @@ void update_textboxes() {
 void update_examined() {
     if (!examined_unit->isIsHost_()) {
         cout << "Updating " << examined_unit->debugString() << "\n";
+        UpdateMessage test = UpdateMessage(*examined_unit);
         Updater updater = Updater(*examined_unit);
         updater.sendUpdate();
-        cout << "Updated " << examined_unit->debugString() << "\n";
+        cout << "Updated " << test.getUnit_().debugString() << "\n";
     }
 }
 
