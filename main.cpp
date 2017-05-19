@@ -354,12 +354,9 @@ void update_textboxes() {
 void update_examined() {
     if (!examined_unit->isIsHost_()) {
         cout << "Updating " << examined_unit->debugString() << "\n";
-        //TODO REMOVE TESTs
-        UpdateMessage test = UpdateMessage(*examined_unit);
-        UpdateMessage test2 = UpdateMessage(test.buildPaketBUffer().data(), (int) test.buildPaketBUffer().size());
         Updater updater = Updater(*examined_unit);
         updater.sendUpdate();
-        cout << "Updated " << test2.getUnit_().debugString() << "\n";
+        cout << "Update send.\n";
     }
 }
 
@@ -415,14 +412,13 @@ void recvError() {
 }
 
 void nodeUpdate(UpdateMessage message) {
-    //TODO RESOLVE UPDATE
+    //RESOLVE UPDATE
     cout << "Update received for: " << message.getUnit_().broadcstDebugString() << "\n";
 
     //Seek list
     for (int i = 0; i < units.size(); ++i) {
         //is it host - don't update data about foreign units, they are udpated by broadcast
-        //TODO REMOVE || TRUE
-        if (units[i].isIsHost_() || true) {
+        if (units[i].isIsHost_()) {
             //compare ID
             if (units[i].getALC1_() == message.getUnit_().getALC1_()) {
                 if (i != 0) {
@@ -452,6 +448,7 @@ int main(int argc, char *argv[]) {
      */
 
     LightUnit bedroom = LightUnit(NetTools::getMyIp(), "bedroom");
+    bedroom.setIsHost_(true); //TODO REMOVE MOCK HOST
 
     units.push_back(host);
     //units.push_back(kitchen);
