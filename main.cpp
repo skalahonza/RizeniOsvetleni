@@ -365,7 +365,7 @@ void confirm_wall_managment() {
 
 void confirm_ceil_managment() {
     examined_unit->setCeil_(Color(r, g, b));
-    if (examined_unit->isIsHost_()) {
+    if (!examined_unit->isIsHost_()) {
         cout << "Updating " << examined_unit->debugString() << "\n";
         Updater updater = Updater(*examined_unit);
         updater.sendUpdate();
