@@ -448,7 +448,6 @@ int main(int argc, char *argv[]) {
      */
 
     LightUnit bedroom = LightUnit(NetTools::getMyIp(), "bedroom");
-    bedroom.setIsHost_(true); //TODO REMOVE MOCK HOST
 
     units.push_back(host);
     //units.push_back(kitchen);
