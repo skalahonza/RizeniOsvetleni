@@ -9,6 +9,8 @@
 #include "Broadcaster.h"
 #include "Listener.h"
 #include "NetTools.h"
+#include "global_const.h"
+#include "Updater.h"
 
 using namespace std;
 
@@ -351,14 +353,24 @@ void update_textboxes() {
 
 void confirm_wall_managment() {
     examined_unit->setWall_(Color(r, g, b));
-    Broadcaster::getInstance().broadcastData(units[0]);
+    if (examined_unit->isIsHost_()) {
+        cout << "Updating " << examined_unit->debugString() << "\n";
+        Updater updater = Updater(*examined_unit);
+        updater.sendUpdate();
+        cout << "Updated " << examined_unit->debugString() << "\n";
+    }
     examined_unit = NULL;
     home_screen();
 }
 
 void confirm_ceil_managment() {
     examined_unit->setCeil_(Color(r, g, b));
-    Broadcaster::getInstance().broadcastData(units[0]);
+    if (!examined_unit->isIsHost_()) {
+        cout << "Updating " << examined_unit->debugString() << "\n";
+        Updater updater = Updater(*examined_unit);
+        updater.sendUpdate();
+        cout << "Updated " << examined_unit->debugString() << "\n";
+    }
     examined_unit = NULL;
     home_screen();
 }
@@ -369,7 +381,7 @@ void *broadcast_loop(void *) {
         if (units.size() > 0) {
             Broadcaster::getInstance().broadcastData(units[0]);
         }
-        sleep(1);
+        sleep(BROADCAST_DELAY);
     }
     return NULL;
 }
@@ -381,8 +393,11 @@ void statusUpdate(StateMessage message) {
     for (int i = 0; i < units.size(); ++i) {
         //update existing
         if (units[i].getALC1_() == message.getUnit_().getALC1_()) {
-            units[i].Update(message.getUnit_());
-            cout << "Updating: " << message.getUnit_().getLabel_() << "\n";
+            if (i != 0) {
+                units[i].Update(message.getUnit_());
+                cout << "Updating: " << message.getUnit_().getLabel_() << "\n";
+            }
+            cout << "host update ignored \n";
             return;
         }
     }
@@ -401,11 +416,12 @@ void *listen(void *) {
 }
 
 int main(int argc, char *argv[]) {
-    //MOCK LIGHT UNITS
     LightUnit host = LightUnit(NetTools::getMyIp(), "host room");
     host.setCeil_(Color(100, 200, 30));
     host.setWall_(Color(10, 20, 30));
-    host.setIsHost(true);
+    host.setIsHost_(true);
+
+    //MOCK LIGHT UNITS
 
     LightUnit kitchen = LightUnit(2, "Kitchen");
     kitchen.setCeil_(Color(11, 22, 33));
@@ -417,7 +433,7 @@ int main(int argc, char *argv[]) {
     units.push_back(kitchen);
     units.push_back(bedroom);
 
-    //home_screen();
+    home_screen();
 
     //Broadcast thread
     pthread_t t1;
@@ -428,7 +444,7 @@ int main(int argc, char *argv[]) {
     pthread_create(&t2, NULL, &listen, NULL);
 
 
-    //controller.Init();
+    controller.Init();
 
     char *b;
     pthread_join(t1, (void **) &b);

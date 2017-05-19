@@ -9,7 +9,7 @@
 #include "NetTools.h"
 
 LightUnit::LightUnit(uint32_t ALC1, std::string label) :
-        ALC1_(ALC1), label_(label), isHost(false) {
+        ALC1_(ALC1), label_(label) {
     wall_ = Color();
     ceil_ = Color();
 }
@@ -58,14 +58,6 @@ std::string LightUnit::broadcstDebugString() const {
     return stream.str();
 }
 
-bool LightUnit::isIsHost() const {
-    return isHost;
-}
-
-void LightUnit::setIsHost(bool isHost) {
-    LightUnit::isHost = isHost;
-}
-
 LightUnit::LightUnit() : LightUnit(0, "") {
 }
 
@@ -86,4 +78,12 @@ std::string LightUnit::getIp()const {
 
 LightUnit::LightUnit(std::string ip, std::string label)
         : LightUnit(NetTools::toUINT32(ip), label) {
+}
+
+bool LightUnit::isIsHost_() const {
+    return isHost_;
+}
+
+void LightUnit::setIsHost_(bool isHost_) {
+    LightUnit::isHost_ = isHost_;
 }

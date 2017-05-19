@@ -53,3 +53,17 @@ Message::Message(char *buffer, int len) {
     ProtVEr_ = DeserializeUINT32(buffer + 4);
     MessageType_ = DeserializeUINT32(buffer + 4);
 }
+
+void Message::SerializeUINT16(uint16_t number, std::vector<char> &buffer) {
+    char *ptr = reinterpret_cast<char *>(&number);
+    for (int i = 0; i < 2; i++)
+        buffer.push_back(ptr[i]);
+}
+
+uint16_t Message::DeserializeUINT16(char *data) {
+    uint16_t result;
+    char *ptr = reinterpret_cast<char *>(&result);
+    for (int i = 0; i < 2; i++)
+        ptr[i] = data[i];
+    return result;
+}
