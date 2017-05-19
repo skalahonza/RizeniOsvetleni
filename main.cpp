@@ -412,7 +412,22 @@ void recvError() {
 }
 
 void nodeUpdate(UpdateMessage message) {
+    //TODO RESOLVE UPDATE
     cout << "Update received for: " << message.getUnit_().broadcstDebugString() << "\n";
+
+    //Seek list
+    for (int i = 0; i < units.size(); ++i) {
+        //is it host - don't update data about foreign units, they are udpated by broadcast
+        if (units[i].isIsHost_()) {
+            //compare ID
+            if (units[i].getALC1_() == message.getUnit_().getALC1_()) {
+                if (i != 0) {
+                    units[i].Update(message.getUnit_());
+                    cout << "Updating: " << units[i].getLabel_() << "\n";
+                }
+            }
+        }
+    }
 }
 
 void *listen(void *) {
