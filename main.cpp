@@ -417,16 +417,15 @@ void nodeUpdate(UpdateMessage message) {
 
     //Seek list
     for (int i = 0; i < units.size(); ++i) {
-        //is it host - don't update data about foreign units, they are udpated by broadcast
-        if (units[i].isIsHost_()) {
-            //compare ID
-            if (units[i].getALC1_() == message.getUnit_().getALC1_()) {
-                if (i != 0) {
-                    units[i].Update(message.getUnit_());
-                    cout << "Updating: " << units[i].getLabel_() << "\n";
-                }
+        //ip matches - don't update data about foreign units, they are udpated by broadcast
+        //compare ID
+        if (units[i].getALC1_() == message.getUnit_().getALC1_()) {
+            if (i != 0) {
+                units[i].Update(message.getUnit_());
+                cout << "Updating: " << units[i].getLabel_() << "\n";
             }
         }
+
     }
 }
 
