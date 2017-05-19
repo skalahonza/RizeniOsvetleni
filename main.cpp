@@ -418,7 +418,8 @@ void nodeUpdate(UpdateMessage message) {
     //Seek list
     for (int i = 0; i < units.size(); ++i) {
         //is it host - don't update data about foreign units, they are udpated by broadcast
-        if (units[i].isIsHost_()) {
+        //TODO REMOVE || TRUE
+        if (units[i].isIsHost_() || true) {
             //compare ID
             if (units[i].getALC1_() == message.getUnit_().getALC1_()) {
                 if (i != 0) {
@@ -447,7 +448,7 @@ int main(int argc, char *argv[]) {
     kitchen.setWall_(Color(22, 33, 44));
      */
 
-    LightUnit bedroom = LightUnit(3, "bedroom");
+    LightUnit bedroom = LightUnit("127.0.0.1", "bedroom");
 
     units.push_back(host);
     //units.push_back(kitchen);
