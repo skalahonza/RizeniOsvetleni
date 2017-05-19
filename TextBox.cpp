@@ -49,7 +49,7 @@ void TextBox::Render(int16_t display[320][480]) {
             for (int x = 0; x < 8; ++x) {
                 if (character > 0)
                     if ((character >> 15 - x) & 1)
-                        if (InsideDisplay((int) (y_ + y), renderX + x))
+                        if (InsideDisplay(renderX + x, (int) (y_ + y)))
                             display[(int) (y_ + y)][renderX + x] = stroke_.getRGB565();
             }
         }
