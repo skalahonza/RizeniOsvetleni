@@ -11,7 +11,19 @@
 
 class TextBox : public Shape {
 public:
+    /**
+     * Default constructor, for later initialization
+     */
     TextBox();
+
+    /**
+     * Creates an instance of textbox on specified coordinates with max width and height
+     * @param x coordinate on display
+     * @param y coordinate on display
+     * @param width used for text owvrflow check
+     * @param height used for text wrapping
+     * @param Stroke Font color
+     */
     TextBox(float x, float y, int width, int height, Color Stroke);
 
     int getWidth_() const;
@@ -24,8 +36,16 @@ public:
 
     const std::string &getText_() const;
 
+    /**
+     * Sets the text that should be rendered on the textbox area
+     * @param text_ UNICODE text, e.g. Hello world
+     */
     void setText_(const std::string &text_);
 
+    /**
+     * Renders the object on target display
+     * @param display Pointer to display 320x480
+     */
     virtual void Render(int16_t display[320][480]);
 
 private:

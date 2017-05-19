@@ -17,8 +17,14 @@ public:
      */
     virtual void Render(int16_t display[320][480]) = 0;
 
+    /**
+     * Hides shape, prevents rendering - requires display refresh
+     */
     void Show();
 
+    /**
+     * Shows shape, enabled by default - requires display refresh
+     */
     void Hide();
 
     bool IsVisible;
@@ -44,6 +50,12 @@ protected:
     float y_;
     Color stroke_;
 
+    /**
+     * Checks whether the point is inside a display
+     * @param x Display coordinate
+     * @param y Display coordinate
+     * @return False if the point is out of the display
+     */
     bool InsideDisplay(int x, int y);
 
     inline int signum(int number);

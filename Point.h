@@ -11,12 +11,27 @@
 
 class Point : public Shape {
 public:
+    /**
+     * Empty constructor for later initialization
+     */
     Point();
+
+    /**
+     * Geometric point - size of pixel
+     * @param x display coordinate
+     * @param y display coordinate
+     * @param stroke point color
+     */
     Point(float x, float y, Color stroke);
 
     float Getx();
 
     float Gety();
+
+    /**
+     * Renders the object on target display
+     * @param display Pointer to display 320x480
+     */
     virtual void Render(int16_t display[320][480]);
 };
 

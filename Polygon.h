@@ -12,9 +12,22 @@
 
 class Polygon : public Shape {
 public:
+    /**
+     * Empty constructor for later initialization
+     */
     Polygon();
-    Polygon(std::vector<Point>, Color Stroke);
 
+    /**
+     * Creates geometric polygon, not filled
+     * @param Points All points of the polygon
+     * @param Stroke Polygon line color
+     */
+    Polygon(std::vector<Point> Points, Color Stroke);
+
+    /**
+     * Renders the object on target display
+     * @param display Pointer to display 320x480
+     */
     virtual void Render(int16_t display[320][480]);
 
 private:

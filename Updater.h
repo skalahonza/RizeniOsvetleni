@@ -20,8 +20,15 @@
 
 class Updater {
 public:
+    /**
+     * Updater object for updating LightUnit information over UDP - exits app if socket init fails
+     * @param unit LightUnit to be updated
+     */
     Updater(LightUnit unit);
 
+    /**
+     * Send update message over network
+     */
     void sendUpdate();
 
 private:

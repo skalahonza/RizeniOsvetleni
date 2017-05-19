@@ -14,8 +14,17 @@ public:
     StateMessage(LightUnit &unit);
 
     StateMessage(char *buf, int len);
+
+    /**
+     * Serialize object inner data into packet buffer
+     * @return Serialized data as a byte buffer
+     */
     std::vector<char> buildPaketBUffer();
 
+    /**
+     * Retrieve information about a unit that was passed along with the message
+     * @return deserialized LightUNit object (label is empty on receive)
+     */
     const LightUnit &getUnit_() const;
 
 private:
