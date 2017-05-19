@@ -448,7 +448,7 @@ int main(int argc, char *argv[]) {
     kitchen.setWall_(Color(22, 33, 44));
      */
 
-    LightUnit bedroom = LightUnit("127.0.0.1", "bedroom");
+    LightUnit bedroom = LightUnit(NetTools::getMyIp(), "bedroom");
 
     units.push_back(host);
     //units.push_back(kitchen);
