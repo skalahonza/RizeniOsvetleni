@@ -388,23 +388,23 @@ void *broadcast_loop(void *) {
 }
 
 void statusUpdate(StateMessage message) {
-    cout << "Received " << message.getUnit_().broadcstDebugString() << "\n";
-
     //Seek list
     for (int i = 0; i < units.size(); ++i) {
         //update existing
         if (units[i].getALC1_() == message.getUnit_().getALC1_()) {
             if (i != 0) {
+                cout << "Received " << message.getUnit_().broadcstDebugString() << "\n";
                 units[i].Update(message.getUnit_());
                 cout << "Updating: " << message.getUnit_().getLabel_() << "\n";
             }
-            cout << "host update ignored \n";
             return;
         }
     }
 
     //not found - add new
+    cout << "Received " << message.getUnit_().broadcstDebugString() << "\n";
     units.push_back(message.getUnit_());
+    cout << "Adding to list: " << message.getUnit_().getLabel_() << "\n";
 }
 
 void recvError() {
