@@ -1,4 +1,4 @@
-# 10. Semestrální úloha - vestavný systém s architekturou ARM
+# Semestrální úloha - vestavný systém s architekturou ARM
 
 ## Distribuované řízení osvětlení
 
