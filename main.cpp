@@ -12,11 +12,13 @@
 #include "global_const.h"
 #include "Updater.h"
 
+#define STEP 5
 using namespace std;
 
 void go_home();
 
 void go_manage();
+
 
 void select_unit();
 
@@ -43,11 +45,15 @@ DisplayHandler &handler = DisplayHandler::getInstance();
 Perifery controller = Perifery();
 TextBox *unitsTb[10];
 
-TextBox *r_value = new TextBox(13, 50, 200, 200, Color(255, 255, 255));
-TextBox *g_value = new TextBox(102, 50, 200, 200, Color(255, 255, 255));
-TextBox *b_value = new TextBox(192, 50, 200, 200, Color(255, 255, 255));
+TextBox *r_value = new TextBox(20, 50, 200, 200, Color(255, 255, 255));
+TextBox *g_value = new TextBox(109, 50, 200, 200, Color(255, 255, 255));
+TextBox *b_value = new TextBox(199, 50, 200, 200, Color(255, 255, 255));
 
 unsigned char r = 0, g = 0, b = 0;
+
+//changing colors view:
+Rectangle *view_rectangle = new Rectangle(Color(r, g, b), 0, 250, 450,
+                                          20);
 
 LightUnit *examined_unit = NULL;
 
@@ -91,20 +97,22 @@ void unit_management_screen(SETUP_MODE mode) {
     unitName_text->setText_(examined_unit->getLabel_());
     handler.addShape(unitName_text);
 
+    TextBox *color_text = new TextBox(1, 230, 200, 200, Color(255, 255, 255));
+    color_text->setText_("Color: ");
     TextBox *changingName_text = new TextBox(1, 20, 200, 200, light_green);
 
     TextBox *r_text = new TextBox(1, 50, 200, 200, Color(255, 0, 0));
-    r_text->setText_("R:");
+    r_text->setText_("R: ");
     handler.addShape(r_text);
 
 
     TextBox *g_text = new TextBox(90, 50, 200, 200, Color(0, 255, 0));
-    g_text->setText_("G:");
+    g_text->setText_("G: ");
     handler.addShape(g_text);
 
 
     TextBox *b_text = new TextBox(180, 50, 200, 200, Color(0, 0, 255));
-    b_text->setText_("B:");
+    b_text->setText_("B: ");
     handler.addShape(b_text);
 
 
@@ -143,11 +151,16 @@ void unit_management_screen(SETUP_MODE mode) {
     g_value->setText_(streamg.str());
     b_value->setText_(streamb.str());
     handler.addShape(changingName_text);
+    handler.addShape(color_text);
     handler.addShape(r_value);
     handler.addShape(g_value);
     handler.addShape(b_value);
+    *view_rectangle = Rectangle(Color(r, g, b), 0, 250, 450,
+                                20);
+    handler.addShape(view_rectangle);
     handler.Refresh();
 }
+
 
 void unit_screen() {
     handler.clearDisplay();
@@ -214,6 +227,42 @@ void unit_screen() {
     handler.Refresh();
 }
 
+void color_management_screen() {
+    selectedIdx = 0;
+    handler.clearDisplay();
+
+    controller.Clear_R_Callbacks();
+    controller.Clear_G_Callbacks();
+    controller.Clear_B_Callbacks();
+    controller.Clear_G_Pressed_Callbacks();
+
+    controller.Register_R_Callback(scroll_unit_list, "printer");
+    controller.Register_G_Callback(scroll_unit_list, "printer");
+    controller.Register_B_Callback(scroll_unit_list, "printer");
+    //TO DO
+    //controller.Register_G_Pressed_Callback();
+    TextBox *colorTb[16];
+
+//COLORS
+    Color black = Color(0, 0, 0);
+    Color white = Color(255, 255, 255);
+    Color red = Color(255, 0, 0);
+    Color lime = Color(0, 255, 0);
+    Color blue = Color(0, 0, 255);
+    Color yellow = Color(255, 255, 0);
+    Color cyan = Color(0, 255, 255);
+    Color magenta = Color(255, 0, 255);
+    Color silver = Color(192, 192, 192);
+    Color gray = Color(128, 128, 128);
+    Color maroon = Color(128, 0, 0);
+    Color olive = Color(128, 128, 0);
+    Color green = Color(0, 128, 0);
+    Color purple = Color(128, 0, 128);
+    Color teal = Color(0, 128, 128);
+    Color navy = Color(0, 0, 128);
+
+}
+
 void home_screen() {
     selectedIdx = 0;
     handler.clearDisplay();
@@ -238,9 +287,11 @@ void home_screen() {
 
     Line *green_line = new Line(0, 16, 115, 16, light_green);
     TextBox *first_text = new TextBox(1, 1, 200, 200, light_green);
-    TextBox *use_text = new TextBox(1, 300, 200, 200, Color(255, 0, 0));
+    TextBox *use_text1 = new TextBox(1, 280, 200, 200, Color(255, 0, 0));
+    TextBox *use_text2 = new TextBox(1, 300, 200, 200, Color(255, 0, 0));
     first_text->setText_("LIGHT CONTROL:");
-    use_text->setText_("Rotate the button, choose the device and confirm with press.");
+    use_text1->setText_("Rotate button, select device,");
+    use_text2->setText_("press green to confirm, press red to go home.");
 
     for (int i = 0; i < units.size(); ++i) {
         unitsTb[i] = new TextBox(1, i * 20 + 30, 200, 200, stroke);
@@ -250,7 +301,8 @@ void home_screen() {
     handler.addShape(first_text);
     handler.addShape(green_line);
     handler.addShape(selection_rectangle);
-    handler.addShape(use_text);
+    handler.addShape(use_text1);
+    handler.addShape(use_text2);
     handler.Refresh();
 }
 
@@ -266,6 +318,24 @@ void go_manage() {
             break;
         case 1: //configure ceiling
             unit_management_screen(CEIL);
+            break;
+        case 2: //turn off wall
+            r = 0;
+            g = 0;
+            b = 0;
+            confirm_wall_managment();
+            break;
+        case 3: //turn off ceil
+            r = 0;
+            g = 0;
+            b = 0;
+            confirm_ceil_managment();
+            break;
+        case 4: //choose color of wall
+            color_management_screen();
+            break;
+        case 5: //choose color of wall
+            color_management_screen();
             break;
     }
 }
@@ -299,10 +369,10 @@ void scroll_red_value(SPINDIRECTION a, int value) {
     if (value % 4 != 0) return;
     switch (a) {
         case LEFT:
-            r--;
+            r -= STEP;
             break;
         case RIGHT:
-            r++;
+            r += STEP;
             break;
     }
     update_textboxes();
@@ -313,10 +383,10 @@ void scroll_green_value(SPINDIRECTION a, int value) {
     if (value % 4 != 0) return;
     switch (a) {
         case LEFT:
-            g--;
+            g -= STEP;
             break;
         case RIGHT:
-            g++;
+            g += STEP;
             break;
     }
     update_textboxes();
@@ -327,10 +397,10 @@ void scroll_blue_value(SPINDIRECTION a, int value) {
     if (value % 4 != 0) return;
     switch (a) {
         case LEFT:
-            b--;
+            b -= STEP;
             break;
         case RIGHT:
-            b++;
+            b += STEP;
             break;
     }
     update_textboxes();
@@ -348,6 +418,8 @@ void update_textboxes() {
     r_value->setText_(streamr.str());
     g_value->setText_(streamg.str());
     b_value->setText_(streamb.str());
+    *view_rectangle = Rectangle(Color(r, g, b), 0, 250, 450,
+                                20);
     handler.Refresh();
 }
 
@@ -358,12 +430,13 @@ void update_examined() {
         updater.sendUpdate();
         cout << "Update send.\n";
     }
+    examined_unit = NULL;
+    home_screen();
 }
 
 void confirm_wall_managment() {
     examined_unit->setWall_(Color(r, g, b));
     update_examined();
-
     examined_unit = NULL;
     home_screen();
 }
@@ -375,6 +448,7 @@ void confirm_ceil_managment() {
     examined_unit = NULL;
     home_screen();
 }
+
 
 void *broadcast_loop(void *) {
     while (true) {
