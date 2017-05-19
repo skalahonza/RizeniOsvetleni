@@ -28,7 +28,12 @@ uint32_t Message::DeserializeUINT32(char data[4]) {
 }
 
 MessageType Message::GetMessageType(char *buffer, int len) {
-    if (len < 8 + 4) return INVALID;
+    //if (len < 8 + 4) return INVALID;
+
+    if (len != 24)
+        if (len != 548)
+            return INVALID;
+
     switch (DeserializeUINT32(buffer + 8)) {
         case 0:
             return STATE;

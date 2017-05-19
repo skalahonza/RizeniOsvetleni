@@ -351,26 +351,27 @@ void update_textboxes() {
     handler.Refresh();
 }
 
-void confirm_wall_managment() {
-    examined_unit->setWall_(Color(r, g, b));
-    if (examined_unit->isIsHost_()) {
-        cout << "Updating " << examined_unit->debugString() << "\n";
-        Updater updater = Updater(*examined_unit);
-        updater.sendUpdate();
-        cout << "Updated " << examined_unit->debugString() << "\n";
-    }
-    examined_unit = NULL;
-    home_screen();
-}
-
-void confirm_ceil_managment() {
-    examined_unit->setCeil_(Color(r, g, b));
+void update_examined() {
     if (!examined_unit->isIsHost_()) {
         cout << "Updating " << examined_unit->debugString() << "\n";
         Updater updater = Updater(*examined_unit);
         updater.sendUpdate();
         cout << "Updated " << examined_unit->debugString() << "\n";
     }
+}
+
+void confirm_wall_managment() {
+    examined_unit->setWall_(Color(r, g, b));
+    update_examined();
+
+    examined_unit = NULL;
+    home_screen();
+}
+
+void confirm_ceil_managment() {
+    examined_unit->setCeil_(Color(r, g, b));
+    update_examined();
+
     examined_unit = NULL;
     home_screen();
 }
