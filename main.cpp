@@ -351,26 +351,27 @@ void update_textboxes() {
     handler.Refresh();
 }
 
-void confirm_wall_managment() {
-    examined_unit->setWall_(Color(r, g, b));
-    if (examined_unit->isIsHost_()) {
+void update_examined() {
+    if (!examined_unit->isIsHost_()) {
         cout << "Updating " << examined_unit->debugString() << "\n";
         Updater updater = Updater(*examined_unit);
         updater.sendUpdate();
-        cout << "Updated " << examined_unit->debugString() << "\n";
+        cout << "Update send.\n";
     }
+}
+
+void confirm_wall_managment() {
+    examined_unit->setWall_(Color(r, g, b));
+    update_examined();
+
     examined_unit = NULL;
     home_screen();
 }
 
 void confirm_ceil_managment() {
     examined_unit->setCeil_(Color(r, g, b));
-    if (!examined_unit->isIsHost_()) {
-        cout << "Updating " << examined_unit->debugString() << "\n";
-        Updater updater = Updater(*examined_unit);
-        updater.sendUpdate();
-        cout << "Updated " << examined_unit->debugString() << "\n";
-    }
+    update_examined();
+
     examined_unit = NULL;
     home_screen();
 }
@@ -387,31 +388,49 @@ void *broadcast_loop(void *) {
 }
 
 void statusUpdate(StateMessage message) {
-    cout << "Received " << message.getUnit_().broadcstDebugString() << "\n";
-
     //Seek list
     for (int i = 0; i < units.size(); ++i) {
         //update existing
         if (units[i].getALC1_() == message.getUnit_().getALC1_()) {
             if (i != 0) {
+                cout << "Received " << message.getUnit_().broadcstDebugString() << "\n";
                 units[i].Update(message.getUnit_());
                 cout << "Updating: " << message.getUnit_().getLabel_() << "\n";
             }
-            cout << "host update ignored \n";
             return;
         }
     }
 
     //not found - add new
+    cout << "Received " << message.getUnit_().broadcstDebugString() << "\n";
     units.push_back(message.getUnit_());
+    cout << "Adding to list: " << message.getUnit_().getLabel_() << "\n";
 }
 
 void recvError() {
-    cout << "Error while receving...\n";
+    cout << "Invalid message received...\n";
+}
+
+void nodeUpdate(UpdateMessage message) {
+    //RESOLVE UPDATE
+    cout << "Update received for: " << message.getUnit_().broadcstDebugString() << "\n";
+
+    //Seek list
+    for (int i = 0; i < units.size(); ++i) {
+        //ip matches - don't update data about foreign units, they are udpated by broadcast
+        //compare ID
+        if (units[i].getALC1_() == message.getUnit_().getALC1_()) {
+            if (i != 0) {
+                units[i].Update(message.getUnit_());
+                cout << "Updating: " << units[i].getLabel_() << "\n";
+            }
+        }
+
+    }
 }
 
 void *listen(void *) {
-    Listener listener = Listener(statusUpdate, recvError);
+    Listener listener = Listener(statusUpdate, recvError, nodeUpdate);
     listener.startListening();
 }
 
@@ -422,15 +441,15 @@ int main(int argc, char *argv[]) {
     host.setIsHost_(true);
 
     //MOCK LIGHT UNITS
-
-    LightUnit kitchen = LightUnit(2, "Kitchen");
+    /*LightUnit kitchen = LightUnit(2, "Kitchen");
     kitchen.setCeil_(Color(11, 22, 33));
     kitchen.setWall_(Color(22, 33, 44));
+     */
 
-    LightUnit bedroom = LightUnit(3, "bedroom");
+    LightUnit bedroom = LightUnit(NetTools::getMyIp(), "bedroom");
 
     units.push_back(host);
-    units.push_back(kitchen);
+    //units.push_back(kitchen);
     units.push_back(bedroom);
 
     home_screen();

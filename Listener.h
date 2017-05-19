@@ -6,6 +6,7 @@
 #define UDPTASK_LISTENER_H
 
 #include "StateMessage.h"
+#include "UpdateMessage.h"
 #include <string>
 #include <stdio.h>
 #include <stdlib.h>
@@ -19,11 +20,14 @@
 
 typedef void (*t_status_rec_callback)(StateMessage);
 
+typedef void (*t_update_rec_callback)(UpdateMessage);
+
 typedef void (*t_invalid_message_callback)();
 
 class Listener {
 public:
-    Listener(t_status_rec_callback status_Rrceived_, t_invalid_message_callback invalid_message_);
+    Listener(t_status_rec_callback status_Rrceived_, t_invalid_message_callback invalid_message_,
+             t_update_rec_callback update_Received_);
 
     void startListening();
 
@@ -38,6 +42,7 @@ private:
 
     //Callbacks
     t_status_rec_callback status_Rrceived_;
+    t_update_rec_callback update_Received_;
     t_invalid_message_callback invalid_message_;
 };
 

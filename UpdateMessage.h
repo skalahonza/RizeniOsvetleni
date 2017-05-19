@@ -16,6 +16,8 @@ public:
 
     virtual std::vector<char> buildPaketBUffer();
 
+    const LightUnit &getUnit_() const;
+
 private:
     LightUnit unit_;
 };

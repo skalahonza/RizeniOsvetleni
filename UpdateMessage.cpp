@@ -35,6 +35,7 @@ UpdateMessage::UpdateMessage(char *buf, int len) : Message(buf, len) {
     if (len > 22)
         bw = DeserializeUINT16(buf + 22);
 
+    unit_ = LightUnit(ALC1_, "empty");
     unit_.setWall_(Color(rw, gw, bw));
     unit_.setCeil_(Color(rc, gc, bc));
 }
@@ -49,4 +50,8 @@ std::vector<char> UpdateMessage::buildPaketBUffer() {
     Message::SerializeUINT16((uint16_t) unit_.getWall_().getRGB888().g, buffer);
     Message::SerializeUINT16((uint16_t) unit_.getWall_().getRGB888().b, buffer);
     return buffer;
+}
+
+const LightUnit &UpdateMessage::getUnit_() const {
+    return unit_;
 }

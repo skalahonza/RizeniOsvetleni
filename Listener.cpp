@@ -5,10 +5,10 @@
 #include "Listener.h"
 #include "global_const.h"
 
-Listener::Listener(t_status_rec_callback status_Rrceived_,
-                   t_invalid_message_callback invalid_message_)
+Listener::Listener(t_status_rec_callback status_Rrceived_, t_invalid_message_callback invalid_message_,
+                   t_update_rec_callback update_Received_)
         : status_Rrceived_(status_Rrceived_),
-          invalid_message_(invalid_message_) {
+          invalid_message_(invalid_message_), update_Received_(update_Received_) {
 
     if ((sockfd_ = socket(AF_INET, SOCK_DGRAM, 0)) == -1) {
         perror("socket");
@@ -57,6 +57,8 @@ void Listener::listeningLoop() {
                 break;
             }
             case CORRECTION: {
+                UpdateMessage message = UpdateMessage(buf, recv_len);
+                update_Received_(message);
                 break;
             }
             case INVALID:
