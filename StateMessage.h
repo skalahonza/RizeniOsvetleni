@@ -11,8 +11,18 @@
 
 class StateMessage : public Message {
 public:
+
+    /**
+     * Creates UpdateMessage instance, used in Broadcaster
+     * @param unit LightUnit that is meant to be broadcsted
+     */
     StateMessage(LightUnit &unit);
 
+    /**
+     * Serialize received buffer into StateMessage object
+     * @param buf received buffer
+     * @param len length of received buffer
+     */
     StateMessage(char *buf, int len);
 
     /**
