@@ -396,9 +396,6 @@ void statusUpdate(StateMessage message) {
                 cout << "Received " << message.getUnit_().broadcstDebugString() << "\n";
                 units[i].Update(message.getUnit_());
                 cout << "Updating: " << message.getUnit_().getLabel_() << "\n";
-            } else {
-                //host node - own broadcasting caught
-                cout << "Host update ignored\n";
             }
             return;
         }
