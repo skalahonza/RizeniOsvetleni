@@ -354,10 +354,12 @@ void update_textboxes() {
 void update_examined() {
     if (!examined_unit->isIsHost_()) {
         cout << "Updating " << examined_unit->debugString() << "\n";
+        //TODO REMOVE TESTs
         UpdateMessage test = UpdateMessage(*examined_unit);
+        UpdateMessage test2 = UpdateMessage(test.buildPaketBUffer().data(), (int) test.buildPaketBUffer().size());
         Updater updater = Updater(*examined_unit);
         updater.sendUpdate();
-        cout << "Updated " << test.getUnit_().debugString() << "\n";
+        cout << "Updated " << test2.getUnit_().debugString() << "\n";
     }
 }
 
