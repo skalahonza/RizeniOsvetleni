@@ -50,3 +50,7 @@ std::vector<char> UpdateMessage::buildPaketBUffer() {
     Message::SerializeUINT16((uint16_t) unit_.getWall_().getRGB888().b, buffer);
     return buffer;
 }
+
+const LightUnit &UpdateMessage::getUnit_() const {
+    return unit_;
+}

@@ -411,8 +411,12 @@ void recvError() {
     cout << "Invalid message received...\n";
 }
 
+void nodeUpdate(UpdateMessage message) {
+    cout << "Update received for: " << message.getUnit_().broadcstDebugString() << "\n";
+}
+
 void *listen(void *) {
-    Listener listener = Listener(statusUpdate, recvError);
+    Listener listener = Listener(statusUpdate, recvError, nodeUpdate);
     listener.startListening();
 }
 
