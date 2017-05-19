@@ -36,7 +36,6 @@ void Broadcaster::broadcastData(char *data, int len) {
 }
 
 void Broadcaster::broadcastData(LightUnit unit) {
-    std::cout << "Broadcasting: " << unit.broadcstDebugString() << "\n";
     StateMessage message = StateMessage(unit);
     broadcastData(&message);
 }
