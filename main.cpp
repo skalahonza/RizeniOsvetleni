@@ -433,7 +433,7 @@ int main(int argc, char *argv[]) {
     units.push_back(kitchen);
     units.push_back(bedroom);
 
-    //home_screen();
+    home_screen();
 
     //Broadcast thread
     pthread_t t1;
@@ -444,7 +444,7 @@ int main(int argc, char *argv[]) {
     pthread_create(&t2, NULL, &listen, NULL);
 
 
-    //controller.Init();
+    controller.Init();
 
     char *b;
     pthread_join(t1, (void **) &b);
