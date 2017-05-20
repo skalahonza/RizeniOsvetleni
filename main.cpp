@@ -243,23 +243,7 @@ void color_management_screen() {
     //controller.Register_G_Pressed_Callback();
     TextBox *colorTb[16];
 
-//COLORS
-    Color black = Color(0, 0, 0);
-    Color white = Color(255, 255, 255);
-    Color red = Color(255, 0, 0);
-    Color lime = Color(0, 255, 0);
-    Color blue = Color(0, 0, 255);
-    Color yellow = Color(255, 255, 0);
-    Color cyan = Color(0, 255, 255);
-    Color magenta = Color(255, 0, 255);
-    Color silver = Color(192, 192, 192);
-    Color gray = Color(128, 128, 128);
-    Color maroon = Color(128, 0, 0);
-    Color olive = Color(128, 128, 0);
-    Color green = Color(0, 128, 0);
-    Color purple = Color(128, 0, 128);
-    Color teal = Color(0, 128, 128);
-    Color navy = Color(0, 0, 128);
+    Color test = Color::black();
 
 }
 
