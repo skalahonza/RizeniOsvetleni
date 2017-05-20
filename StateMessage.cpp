@@ -21,9 +21,10 @@ std::vector<char> StateMessage::buildPaketBUffer() {
             buffer.push_back(unit_.getLabel_()[i]);
     }
 
-    //TODO Add icon
-    for (int j = 0; j < 512; ++j) {
-        buffer.push_back('\0');
+    //Add icon
+    for (int j = 0; j < 256; ++j) {
+        uint16_t a = unit_.getIcon()[j];
+        SerializeUINT16(a, buffer);
     }
 
     return buffer;
