@@ -7,11 +7,14 @@
 #include "LightUnit.h"
 #include "StateMessage.h"
 #include "NetTools.h"
+#include "global_const.h"
 
 LightUnit::LightUnit(uint32_t ALC1, std::string label) :
         ALC1_(ALC1), label_(label) {
     wall_ = Color();
     ceil_ = Color();
+
+    setIcon(lightBulb);
 }
 
 const Color &LightUnit::getCeil_() const {
