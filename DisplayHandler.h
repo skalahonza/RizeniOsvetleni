@@ -29,17 +29,30 @@ private:
     void parlcd_write_cmd(int16_t cmd);
 
 public:
+    /**
+     * Get singleton instance or create a new one
+     * @return DisplayHandler singleton instance
+     */
     static DisplayHandler &getInstance() {
         static DisplayHandler INSTANCE;
         return INSTANCE;
     }
 
+    /**
+     * Add shape into list, all shapes in the list will be rendered when Refresh() is called
+     * @param shape Object that inherits from class Shape
+     */
     void addShape(Shape *shape);
 
+    /**
+     * Remove all shapes from list and wipe all display
+     */
     void clearDisplay();
+
+    /**
+     * Refresh display and (re)render all shapes on the display
+     */
     void Refresh();
-
-
 };
 
 

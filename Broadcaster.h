@@ -28,15 +28,32 @@ private:
     int sockfd;
 
 public:
+    /**
+    * Get singleton instance or create a new one
+    * @return Broadcaster singleton instance
+    */
     static Broadcaster &getInstance() {
         static Broadcaster INSTANCE;
         return INSTANCE;
     }
 
+    /**
+     * Broadcasts given buffer to all listeners in LAN
+     * @param data Raw bytes data
+     * @param len BUffer length
+     */
     void broadcastData(char *data, int len);
 
+    /**
+     * Broadcasts given unit information to all listeners in LAN
+     * @param unit LightUnit to be broadcaster
+     */
     void broadcastData(LightUnit unit);
 
+    /**
+     * Broadcast given message to all listeners in LAN
+     * @param message Message to be broadcasted
+     */
     void broadcastData(Message *message);
 };
 
