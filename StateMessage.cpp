@@ -21,9 +21,10 @@ std::vector<char> StateMessage::buildPaketBUffer() {
             buffer.push_back(unit_.getLabel_()[i]);
     }
 
-    //TODO Add icon
-    for (int j = 0; j < 512; ++j) {
-        buffer.push_back('\0');
+    //Add icon
+    for (int j = 0; j < 256; ++j) {
+        uint16_t a = unit_.getIcon()[j];
+        SerializeUINT16(a, buffer);
     }
 
     return buffer;
@@ -48,10 +49,11 @@ StateMessage::StateMessage(char *buf, int len) : Message(buf, len) {
         }
 
     //deserialize icon
-    if (len > 36 + 256)
-        for (int j = 0; j < 256; ++j) {
-            icon[j] = (uint16_t) buf[36 + j];
+    if (len >= 36 + 512) {
+        for (int i = 0; i < 512; i += 2) {
+            icon[i / 2] = DeserializeUINT16(buf + i + 36);
         }
+    }
 
     unit_ = LightUnit(ALC1_, label);
     unit_.setWall_(Color::fromUINT32(wall));
