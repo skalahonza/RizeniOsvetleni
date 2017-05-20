@@ -54,8 +54,16 @@ unsigned char r = 0, g = 0, b = 0;
 //changing colors view:
 Rectangle *view_rectangle = new Rectangle(Color(r, g, b), 0, 250, 450,
                                           20);
-
 LightUnit *examined_unit = NULL;
+
+enum SCREEN {
+    HOME,
+    UNIT_SCREEN,
+    UNIT_MANAGMENT_SCREEN,
+    COLOR_MANAGMENT
+};
+
+SCREEN currentScreen = HOME;
 
 enum SETUP_MODE {
     WALL,
@@ -82,6 +90,7 @@ void scroll_unit_list(SPINDIRECTION a, int value) {
 }
 
 void unit_management_screen(SETUP_MODE mode) {
+    currentScreen = UNIT_SCREEN;
     controller.Clear_R_Callbacks();
     controller.Clear_G_Callbacks();
     controller.Clear_B_Callbacks();
@@ -161,8 +170,8 @@ void unit_management_screen(SETUP_MODE mode) {
     handler.Refresh();
 }
 
-
 void unit_screen() {
+    currentScreen = UNIT_SCREEN;
     handler.clearDisplay();
     examined_unit = &units[selectedIdx];
 
@@ -228,6 +237,7 @@ void unit_screen() {
 }
 
 void color_management_screen() {
+    currentScreen = COLOR_MANAGMENT;
     selectedIdx = 0;
     handler.clearDisplay();
 
@@ -248,6 +258,7 @@ void color_management_screen() {
 }
 
 void home_screen() {
+    currentScreen = HOME;
     selectedIdx = 0;
     handler.clearDisplay();
 
@@ -433,7 +444,6 @@ void confirm_ceil_managment() {
     home_screen();
 }
 
-
 void *broadcast_loop(void *) {
     while (true) {
         // child process
@@ -463,6 +473,9 @@ void statusUpdate(StateMessage message) {
     cout << "Received " << message.getUnit_().broadcstDebugString() << "\n";
     units.push_back(message.getUnit_());
     cout << "Adding to list: " << message.getUnit_().getLabel_() << "\n";
+    //refresh list
+    if (currentScreen == HOME)
+        home_screen();
 }
 
 void recvError() {
