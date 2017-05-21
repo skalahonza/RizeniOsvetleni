@@ -65,7 +65,7 @@ public:
 
     static Color teal() { return Color(0, 128, 128, "TEAL"); }
 
-    static Color navy() { Color(0, 0, 128, "NAVY"); }
+    static Color navy() { return Color(0, 0, 128, "NAVY"); }
 
     const std::string &getName_() const;
 
