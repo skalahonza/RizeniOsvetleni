@@ -19,7 +19,6 @@ void go_home();
 
 void go_manage();
 
-
 void select_unit();
 
 void scroll_red_value(SPINDIRECTION a, int value);
@@ -30,13 +29,19 @@ void scroll_blue_value(SPINDIRECTION a, int value);
 
 void scroll_attribute_list(SPINDIRECTION a, int value);
 
+void scroll_manage_color_list(SPINDIRECTION a, int value);
+
 void update_textboxes();
 
 void confirm_wall_managment();
 
 void confirm_ceil_managment();
 
+void confirm_color_selection();
+
 Rectangle *selection_rectangle = new Rectangle(Color(255, 255, 255), 0, 28, 450,
+                                               20);
+Rectangle *small_selection_rectangle = new Rectangle(Color(255, 255, 255), 0, 30, 140,
                                                20);
 unsigned int selectedIdx = 0; //selected index for listboxes
 
@@ -69,6 +74,8 @@ enum SETUP_MODE {
     WALL,
     CEIL
 };
+
+SETUP_MODE manage_color_mode = WALL;
 
 void scroll_unit_list(SPINDIRECTION a, int value) {
     //ignore small steps
@@ -227,33 +234,53 @@ void unit_screen() {
     handler.Refresh();
 
     TextBox *turn_onWall = new TextBox(1, 130, 200, 200, Color(150, 150, 150));
-    turn_onWall->setText_("TURN ON WALL");
+    turn_onWall->setText_("TURN ON WALL (select from 16 colors)");
     handler.addShape(turn_onWall);
 
     TextBox *turn_onCeil = new TextBox(1, 150, 200, 200, Color(150, 150, 150));
-    turn_onCeil->setText_("TURN ON CEILING");
+    turn_onCeil->setText_("TURN ON CEILING (select from 16 colors)");
     handler.addShape(turn_onCeil);
     handler.Refresh();
 }
 
-void color_management_screen() {
+void color_management_screen(SETUP_MODE mode) {
     currentScreen = COLOR_MANAGMENT;
+    manage_color_mode = mode;
     selectedIdx = 0;
     handler.clearDisplay();
+    small_selection_rectangle = new Rectangle(Color(255, 255, 255), 0, 30, 140,
+                                              20);
 
     controller.Clear_R_Callbacks();
     controller.Clear_G_Callbacks();
     controller.Clear_B_Callbacks();
     controller.Clear_G_Pressed_Callbacks();
 
-    controller.Register_R_Callback(scroll_unit_list, "printer");
-    controller.Register_G_Callback(scroll_unit_list, "printer");
-    controller.Register_B_Callback(scroll_unit_list, "printer");
-    //TO DO
-    //controller.Register_G_Pressed_Callback();
-    TextBox *colorTb[16];
+    controller.Register_R_Callback(scroll_manage_color_list, "scroll colors");
+    controller.Register_G_Callback(scroll_manage_color_list, "scroll colors");
+    controller.Register_B_Callback(scroll_manage_color_list, "scroll colors");
 
-    Color test = Color::black();
+    controller.Register_G_Pressed_Callback(confirm_color_selection, "greenclick");
+
+    TextBox *colorTb[16];
+    Color colors_list[] = {Color::black(), Color::white(), Color::red(), Color::lime(), Color::blue(),
+    Color::yellow(), Color::cyan(), Color::magenta(), Color::silver(), Color::gray(), Color::maroon(),
+    Color::olive(), Color::green(), Color::purple(). Color::teal(), Color::navy()};
+
+
+    for (int i=0; i<8; i++) {
+        colorTb[i] = new TextBox(1, i*20+30, 200, 200, colors_list[i]);
+        colorTb[i]->setText_(colors_list[i].getName_());
+        handler.addShape(colorTb[i]);
+    }
+
+    for (int i=8; i<16; i++) {
+        colorTb[i] = new TextBox(160, i*20+30, 200, 200, colors_list[i]);
+        colorTb[i]->setText_(colors_list[i].getName_());
+        handler.addShape(colorTb[i]);
+    }
+    handler.addShape(small_selection_rectangle);
+    handler.Refresh();
 
 }
 
@@ -327,10 +354,10 @@ void go_manage() {
             confirm_ceil_managment();
             break;
         case 4: //choose color of wall
-            color_management_screen();
+            color_management_screen(WALL);
             break;
-        case 5: //choose color of wall
-            color_management_screen();
+        case 5: //choose color of ceiling
+            color_management_screen(CEIL);
             break;
     }
 }
@@ -356,6 +383,36 @@ void scroll_attribute_list(SPINDIRECTION a, int value) {
 
     selection_rectangle->setY_(50 + selectedIdx * 20);
     selection_rectangle->setY2_(selection_rectangle->getY_() + 20);
+    handler.Refresh();
+}
+
+void scroll_manage_color_list(SPINDIRECTION a, int value) {
+    //ignore small steps
+    if (value % 4 != 0 || units.size() == 0) return;
+
+    switch (a) {
+        case LEFT:
+            selectedIdx--;
+            selectedIdx %= 16;
+            break;
+        case RIGHT:
+            selectedIdx++;
+            selectedIdx %= 16;
+            break;
+    }
+
+    if (selectedIdx < 8) {
+        small_selection_rectangle->setX_(0);
+        small_selection_rectangle->setX2_(140);
+        small_selection_rectangle->setY_(30+selectedIdx*20);
+        small_selection_rectangle->setY2_(small_selection_rectangle->getY_()+20);
+    }
+    else {
+        small_selection_rectangle->setX_(159);
+        small_selection_rectangle->setX2_(300);
+        small_selection_rectangle->setY_(30+(selectedIdx-8)*20);
+        small_selection_rectangle->setY2_(small_selection_rectangle->getY_()+20);
+    }
     handler.Refresh();
 }
 
@@ -443,6 +500,21 @@ void confirm_ceil_managment() {
     examined_unit = NULL;
     home_screen();
 }
+
+void confirm_color_selection (){
+    Color colors_list2[] = {Color::black(), Color::white(), Color::red(), Color::lime(), Color::blue(),
+                           Color::yellow(), Color::cyan(), Color::magenta(), Color::silver(), Color::gray(), Color::maroon(),
+                           Color::olive(), Color::green(), Color::purple(). Color::teal(), Color::navy()};
+    if (manage_color_mode == WALL) {
+        examined_unit->setWall_(colors_list2[selectedIdx]);
+    }
+    else if (manage_color_mode == CEIL) {
+       examined_unit->setCeil_(colors_list2[selectedIdx]);
+    }
+    update_examined();
+    examined_unit = NULL;
+    home_screen();
+};
 
 void *broadcast_loop(void *) {
     while (true) {
