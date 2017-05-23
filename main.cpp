@@ -551,12 +551,14 @@ void statusUpdate(StateMessage message) {
             }
     }
 
+    bool newAdded = false;
     //add if not host
     if (!found && units[0].getALC1_() != message.getUnit_().getALC1_()) {
         //not found - add new
         cout << "Received " << message.getUnit_().broadcstDebugString() << "\n";
         units.push_back(message.getUnit_());
         cout << "Adding to list: " << message.getUnit_().getLabel_() << "\n";
+        newAdded = true;
     }
 
     bool deleted = false;
@@ -571,7 +573,7 @@ void statusUpdate(StateMessage message) {
         }
 
     //refresh list
-    if (currentScreen == HOME && units.size() > 1 && (deleted || !found))
+    if (currentScreen == HOME && units.size() > 1 && (deleted || newAdded))
         home_screen();
 }
 
