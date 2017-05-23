@@ -143,7 +143,7 @@ void LightUnit::setIsHost_(bool isHost_) {
 }
 
 bool LightUnit::isIdle() {
-    return idle_timeout > 0;
+    return idle_timeout <= 0;
 }
 
 void LightUnit::resetIdle() {
