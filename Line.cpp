@@ -17,7 +17,7 @@ Line::Line(float x1, float y1, float x2, float y2, Color stroke)
         : x2_(x2), y2_(y2), Shape(x1, y1, Color(stroke)) {
 }
 
-void Line::Render(int16_t display[320][480]) {
+void Line::Render(uint16_t display[320][480]) {
     if (!IsVisible)
         return;
 

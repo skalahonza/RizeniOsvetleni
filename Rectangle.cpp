@@ -6,7 +6,7 @@
 #include "Rectangle.h"
 #include "Line.h"
 
-void Rectangle::Render(int16_t display[320][480]) {
+void Rectangle::Render(uint16_t display[320][480]) {
     if (!IsVisible) return;
 
     Line a = Line(x_, y_, x2_, y_, stroke_);

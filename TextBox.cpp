@@ -34,7 +34,7 @@ void TextBox::setText_(const std::string &text_) {
     TextBox::text_ = text_;
 }
 
-void TextBox::Render(int16_t display[320][480]) {
+void TextBox::Render(uint16_t display[320][480]) {
     if (!IsVisible) return;
 
     int renderX = (int) x_;

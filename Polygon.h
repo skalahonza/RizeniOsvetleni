@@ -28,7 +28,7 @@ public:
      * Renders the object on target display
      * @param display Pointer to display 320x480
      */
-    virtual void Render(int16_t display[320][480]);
+    virtual void Render(uint16_t display[320][480]);
 
 private:
     std::vector<Point> points_;

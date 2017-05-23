@@ -15,7 +15,7 @@ public:
      * Renders the object on target display
      * @param display Pointer to display 320x480
      */
-    virtual void Render(int16_t display[320][480]) = 0;
+    virtual void Render(uint16_t display[320][480]) = 0;
 
     /**
      * Hides shape, prevents rendering - requires display refresh

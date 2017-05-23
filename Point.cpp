@@ -7,7 +7,7 @@
 Point::Point(float x, float y, Color stroke) : Shape(x, y, Color(stroke)) {
 }
 
-void Point::Render(int16_t display[320][480]) {
+void Point::Render(uint16_t display[320][480]) {
     if (!IsVisible) return;
     display[(int) y_][(int) x_] = stroke_.getRGB565();
 }
