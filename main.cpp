@@ -590,17 +590,7 @@ int main(int argc, char *argv[]) {
     host.setWall_(Color(10, 20, 30));
     host.setIsHost_(true);
 
-    //MOCK LIGHT UNITS
-    /*LightUnit kitchen = LightUnit(2, "Kitchen");
-    kitchen.setCeil_(Color(11, 22, 33));
-    kitchen.setWall_(Color(22, 33, 44));
-     */
-
-    LightUnit bedroom = LightUnit(NetTools::getMyIp(), "bedroom");
-
     units.push_back(host);
-    //units.push_back(kitchen);
-    units.push_back(bedroom);
 
     home_screen();
 
