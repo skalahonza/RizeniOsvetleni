@@ -97,7 +97,7 @@ private:
 
     SPINDIRECTION SpinDirection(unsigned char previous, unsigned char current);
 
-    unsigned char *mem_base_;
+    unsigned char *mem_base_ = NULL;
     char *memdev;
     volatile bool loop_;
     unsigned char red_, green_, blue_;
