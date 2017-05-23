@@ -535,10 +535,7 @@ void *broadcast_loop(void *) {
 }
 
 void statusUpdate(StateMessage message) {
-    //increase idles
-    for (int i = 0; i < units.size(); ++i)
-        if (i != 0)
-            units[i].incrementIdle();
+    bool found = false;
 
     //Seek list
     for (int i = 0; i < units.size(); ++i) {
@@ -548,16 +545,26 @@ void statusUpdate(StateMessage message) {
             units[i].Update(message.getUnit_());
             cout << "Updating: " << message.getUnit_().getLabel_() << "\n";
             units[i].resetIdle();
-            return;
-        } else if (units[i].isIdle()) {
-            units.erase(units.begin() + i);
+            found = true;
+            break;
         }
     }
 
-    //not found - add new
-    cout << "Received " << message.getUnit_().broadcstDebugString() << "\n";
-    units.push_back(message.getUnit_());
-    cout << "Adding to list: " << message.getUnit_().getLabel_() << "\n";
+    if (!found) {
+        //not found - add new
+        cout << "Received " << message.getUnit_().broadcstDebugString() << "\n";
+        units.push_back(message.getUnit_());
+        cout << "Adding to list: " << message.getUnit_().getLabel_() << "\n";
+    }
+
+    //increase idles . remove idle units
+    for (int i = 0; i < units.size(); ++i)
+        if (i != 0) {
+            units[i].incrementIdle();
+            units[i].isIdle();
+            units.erase(units.begin() + i);
+        }
+
     //refresh list
     if (currentScreen == HOME)
         home_screen();
