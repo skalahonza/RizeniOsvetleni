@@ -539,15 +539,16 @@ void statusUpdate(StateMessage message) {
 
     //Seek list
     for (int i = 0; i < units.size(); ++i) {
-        //update existing
-        if (units[i].getALC1_() == message.getUnit_().getALC1_()) {
-            cout << "Received " << message.getUnit_().broadcstDebugString() << "\n";
-            units[i].Update(message.getUnit_());
-            cout << "Updating: " << message.getUnit_().getLabel_() << "\n";
-            units[i].resetIdle();
-            found = true;
-            break;
-        }
+        //update existing - ignore host, self update
+        if (i != 0)
+            if (units[i].getALC1_() == message.getUnit_().getALC1_()) {
+                cout << "Received " << message.getUnit_().broadcstDebugString() << "\n";
+                units[i].Update(message.getUnit_());
+                cout << "Updating: " << message.getUnit_().getLabel_() << "\n";
+                units[i].resetIdle();
+                found = true;
+                break;
+            }
     }
 
     if (!found) {
@@ -557,16 +558,18 @@ void statusUpdate(StateMessage message) {
         cout << "Adding to list: " << message.getUnit_().getLabel_() << "\n";
     }
 
-    //increase idles . remove idle units
+    bool deleted = false;
+    //increase idles . remove idle units - ignore host
     for (int i = 0; i < units.size(); ++i)
         if (i != 0) {
             units[i].incrementIdle();
             units[i].isIdle();
             units.erase(units.begin() + i);
+            deleted = true;
         }
 
     //refresh list
-    if (currentScreen == HOME)
+    if (currentScreen == HOME && (deleted || !found))
         home_screen();
 }
 
