@@ -535,31 +535,45 @@ void *broadcast_loop(void *) {
 }
 
 void statusUpdate(StateMessage message) {
-    //increase idles
-    for (int i = 0; i < units.size(); ++i)
-        if (i != 0)
-            units[i].incrementIdle();
+    bool found = false;
 
     //Seek list
     for (int i = 0; i < units.size(); ++i) {
-        //update existing
-        if (units[i].getALC1_() == message.getUnit_().getALC1_()) {
-            cout << "Received " << message.getUnit_().broadcstDebugString() << "\n";
-            units[i].Update(message.getUnit_());
-            cout << "Updating: " << message.getUnit_().getLabel_() << "\n";
-            units[i].resetIdle();
-            return;
-        } else if (units[i].isIdle()) {
-            units.erase(units.begin() + i);
-        }
+        //update existing - ignore host, self update
+        if (i != 0)
+            if (units[i].getALC1_() == message.getUnit_().getALC1_()) {
+                cout << "Received " << message.getUnit_().broadcstDebugString() << "\n";
+                units[i].Update(message.getUnit_());
+                cout << "Updating: " << message.getUnit_().getLabel_() << "\n";
+                units[i].resetIdle();
+                found = true;
+                break;
+            }
     }
 
-    //not found - add new
-    cout << "Received " << message.getUnit_().broadcstDebugString() << "\n";
-    units.push_back(message.getUnit_());
-    cout << "Adding to list: " << message.getUnit_().getLabel_() << "\n";
+    bool newAdded = false;
+    //add if not host
+    if (!found && units[0].getALC1_() != message.getUnit_().getALC1_()) {
+        //not found - add new
+        cout << "Received " << message.getUnit_().broadcstDebugString() << "\n";
+        units.push_back(message.getUnit_());
+        cout << "Adding to list: " << message.getUnit_().getLabel_() << "\n";
+        newAdded = true;
+    }
+
+    bool deleted = false;
+    //increase idles . remove idle units - ignore host
+    for (int i = 0; i < units.size(); ++i)
+        if (i != 0) {
+            units[i].incrementIdle();
+            if (units[i].isIdle()) {
+                units.erase(units.begin() + i);
+                deleted = true;
+            }
+        }
+
     //refresh list
-    if (currentScreen == HOME)
+    if (currentScreen == HOME && units.size() > 1 && (deleted || newAdded))
         home_screen();
 }
 
@@ -591,7 +605,7 @@ void *listen(void *) {
 }
 
 int main(int argc, char *argv[]) {
-    LightUnit host = LightUnit(NetTools::getMyIp(), "host room");
+    LightUnit host = LightUnit(NetTools::getMyIp(), "new host room");
     host.setCeil_(Color(100, 200, 30));
     host.setWall_(Color(10, 20, 30));
     host.setIsHost_(true);
