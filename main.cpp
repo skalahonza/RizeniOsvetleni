@@ -551,7 +551,7 @@ void statusUpdate(StateMessage message) {
             }
     }
 
-    if (!found) {
+    if (!found && units.size() > 1) {
         //not found - add new
         cout << "Received " << message.getUnit_().broadcstDebugString() << "\n";
         units.push_back(message.getUnit_());
@@ -569,7 +569,7 @@ void statusUpdate(StateMessage message) {
         }
 
     //refresh list
-    if (currentScreen == HOME && (deleted || !found))
+    if (currentScreen == HOME && units.size() > 1 && (deleted || !found))
         home_screen();
 }
 
