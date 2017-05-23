@@ -5,11 +5,11 @@
 #ifndef UDPTASK_LIGHTUNIT_H
 #define UDPTASK_LIGHTUNIT_H
 
-
 #include <inttypes.h>
 #include <stdio.h>
 #include <string>
 #include "Color.h"
+#include "global_const.h"
 
 class LightUnit {
 public:
@@ -57,6 +57,12 @@ public:
 
     void setIsHost_(bool isHost_);
 
+    bool isIdle();
+
+    void resetIdle();
+
+    void incrementIdle();
+
 private:
     uint32_t ALC1_;
     std::string label_;
@@ -64,6 +70,7 @@ private:
     Color wall_;
     uint16_t icon_[256];
     bool isHost_;
+    int idle_timeout = DEFAULT_DILE_TIMEOUT;
 };
 
 
