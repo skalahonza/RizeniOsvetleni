@@ -334,6 +334,8 @@ void home_screen() {
     handler.addShape(use_text1);
     handler.addShape(use_text2);
     handler.Refresh();
+    controller.update_ceil_led(units[0].getCeil_());
+    controller.update_wall_led(units[0].getWall_());
 }
 
 void go_home() {
@@ -586,6 +588,8 @@ void nodeUpdate(UpdateMessage message) {
     cout << "Update received for: " << message.getUnit_().broadcstDebugString() << "\n";
     if (units[0].getALC1_() == message.getUnit_().getALC1_()) {
         units[0].Update(message.getUnit_());
+        controller.update_ceil_led(units[0].getCeil_());
+        controller.update_wall_led(units[0].getWall_());
         cout << "Host updated\n";
     } else {
         cout << "Update denied\n";

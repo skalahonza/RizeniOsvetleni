@@ -74,6 +74,7 @@ void *Perifery::map_phys_address(off_t region_base, size_t region_size, int opt_
 Perifery::Perifery() {
     loop_ = true;
     memdev = (char *) "/dev/mem";
+    mem_base_ = (unsigned char *) map_phys_address(SPILED_REG_BASE_PHYS, SPILED_REG_SIZE, 0);
 }
 
 Perifery::~Perifery() {
@@ -285,5 +286,15 @@ void Perifery::Register_G_Pressed_Callback(t_pressed_callback callback, std::str
 
 void Perifery::Register_B_Pressed_Callback(t_pressed_callback callback, std::string key) {
     B_pressed_callbacks_[key] = callback;
+}
+
+void Perifery::update_ceil_led(Color color) {
+    if (mem_base_ == NULL) return;
+    *(volatile uint32_t *) (mem_base_ + SPILED_REG_LED_RGB1_o) = color.toUINT32();
+}
+
+void Perifery::update_wall_led(Color color) {
+    if (mem_base_ == NULL) return;
+    *(volatile uint32_t *) (mem_base_ + SPILED_REG_LED_RGB2_o) = color.toUINT32();
 }
 
