@@ -44,7 +44,6 @@ void Listener::stopListening() {
 
 void Listener::listeningLoop() {
     while (loop_) {
-        sleep(1);
         int recv_len;
         int slen = sizeof(si_other_);
         char buf[PACKET_MAX_LEN] = {0};
