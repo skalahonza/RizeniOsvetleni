@@ -287,3 +287,11 @@ void Perifery::Register_B_Pressed_Callback(t_pressed_callback callback, std::str
     B_pressed_callbacks_[key] = callback;
 }
 
+void Perifery::update_ceil_led(Color color) {
+    *(volatile uint32_t *) (mem_base_ + SPILED_REG_LED_RGB1_o) = color.toUINT32();
+}
+
+void Perifery::update_wall_led(Color color) {
+    *(volatile uint32_t *) (mem_base_ + SPILED_REG_LED_RGB2_o) = color.toUINT32();
+}
+

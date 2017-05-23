@@ -10,6 +10,7 @@
 #include <map>
 #include <string>
 #include "HardwareEndpoints.h"
+#include "Color.h"
 #include <inttypes.h>
 
 enum SPINDIRECTION {
@@ -68,6 +69,10 @@ public:
     void Clear_B_Pressed_Callbacks();
 
     void *map_phys_address(off_t region_base, size_t region_size, int opt_cached);
+
+    void update_ceil_led(Color color);
+
+    void update_wall_led(Color color);
 
     virtual ~Perifery();
 
