@@ -141,3 +141,15 @@ bool LightUnit::isIsHost_() const {
 void LightUnit::setIsHost_(bool isHost_) {
     LightUnit::isHost_ = isHost_;
 }
+
+bool LightUnit::isIdle() {
+    return idle_timeout <= 0;
+}
+
+void LightUnit::resetIdle() {
+    idle_timeout = DEFAULT_DILE_TIMEOUT;
+}
+
+void LightUnit::incrementIdle() {
+    idle_timeout--;
+}

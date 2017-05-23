@@ -43,7 +43,7 @@ void confirm_color_selection();
 Rectangle *selection_rectangle = new Rectangle(Color(255, 255, 255), 0, 28, 450,
                                                20);
 Rectangle *small_selection_rectangle = new Rectangle(Color(255, 255, 255), 0, 30, 140,
-                                               20);
+                                                     20);
 unsigned int selectedIdx = 0; //selected index for listboxes
 
 std::vector<LightUnit> units;
@@ -168,13 +168,13 @@ void unit_management_screen(SETUP_MODE mode) {
     g_value->setText_(streamg.str());
     b_value->setText_(streamb.str());
     handler.addShape(changingName_text);
-   // handler.addShape(color_text);
+    // handler.addShape(color_text);
     handler.addShape(r_value);
     handler.addShape(g_value);
     handler.addShape(b_value);
-   /* *view_rectangle = Rectangle(Color(r, g, b), 0, 250, 450,
-                                20);
-    handler.addShape(view_rectangle);*/
+    /* *view_rectangle = Rectangle(Color(r, g, b), 0, 250, 450,
+                                 20);
+     handler.addShape(view_rectangle);*/
     handler.Refresh();
 }
 
@@ -265,18 +265,19 @@ void color_management_screen(SETUP_MODE mode) {
 
     TextBox *colorTb[16];
     Color colors_list[] = {Color::black(), Color::white(), Color::red(), Color::lime(), Color::blue(),
-    Color::yellow(), Color::cyan(), Color::magenta(), Color::silver(), Color::gray(), Color::maroon(),
-    Color::olive(), Color::green(), Color::purple(), Color::teal(), Color::navy()};
+                           Color::yellow(), Color::cyan(), Color::magenta(), Color::silver(), Color::gray(),
+                           Color::maroon(),
+                           Color::olive(), Color::green(), Color::purple(), Color::teal(), Color::navy()};
 
 
-    for (int i=0; i<8; i++) {
-        colorTb[i] = new TextBox(1, i*20+30, 200, 200, Color(255,255,255));
+    for (int i = 0; i < 8; i++) {
+        colorTb[i] = new TextBox(1, i * 20 + 30, 200, 200, Color(255, 255, 255));
         colorTb[i]->setText_(colors_list[i].getName_());
         handler.addShape(colorTb[i]);
     }
 
-    for (int i=8; i<16; i++) {
-        colorTb[i] = new TextBox(160, (i-8)*20+30, 200, 200, Color(255,255,255));
+    for (int i = 8; i < 16; i++) {
+        colorTb[i] = new TextBox(160, (i - 8) * 20 + 30, 200, 200, Color(255, 255, 255));
         colorTb[i]->setText_(colors_list[i].getName_());
         handler.addShape(colorTb[i]);
     }
@@ -411,14 +412,13 @@ void scroll_manage_color_list(SPINDIRECTION a, int value) {
     if (selectedIdx < 8) {
         small_selection_rectangle->setX_(0);
         small_selection_rectangle->setX2_(140);
-        small_selection_rectangle->setY_(30+selectedIdx*20);
-        small_selection_rectangle->setY2_(small_selection_rectangle->getY_()+20);
-    }
-    else {
+        small_selection_rectangle->setY_(30 + selectedIdx * 20);
+        small_selection_rectangle->setY2_(small_selection_rectangle->getY_() + 20);
+    } else {
         small_selection_rectangle->setX_(159);
         small_selection_rectangle->setX2_(300);
-        small_selection_rectangle->setY_(30+(selectedIdx-8)*20);
-        small_selection_rectangle->setY2_(small_selection_rectangle->getY_()+20);
+        small_selection_rectangle->setY_(30 + (selectedIdx - 8) * 20);
+        small_selection_rectangle->setY2_(small_selection_rectangle->getY_() + 20);
     }
     handler.Refresh();
 }
@@ -508,15 +508,15 @@ void confirm_ceil_managment() {
     home_screen();
 }
 
-void confirm_color_selection (){
+void confirm_color_selection() {
     Color colors_list2[] = {Color::black(), Color::white(), Color::red(), Color::lime(), Color::blue(),
-                           Color::yellow(), Color::cyan(), Color::magenta(), Color::silver(), Color::gray(), Color::maroon(),
-                           Color::olive(), Color::green(), Color::purple(). Color::teal(), Color::navy()};
+                            Color::yellow(), Color::cyan(), Color::magenta(), Color::silver(), Color::gray(),
+                            Color::maroon(),
+                            Color::olive(), Color::green(), Color::purple().Color::teal(), Color::navy()};
     if (manage_color_mode == WALL) {
         examined_unit->setWall_(colors_list2[selectedIdx]);
-    }
-    else if (manage_color_mode == CEIL) {
-       examined_unit->setCeil_(colors_list2[selectedIdx]);
+    } else if (manage_color_mode == CEIL) {
+        examined_unit->setCeil_(colors_list2[selectedIdx]);
     }
     update_examined();
     examined_unit = NULL;
@@ -535,16 +535,22 @@ void *broadcast_loop(void *) {
 }
 
 void statusUpdate(StateMessage message) {
+    //increase idles
+    for (int i = 0; i < units.size(); ++i)
+        if (i != 0)
+            units[i].incrementIdle();
+
     //Seek list
     for (int i = 0; i < units.size(); ++i) {
         //update existing
         if (units[i].getALC1_() == message.getUnit_().getALC1_()) {
-            if (i != 0) {
-                cout << "Received " << message.getUnit_().broadcstDebugString() << "\n";
-                units[i].Update(message.getUnit_());
-                cout << "Updating: " << message.getUnit_().getLabel_() << "\n";
-            }
+            cout << "Received " << message.getUnit_().broadcstDebugString() << "\n";
+            units[i].Update(message.getUnit_());
+            cout << "Updating: " << message.getUnit_().getLabel_() << "\n";
+            units[i].resetIdle();
             return;
+        } else if (units[i].isIdle()) {
+            units.erase(units.begin() + i);
         }
     }
 
