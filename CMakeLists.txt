@@ -10,5 +10,5 @@ set(SOURCE_FILES main.cpp Updater.cpp Updater.h Perifery.cpp
         DisplayHandler.cpp DisplayHandler.h LightUnit.cpp LightUnit.h
         Message.cpp Message.h Broadcaster.cpp Broadcaster.h global_const.h
         StateMessage.cpp StateMessage.h Listener.cpp Listener.h
-        font_prop14x16.h font_rom8x16.h font_types.h NetTools.cpp NetTools.h UpdateMessage.cpp UpdateMessage.h)
+        font_prop14x16.h font_rom8x16.h font_types.h NetTools.cpp NetTools.h UpdateMessage.cpp UpdateMessage.h Icon.cpp Icon.h)
 add_executable(UdpTask ${SOURCE_FILES})

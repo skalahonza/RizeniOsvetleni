@@ -11,6 +11,7 @@
 #include "NetTools.h"
 #include "global_const.h"
 #include "Updater.h"
+#include "Icon.h"
 
 #define STEP 5
 using namespace std;
@@ -315,11 +316,20 @@ void home_screen() {
     use_text1->setText_("Rotate button, select device,");
     use_text2->setText_("press green to confirm, press red to go home.");
 
+    //UNITS LIST
     for (int i = 0; i < units.size(); ++i) {
-        unitsTb[i] = new TextBox(1, i * 20 + 30, 200, 200, stroke);
+        //add label
+
+        unitsTb[i] = new TextBox(20, i * 20 + 30, 200, 200, stroke);
         unitsTb[i]->setText_(units[i].debugString());
         handler.addShape((unitsTb[i]));
+
+        //add icon
+        Icon *icon = new Icon(2, i * 20 + 30, (uint16_t *) units[i].getIcon());
+        handler.addShape(icon);
     }
+
+
     handler.addShape(first_text);
     handler.addShape(green_line);
     handler.addShape(selection_rectangle);
@@ -583,17 +593,7 @@ int main(int argc, char *argv[]) {
     host.setWall_(Color(10, 20, 30));
     host.setIsHost_(true);
 
-    //MOCK LIGHT UNITS
-    /*LightUnit kitchen = LightUnit(2, "Kitchen");
-    kitchen.setCeil_(Color(11, 22, 33));
-    kitchen.setWall_(Color(22, 33, 44));
-     */
-
-    LightUnit bedroom = LightUnit(NetTools::getMyIp(), "bedroom");
-
     units.push_back(host);
-    //units.push_back(kitchen);
-    units.push_back(bedroom);
 
     home_screen();
 
