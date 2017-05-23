@@ -8,7 +8,7 @@
 Ellipse::Ellipse(float x, float y, int width, int height, Color Stroke) :
         Shape(x, y, Stroke), width_(width), height_(height) {}
 
-void Ellipse::Render(int16_t display[320][480]) {
+void Ellipse::Render(uint16_t display[320][480]) {
     if (!IsVisible) return;
 
     int height = (int) ceil((double) height_ / 2.0);

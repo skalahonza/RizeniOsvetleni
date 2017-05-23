@@ -15,7 +15,7 @@ public:
     Line();
     Line(float x1, float y1, float x2, float y2, Color stroke);
 
-    virtual void Render(int16_t display[320][480]);
+    virtual void Render(uint16_t display[320][480]);
 
     float getX2() const;
 

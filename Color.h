@@ -29,7 +29,7 @@ public:
 
     RGBcolor getRGB888() const;
 
-    int16_t getRGB565();
+    uint16_t getRGB565();
 
     uint32_t toUINT32() const;
 

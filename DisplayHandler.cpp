@@ -34,11 +34,11 @@ void DisplayHandler::Refresh() {
     }
 }
 
-void DisplayHandler::parlcd_write_data(int16_t data) {
+void DisplayHandler::parlcd_write_data(uint16_t data) {
     *(volatile uint16_t *) (parlcd_mem_base_ + PARLCD_REG_DATA_o) = (uint16_t) data;
 }
 
-void DisplayHandler::parlcd_write_cmd(int16_t cmd) {
+void DisplayHandler::parlcd_write_cmd(uint16_t cmd) {
     *(volatile uint16_t *) (parlcd_mem_base_ + PARLCD_REG_CMD_o) = (uint16_t) cmd;
 }
 

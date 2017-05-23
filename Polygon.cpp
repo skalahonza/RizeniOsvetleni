@@ -8,7 +8,7 @@
 Polygon::Polygon(std::vector<Point> Points, Color Stroke) : Shape(Stroke), points_(Points) {
 }
 
-void Polygon::Render(int16_t display[320][480]) {
+void Polygon::Render(uint16_t display[320][480]) {
     if (!IsVisible) return;
 
     //draw lines that will form the polygon together

@@ -21,12 +21,12 @@ private:
     DisplayHandler(DisplayHandler const &); // Don't Implement
     void operator=(DisplayHandler const &); // Don't implement
     unsigned char *parlcd_mem_base_;
-    int16_t display[320][480];
+    uint16_t display[320][480];
     std::vector<Shape *> shapes_;
 
-    void parlcd_write_data(int16_t data);
+    void parlcd_write_data(uint16_t data);
 
-    void parlcd_write_cmd(int16_t cmd);
+    void parlcd_write_cmd(uint16_t cmd);
 
 public:
     /**
