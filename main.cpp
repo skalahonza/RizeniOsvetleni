@@ -584,19 +584,13 @@ void recvError() {
 void nodeUpdate(UpdateMessage message) {
     //RESOLVE UPDATE
     cout << "Update received for: " << message.getUnit_().broadcstDebugString() << "\n";
-
-    //Seek list
-    for (int i = 0; i < units.size(); ++i) {
-        //ip matches - don't update data about foreign units, they are udpated by broadcast
-        //compare ID
-        if (units[i].getALC1_() == message.getUnit_().getALC1_()) {
-            if (i != 0) {
-                units[i].Update(message.getUnit_());
-                cout << "Updating: " << units[i].getLabel_() << "\n";
-            }
-        }
-
+    if (units[0].getALC1_() == message.getUnit_().getALC1_()) {
+        units[0].Update(message.getUnit_());
+        cout << "Host updated\n";
+    } else {
+        cout << "Update denied\n";
     }
+
 }
 
 void *listen(void *) {
