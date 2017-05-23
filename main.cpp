@@ -11,7 +11,6 @@
 #include "NetTools.h"
 #include "global_const.h"
 #include "Updater.h"
-#include "Icon.h"
 
 #define STEP 5
 using namespace std;
@@ -168,13 +167,13 @@ void unit_management_screen(SETUP_MODE mode) {
     g_value->setText_(streamg.str());
     b_value->setText_(streamb.str());
     handler.addShape(changingName_text);
-    handler.addShape(color_text);
+   // handler.addShape(color_text);
     handler.addShape(r_value);
     handler.addShape(g_value);
     handler.addShape(b_value);
-    *view_rectangle = Rectangle(Color(r, g, b), 0, 250, 450,
+   /* *view_rectangle = Rectangle(Color(r, g, b), 0, 250, 450,
                                 20);
-    handler.addShape(view_rectangle);
+    handler.addShape(view_rectangle);*/
     handler.Refresh();
 }
 
@@ -266,17 +265,17 @@ void color_management_screen(SETUP_MODE mode) {
     TextBox *colorTb[16];
     Color colors_list[] = {Color::black(), Color::white(), Color::red(), Color::lime(), Color::blue(),
     Color::yellow(), Color::cyan(), Color::magenta(), Color::silver(), Color::gray(), Color::maroon(),
-    Color::olive(), Color::green(), Color::purple(). Color::teal(), Color::navy()};
+    Color::olive(), Color::green(), Color::purple(), Color::teal(), Color::navy()};
 
 
     for (int i=0; i<8; i++) {
-        colorTb[i] = new TextBox(1, i*20+30, 200, 200, colors_list[i]);
+        colorTb[i] = new TextBox(1, i*20+30, 200, 200, Color(255,255,255));
         colorTb[i]->setText_(colors_list[i].getName_());
         handler.addShape(colorTb[i]);
     }
 
     for (int i=8; i<16; i++) {
-        colorTb[i] = new TextBox(160, i*20+30, 200, 200, colors_list[i]);
+        colorTb[i] = new TextBox(160, (i-8)*20+30, 200, 200, Color(255,255,255));
         colorTb[i]->setText_(colors_list[i].getName_());
         handler.addShape(colorTb[i]);
     }
@@ -316,20 +315,11 @@ void home_screen() {
     use_text1->setText_("Rotate button, select device,");
     use_text2->setText_("press green to confirm, press red to go home.");
 
-    //UNITS LIST
     for (int i = 0; i < units.size(); ++i) {
-        //add label
-
-        unitsTb[i] = new TextBox(20, i * 20 + 30, 200, 200, stroke);
+        unitsTb[i] = new TextBox(1, i * 20 + 30, 200, 200, stroke);
         unitsTb[i]->setText_(units[i].debugString());
         handler.addShape((unitsTb[i]));
-
-        //add icon
-        Icon *icon = new Icon(2, i * 20 + 30, (uint16_t *) units[i].getIcon());
-        handler.addShape(icon);
     }
-
-
     handler.addShape(first_text);
     handler.addShape(green_line);
     handler.addShape(selection_rectangle);
@@ -593,7 +583,17 @@ int main(int argc, char *argv[]) {
     host.setWall_(Color(10, 20, 30));
     host.setIsHost_(true);
 
+    //MOCK LIGHT UNITS
+    /*LightUnit kitchen = LightUnit(2, "Kitchen");
+    kitchen.setCeil_(Color(11, 22, 33));
+    kitchen.setWall_(Color(22, 33, 44));
+     */
+
+    LightUnit bedroom = LightUnit(NetTools::getMyIp(), "bedroom");
+
     units.push_back(host);
+    //units.push_back(kitchen);
+    units.push_back(bedroom);
 
     home_screen();
 
