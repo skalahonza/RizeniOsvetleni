@@ -536,15 +536,20 @@ void *broadcast_loop(void *) {
 
 void statusUpdate(StateMessage message) {
     //Seek list
-    for (int i = 0; i < units.size(); ++i) {
+    if (units.size() > 1)
+        for (int i = 1; i < units.size(); ++i) {
+            //increase idle
+            units[i].incrementIdle();
+
         //update existing
         if (units[i].getALC1_() == message.getUnit_().getALC1_()) {
-            if (i != 0) {
                 cout << "Received " << message.getUnit_().broadcstDebugString() << "\n";
                 units[i].Update(message.getUnit_());
                 cout << "Updating: " << message.getUnit_().getLabel_() << "\n";
-            }
+            units[i].resetIdle();
             return;
+        } else if (units[i].isIdle()) {
+            units.erase(units.begin() + i);
         }
     }
 
