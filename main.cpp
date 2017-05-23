@@ -601,7 +601,7 @@ void *listen(void *) {
 }
 
 int main(int argc, char *argv[]) {
-    LightUnit host = LightUnit(NetTools::getMyIp(), "host room");
+    LightUnit host = LightUnit(NetTools::getMyIp(), "new host room");
     host.setCeil_(Color(100, 200, 30));
     host.setWall_(Color(10, 20, 30));
     host.setIsHost_(true);
