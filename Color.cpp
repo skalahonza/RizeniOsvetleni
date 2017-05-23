@@ -13,7 +13,7 @@ RGBcolor Color::getRGB888() const {
 }
 
 int16_t Color::getRGB565() {
-    return (int16_t) ((rgb888_.r << 11) | (rgb888_.g << 5) | rgb888_.b);
+    return ((rgb888_.r << 11) | (rgb888_.g << 5) | rgb888_.b);
 }
 
 Color::Color(int r, int g, int b) : Color(r, g, b, "") {
