@@ -564,8 +564,8 @@ void statusUpdate(StateMessage message) {
     for (int i = 0; i < units.size(); ++i)
         if (i != 0) {
             units[i].incrementIdle();
-            units[i].isIdle();
-            units.erase(units.begin() + i);
+            if (units[i].isIdle())
+                units.erase(units.begin() + i);
             deleted = true;
         }
 
